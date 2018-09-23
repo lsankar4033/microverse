@@ -1,0 +1,177 @@
+/*yellow
+	rgba(243,244,123,1)
+	#f3f47b  
+*/
+
+html {
+	font-size: 16px;
+}
+
+/*hexes - https://www.codesmite.com/article/how-to-create-pure-css-hexagonal-grids*/
+
+body {
+	display: flex;
+	font-family: 'Work Sans', sans-serif;
+	flex-direction: column;
+	margin: 0px;
+	line-height: 1.48;
+}
+
+h1, h2, h3, .label {
+	font-family: 'Space Mono', monospace;
+	margin-bottom: .5rem;
+}
+
+p {
+	margin: .5rem 0 .5rem 0;
+}
+
+header {
+	display: flex;
+	flex-direction: row;
+	padding: .5rem;
+}
+
+header .menu-items {
+	margin-left: auto;
+}
+
+header .menu-items span:first-child {
+	margin-right: 1rem;
+}
+
+.section {
+	display: flex;
+	flex-direction: column;
+	width: auto;
+	padding: .5rem;
+}
+
+.hero h1 {
+	margin-top: .5rem;
+	font-size: 1.5rem;
+}
+
+.jackpot {
+	background-color: rgba(243,244,123,1)
+}
+
+.label {
+	text-transform: uppercase;
+	font-weight: 700;
+	font-size: .8rem;
+	color: rgba(0,0,0, .66);
+}
+
+.label.light {
+	color: rgba(255,255,255.66);
+}
+
+.grid {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	align-items: center;
+}
+
+.grid .row {
+	display: flex;
+	flex-direction: row;
+	margin-bottom: -3rem;
+	line-height: normal;
+}
+
+.grid .row:last-child {
+	margin-bottom: 0rem;
+}
+
+.grid .row .hex {
+	font-size: 4rem;
+	margin-right: -.6rem;
+	position: relative;
+}
+
+.grid .row .hex:last-child {
+	margin-right: 0rem;
+}
+
+.grid .row .hex p {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -o-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  font-size: 1rem;
+  color: white;
+}
+
+
+#grid {
+    position: relative;
+    width: 60%;
+    margin: 0 auto;
+    padding: 0; /* Clears unordered list default of 40px */
+}
+
+.clear:after {
+    content: "";
+    display: block;
+    clear: both;
+}
+
+#grid li {
+    list-style-type: none;
+    position: relative;
+    float: left;
+    width: 27.85714285714286%;
+    padding: 0 0 32.16760145166612% 0;
+    -o-transform: rotate(-60deg) skewY(30deg);
+    -moz-transform: rotate(-60deg) skewY(30deg);
+    -webkit-transform: rotate(-60deg) skewY(30deg);
+    -ms-transform: rotate(-60deg) skewY(30deg);
+    transform: rotate(-60deg) skewY(30deg);
+    background: #fd005f;
+    overflow: hidden;
+    visibility: hidden;
+}
+
+#grid li .hexagon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #fdbf00;
+    -o-transform: skewY(-30deg) rotate(60deg);
+    -moz-transform: skewY(-30deg) rotate(60deg);
+    -webkit-transform: skewY(-30deg) rotate(60deg);
+    -ms-transform: skewY(-30deg) rotate(60deg);
+    transform: skewY(-30deg) rotate(60deg);
+    overflow: hidden;
+}
+
+#grid li * {
+    visibility: visible;
+}
+
+#grid li:nth-child(3n+2) {
+  margin: 0 1%;
+}
+
+#grid li:nth-child(6n+4), #grid li:nth-child(6n+5), #grid li:nth-child(6n+6) {
+    margin-top: -6.9285714285%;
+    margin-bottom: -6.9285714285%;
+    -o-transform: translateX(50%) rotate(-60deg) skewY(30deg);
+    -moz-transform: translateX(50%) rotate(-60deg) skewY(30deg);
+    -webkit-transform: translateX(50%) rotate(-60deg) skewY(30deg);
+    -ms-transform: translateX(50%) rotate(-60deg) skewY(30deg);
+    transform: translateX(50%) rotate(-60deg) skewY(30deg);
+}
+
+#grid li:nth-child(6n+4) { 
+    margin-left: 0.5%;
+}
