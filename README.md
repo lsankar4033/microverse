@@ -2,9 +2,10 @@ Smart contract for a fun new game
 
 ## TODO
 Contract:
-- jackpot timer + distribution
+- jackpot winner+landholder distribution (i.e. using differentials...)
+- figure out when to call 'endRound' in other txes
 - add events
-- decide if we want to use the old version of PullPayment
+- cleaner way of storing all fee portions
 
 Web client:
 - everything...
