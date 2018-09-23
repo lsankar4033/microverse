@@ -1,24 +1,17 @@
 pragma solidity ^0.4.22;
 
-import "./SafeMath.sol";
+import "./Ownable.sol";
 import "./PullPayment.sol";
+import "./SafeMath.sol";
 
 import "./HexBoard2.sol";
+import "./TaxRules.sol";
 
 // TODO: Make HexBoard4
-contract LandGrab is HexBoard2, PullPayment {
-  // Tx methods:
-  // - buy(tileId, newPrice) payable
-  // - setPrice(tileId, newPrice) payable
-
-  // Visibility methods:
-  // - getPrice(tileId)
-  // - getNeighbors(tileId)
-  // - getOwner(tileId)
+contract LandGrab is HexBoard2, PullPayment, Ownable, TaxRules {
+  // TODO Visibility methods:
   // - getJackpotSize()
   // - getJackpotTimeRemaining()
-  // - getBalance()
-  // - withdraw()
 
   // Annoying gotchas:
   // - tile numbering/neighboring (likely has to be statically defined or generated code)
@@ -30,8 +23,9 @@ contract LandGrab is HexBoard2, PullPayment {
 
   mapping(uint8 => address) public landRegistry;
 
-  // TODO: How is this initialized? Perhaps use a default value
+  // TODO: Ok to initialize these to 0?
   mapping(uint8 => uint256) public tileToPrice;
+  uint256 public totalTileValue;
 
   uint256 public jackpot;
   uint256 public nextJackpot;
@@ -48,7 +42,10 @@ contract LandGrab is HexBoard2, PullPayment {
     require(msg.value >= tax);
 
     _distributeTax(msg.value);
+
+    uint256 oldPrice = tileToPrice[tileId];
     tileToPrice[tileId] = newPrice;
+    totalTileValue = totalTileValue.add(newPrice.sub(oldPrice));
   }
 
   function buy(uint8 tileId, uint256 newPrice) public payable {
@@ -61,61 +58,39 @@ contract LandGrab is HexBoard2, PullPayment {
     require(msg.value >= tax.add(tileToPrice[tileId]));
 
     // pay seller
-    _asyncTransfer(landRegistry[tileId], tileToPrice[tileId]);
+    asyncSend(landRegistry[tileId], tileToPrice[tileId]);
 
     uint256 actualTax = msg.value.sub(tileToPrice[tileId]);
     _distributeTax(actualTax);
+
+    uint256 oldPrice = tileToPrice[tileId];
     tileToPrice[tileId] = newPrice;
+    totalTileValue = totalTileValue.add(newPrice.sub(oldPrice));
   }
 
   // NOTE: Currently haven't implemented sidepot or 'referrals'
   function _distributeTax(uint256 tax) private {
-    // jackpot
-    // land holder dividends
-    // sidepot (optional)
-    // team fee
-    // next pot
-    // referral (optional)
-
     jackpot = jackpot.add(_computeJackpotTax(tax));
 
     _distributeLandholderTax(_computeTotalLandholderTax(tax));
 
-    // TODO: Distribute team fee
+    // TODO: Change this once we define 'team'
+    asyncSend(owner, _computeTeamTax(tax));
 
     nextJackpot = nextJackpot.add(_computeNextPotTax(tax));
   }
 
+  // NOTE: Perf test for Hex4 before deployment. Because loops
   function _distributeLandholderTax(uint256 landholderTax) private {
-    // TODO! Iterate through all landholders to distribute dividends
+    for (uint8 tile = minTileId; tile <= maxTileId; tile++) {
+
+      // NOTE: This assumes no unowned land with value!
+      if (landRegistry[tile] != address(0)) {
+        uint256 tilePrice = tileToPrice[tile];
+        uint256 allocation = landholderTax.mul(tilePrice).div(totalTileValue);
+
+        asyncSend(landRegistry[tile], allocation);
+      }
+    }
   }
-
-  // 10%
-  function _computeTax(uint256 price) private pure returns (uint256) {
-    return price.div(10);
-  }
-
-  // NOTE: The next 4 methods *must* add up to 100%
-
-  // 50%
-  function _computeJackpotTax(uint256 tax) private pure returns (uint256) {
-    return tax.div(2);
-  }
-
-  // 40%
-  function _computeTotalLandholderTax(uint256 tax) private pure returns (uint256) {
-    return (tax.mul(2)).div(5);
-  }
-
-  // 5%
-  function _computeTeamTax(uint256 tax) private pure returns (uint256) {
-    return tax.div(20);
-  }
-
-  // 5%
-  function _computeNextPotTax(uint256 tax) private pure returns (uint256) {
-    return tax.div(20);
-  }
-
-
 }
