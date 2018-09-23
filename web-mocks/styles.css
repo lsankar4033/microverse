@@ -46,6 +46,11 @@ header .menu-items span:first-child {
 	margin-right: 1rem;
 }
 
+header a {
+  color: black;
+  text-decoration: none;
+}
+
 .section {
 	display: flex;
 	flex-direction: column;
@@ -134,10 +139,68 @@ header .menu-items span:first-child {
   background-color: rgba(39,64,42,.66);
 }
 
+.button.inline {
+  font-size: .8rem;
+  padding: .25rem .5rem;
+  background-color: rgba(0,0,0,.66);
+}
+
+.button.inline:hover {
+  background-color: rgba(0,0,0,.33);
+}
+
 .close-button {
   display:block;
   position:absolute;
   top:1rem;
   right:1rem;
   color: black;
+}
+
+.metadata {
+  color: rgba(0,0,0,.66);
+  font-size: .8rem;
+  margin: 0px;
+}
+
+.table {
+  margin-top: 1rem;
+}
+
+.table {
+  display: flex;
+  flex-direction: column;
+}
+
+.table-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.table-row-right {
+  display: flex;
+  flex-direction: row;
+  margin-left: auto;
+}
+
+.table-row-right div {
+  margin-left: auto;
+  display: flex;
+  width: 50%;
+}
+
+.table-row-right div:first-child {
+  margin-right: 1rem;
+}
+
+.table-row:hover {
+  background-color: rgba(0,0,0,.05);
+}
+
+.table.worlds .table-row-right {
+  width: 40%;
+}
+
+.table.transactions .table-row-right {
+  width: 40%;
 }
