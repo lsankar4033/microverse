@@ -30,8 +30,9 @@ Every ETH that flows through the Microverse economy is allocated as follows:
 
 * 45% to the stimulus
 * 40% to current owners of worlds
-* 7.5% to seed the stimulus of the next simulation
-* 7.5% to the Microverse community fund
+* 5% to the referrer
+* 5% to seed the stimulus of the next simulation
+* 5% to developers
 
 ### Stimulus splits
 
