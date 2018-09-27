@@ -47,7 +47,6 @@ contract Microverse is HexBoard2, PullPayment, Ownable, TaxRules, JackpotRules {
     _startRound();
   }
 
-  // TODO: call end round!
   function setPrice(uint8 tileId, uint256 newPrice) public payable {
     // must be owner
     require(tileToOwner[tileId] == msg.sender);
@@ -64,7 +63,6 @@ contract Microverse is HexBoard2, PullPayment, Ownable, TaxRules, JackpotRules {
     totalTileValue = totalTileValue.add(newPrice.sub(oldPrice));
   }
 
-  // TODO: call end round!
   function buy(uint8 tileId, uint256 newPrice) public payable {
     // can't buy from self
     require(tileToOwner[tileId] != msg.sender);
