@@ -9,7 +9,7 @@ import "./JackpotRules.sol";
 import "./TaxRules.sol";
 
 // TODO: Make HexBoard4
-contract LandGrab is HexBoard2, PullPayment, Ownable, TaxRules, JackpotRules {
+contract Microverse is HexBoard2, PullPayment, Ownable, TaxRules, JackpotRules {
 
   using SafeMath for uint256;
 
