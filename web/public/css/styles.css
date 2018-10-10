@@ -1,0 +1,223 @@
+/*
+
+yellow
+	rgba(243,244,123,1)
+	#f3f47b
+
+green
+  rgba(39,64,42,1)
+  #64a46b
+
+
+*/
+
+html {
+	font-size: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+body {
+	display: flex;
+	font-family: 'Work Sans', sans-serif;
+	flex-direction: column;
+	margin: 0px;
+	line-height: 1.48;
+  max-width: 700px;
+}
+
+h1, h2, h3, .label {
+	font-family: 'Space Mono', monospace;
+	margin-bottom: .5rem;
+}
+
+p {
+	margin: .5rem 0 .5rem 0;
+}
+
+header {
+	display: flex;
+	flex-direction: row;
+	padding: .5rem;
+}
+
+header .menu-items {
+	margin-left: auto;
+}
+
+header .menu-items span:first-child {
+	margin-right: 1rem;
+}
+
+header a {
+  color: black;
+  text-decoration: none;
+}
+
+header .logo {
+  font-weight: 700;
+  text-transform: uppercase;
+  font-family: 'Space Mono', monospace;
+  color: rgba(0,0,0,.5);
+}
+
+.section {
+	display: flex;
+	flex-direction: column;
+	width: auto;
+	padding: .5rem;
+}
+
+.hero h1 {
+	margin-top: .5rem;
+	font-size: 1.5rem;
+}
+
+.section-accent {
+	background-color: rgba(243,244,123,1)
+}
+
+.label {
+	text-transform: uppercase;
+	font-weight: 700;
+	font-size: .8rem;
+	color: rgba(0,0,0, .66);
+}
+
+.label.light {
+	color: rgba(255,255,255.66);
+}
+
+.grid {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	align-items: center;
+}
+
+.grid .row {
+	display: flex;
+	flex-direction: row;
+	margin-bottom: -3rem;
+	line-height: normal;
+}
+
+.grid .row:last-child {
+	margin-bottom: 0rem;
+}
+
+.grid .row .hex {
+	font-size: 4rem;
+	margin-right: -.6rem;
+	position: relative;
+}
+
+.grid .row .hex.owned {
+  color: rgba(39,64,42,1);
+}
+
+.grid .row .hex:last-child {
+	margin-right: 0rem;
+}
+
+.grid .row .hex p {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -o-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  font-size: 1rem;
+  color: white;
+}
+
+.button {
+  padding: .5rem 1rem;
+  background-color: rgba(39,64,42,1);
+  color: rgba(255,255,255,.87);
+  text-align: center;
+  text-transform: uppercase;
+  font-family: 'Space Mono', monospace;
+  font-weight: 700;
+  border-radius: 10rem;
+}
+
+.button:hover {
+  background-color: rgba(39,64,42,.66);
+}
+
+.button.inline {
+  font-size: .8rem;
+  padding: .25rem .5rem;
+  background-color: rgba(0,0,0,.66);
+}
+
+.button.inline:hover {
+  background-color: rgba(0,0,0,.33);
+}
+
+.close-button {
+  display:block;
+  position:absolute;
+  top:1rem;
+  right:1rem;
+  color: black;
+}
+
+.metadata {
+  color: rgba(0,0,0,.66);
+  font-size: .8rem;
+  margin: 0px;
+}
+
+.table {
+  margin-top: 1rem;
+}
+
+.table {
+  display: flex;
+  flex-direction: column;
+}
+
+.table-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.table-row-right {
+  display: flex;
+  flex-direction: row;
+  margin-left: auto;
+}
+
+.table-row-right div {
+  margin-left: auto;
+  display: flex;
+  width: 50%;
+}
+
+.table-row-right div:first-child {
+  margin-right: 1rem;
+}
+
+.table-row:hover {
+  background-color: rgba(0,0,0,.05);
+}
+
+.table.worlds .table-row-right {
+  width: 40%;
+}
+
+.table.transactions .table-row-right {
+  width: 40%;
+}
+
+input {
+  padding: .5rem .5rem;
+  margin-right: .5rem;
+  border-radius: 10rem;
+}
