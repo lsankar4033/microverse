@@ -58,9 +58,7 @@ contract Microverse is HexBoard2, PullPayment, Ownable, TaxRules, JackpotRules {
 
     _distributeTax(msg.value);
 
-    uint256 oldPrice = tileToPrice[tileId];
-    tileToPrice[tileId] = newPrice;
-    totalTileValue = totalTileValue.add(newPrice.sub(oldPrice));
+    _changeTilePrice(tileId, newPrice);
   }
 
   function buy(uint8 tileId, uint256 newPrice) public payable {
@@ -78,6 +76,10 @@ contract Microverse is HexBoard2, PullPayment, Ownable, TaxRules, JackpotRules {
     uint256 actualTax = msg.value.sub(tileToPrice[tileId]);
     _distributeTax(actualTax);
 
+    _changeTilePrice(tileId, newPrice);
+  }
+
+  function _changeTilePrice(uint8 tileId, uint256 newPrice) private {
     uint256 oldPrice = tileToPrice[tileId];
     tileToPrice[tileId] = newPrice;
     totalTileValue = totalTileValue.add(newPrice.sub(oldPrice));
@@ -107,10 +109,11 @@ contract Microverse is HexBoard2, PullPayment, Ownable, TaxRules, JackpotRules {
     }
   }
 
-  // TODO: This can get very expensive! Must benchmark. Two approaches to test against eachother:
-  // 1. iterate once to get all differentials in a memory array, then iterate through that array to  determine
+  // TODO: This can get expensive (although maxes out to O(num_tiles) ! Two approaches to test against
+  // eachother:
+  // 1. iterate once to get all differentials in a memory array, then iterate through that array to determine
   // how landholder payouts (this is what's implemented now)
-  // 2. iterate through all tiles twice. once to get winner, one to get neighbor differentials
+  // 2. iterate through all tiles twice. once to get winner, once to get neighbor differentials
   //
   // Returns false if there were no positive differentials this round
   function _distributeWinnerAndLandholderJackpot(uint256 winnerJackpot, uint256 landholderJackpot) private returns (bool) {
@@ -144,8 +147,7 @@ contract Microverse is HexBoard2, PullPayment, Ownable, TaxRules, JackpotRules {
     // winner
     asyncSend(tileToOwner[bestTile], winnerJackpot);
 
-    // TODO: Make sure there isn't a way for any ether to get lost here
-    // other landholders
+    // all landholders
     for (uint8 j = minTileId; j <= maxTileId; j++) {
       if (differentials[j] > 0) {
         uint256 allocation = landholderJackpot.mul(differentials[j]).div(numValidDifferentials);
