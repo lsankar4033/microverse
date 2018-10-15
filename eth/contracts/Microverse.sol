@@ -4,12 +4,11 @@ import "./Ownable.sol";
 import "./PullPayment.sol";
 import "./SafeMath.sol";
 
-import "./HexBoard2.sol";
+import "./HexBoard4.sol";
 import "./JackpotRules.sol";
 import "./TaxRules.sol";
 
-// TODO: Make HexBoard4
-contract Microverse is HexBoard2, PullPayment, Ownable, TaxRules, JackpotRules {
+contract Microverse is HexBoard4, PullPayment, Ownable, TaxRules, JackpotRules {
   using SafeMath for uint256;
 
   // states this contract progresses through
