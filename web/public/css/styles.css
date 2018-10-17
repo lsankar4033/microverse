@@ -110,7 +110,7 @@ header .logo {
 .grid .row .hex {
 	font-size: 4rem;
 	margin-right: -.6rem;
-	position: relative;
+  position: relative;
 }
 
 .grid .row .hex.owned {

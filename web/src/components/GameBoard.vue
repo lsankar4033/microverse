@@ -13,15 +13,16 @@
       <p class="label">Click to acquire a world</p>
       <div class="grid">
         <div class="row">
-          <div class="hex">
+          <GamePiece :value="true" />
+          <!-- <div class="hex">
             &#x2B22;
             <p>Ξ1</p>
-          </div>
+          </div> -->
+          <!-- <div class="hex">&#x2B22;</div>
           <div class="hex">&#x2B22;</div>
-          <div class="hex">&#x2B22;</div>
-          <div class="hex">&#x2B22;</div>
+          <div class="hex">&#x2B22;</div> -->
         </div>
-        <div class="row">
+        <!-- <div class="row">
           <div class="hex">&#x2B22;</div>
           <div class="hex">&#x2B22;</div>
           <div class="hex owned">&#x2B22;<p>Ξ1</p></div>
@@ -65,14 +66,18 @@
           <div class="hex">&#x2B22;</div>
           <div class="hex">&#x2B22;</div>
           <div class="hex">&#x2B22;</div>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import GamePiece from './GamePiece'
 export default{
-  name: 'GameBoard'
+  name: 'GameBoard',
+  components: {
+    GamePiece,
+  }
 }
 </script>
