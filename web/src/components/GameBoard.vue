@@ -14,6 +14,9 @@
       <div class="grid">
         <div class="row">
           <GamePiece :value="true" />
+          <GamePiece :value="true" />
+          <!-- <GamePiece :value="true" />
+          <GamePiece :value="true" /> -->
           <!-- <div class="hex">
             &#x2B22;
             <p>Ξ1</p>
