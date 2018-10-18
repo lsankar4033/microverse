@@ -1,6 +1,8 @@
 <template>
-  <svg id="color-fill" xmlns="http://www.w3.org/2000/svg" version="1.1" :width="width" :height="height" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <polygon @click.prevent="openModal" class="hex" :points="points"></polygon>
+  <svg id="game-piece" @click.prevent="openModal" xmlns="http://www.w3.org/2000/svg" version="1.1" :width="width" :height="height" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <polygon class="hex" :points="points"></polygon>
+    <text v-if="owned" x="50%" y="50%" alignment-baseline="middle" text-anchor="middle">hello</text>
+    <text v-if="value" x="50%" y="50%" alignment-baseline="middle" text-anchor="middle">world</text>
   </svg>
 </template>
 
@@ -24,22 +26,28 @@ export default {
   },
   methods: {
     openModal() {
-      console.log('hi')
+      this.$router.push({ path: 'buy' })
     },
   }
 }
 </script>
 
 <style scoped>
-/* https://codepen.io/cwmanning/pen/Hugye */
 .hex {
-  cursor: pointer;
   fill-opacity: 0.4;
   stroke: #000;
   stroke-width: 1;
 }
 
-#color-fill .hex {
+#game-piece .hex {
   fill: #ffff00;
+}
+
+#game-piece:hover .hex {
+  fill: #ffff99;
+}
+
+#game-piece {
+  cursor: pointer;
 }
 </style>

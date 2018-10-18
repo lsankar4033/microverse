@@ -13,13 +13,7 @@
       <p class="label">Click to acquire a world</p>
       <div class="grid">
         <div class="row">
-          <GamePiece />
-          <GamePiece />
-          <GamePiece />
-        </div>
-        <div class="row">
-          <GamePiece />
-          <GamePiece />
+          <GamePiece :owned="true" />
           <GamePiece />
           <GamePiece />
         </div>
@@ -27,6 +21,12 @@
           <GamePiece />
           <GamePiece />
           <GamePiece />
+          <GamePiece />
+        </div>
+        <div class="row">
+          <GamePiece />
+          <GamePiece />
+          <GamePiece :value="true" />
           <GamePiece />
           <GamePiece />
         </div>
