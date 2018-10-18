@@ -13,63 +13,34 @@
       <p class="label">Click to acquire a world</p>
       <div class="grid">
         <div class="row">
-          <GamePiece :value="true" />
-          <GamePiece :value="true" />
-          <!-- <GamePiece :value="true" />
-          <GamePiece :value="true" /> -->
-          <!-- <div class="hex">
-            &#x2B22;
-            <p>Ξ1</p>
-          </div> -->
-          <!-- <div class="hex">&#x2B22;</div>
-          <div class="hex">&#x2B22;</div>
-          <div class="hex">&#x2B22;</div> -->
-        </div>
-        <!-- <div class="row">
-          <div class="hex">&#x2B22;</div>
-          <div class="hex">&#x2B22;</div>
-          <div class="hex owned">&#x2B22;<p>Ξ1</p></div>
-          <div class="hex owned">&#x2B22;<p>Ξ1</p></div>
-          <div class="hex">&#x2B22;</div>
+          <GamePiece />
+          <GamePiece />
+          <GamePiece />
         </div>
         <div class="row">
-          <div class="hex">&#x2B22;</div>
-          <div class="hex">&#x2B22;</div>
-          <div class="hex">&#x2B22;</div>
-          <div class="hex">&#x2B22;</div>
-          <div class="hex">&#x2B22;</div>
-          <div class="hex">&#x2B22;</div>
+          <GamePiece />
+          <GamePiece />
+          <GamePiece />
+          <GamePiece />
         </div>
         <div class="row">
-          <div class="hex">&#x2B22;</div>
-          <div class="hex">&#x2B22;</div>
-          <div class="hex">&#x2B22;</div>
-          <div class="hex">&#x2B22;</div>
-          <div class="hex">&#x2B22;</div>
-          <div class="hex">&#x2B22;</div>
-          <div class="hex">&#x2B22;</div>
+          <GamePiece />
+          <GamePiece />
+          <GamePiece />
+          <GamePiece />
+          <GamePiece />
         </div>
         <div class="row">
-          <div class="hex">&#x2B22;</div>
-          <div class="hex">&#x2B22;</div>
-          <div class="hex">&#x2B22;</div>
-          <div class="hex">&#x2B22;</div>
-          <div class="hex">&#x2B22;</div>
-          <div class="hex">&#x2B22;</div>
+          <GamePiece />
+          <GamePiece />
+          <GamePiece />
+          <GamePiece />
         </div>
         <div class="row">
-          <div class="hex">&#x2B22;</div>
-          <div class="hex">&#x2B22;</div>
-          <div class="hex">&#x2B22;</div>
-          <div class="hex">&#x2B22;</div>
-          <div class="hex">&#x2B22;</div>
+          <GamePiece />
+          <GamePiece />
+          <GamePiece />
         </div>
-        <div class="row">
-          <div class="hex">&#x2B22;</div>
-          <div class="hex">&#x2B22;</div>
-          <div class="hex">&#x2B22;</div>
-          <div class="hex">&#x2B22;</div>
-        </div> -->
       </div>
     </div>
   </div>
