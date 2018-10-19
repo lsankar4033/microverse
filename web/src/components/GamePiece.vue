@@ -28,6 +28,13 @@ export default {
     openModal() {
       this.$router.push({ path: 'buy' })
     },
+  },
+  mounted() {
+    // TODO: Use a window listener -- breaks if user resizes screen w/o refresh
+    if (screen.width < 768 || window.innerWidth < 768) {
+      this.width = 60
+      this.height = 40
+    }
   }
 }
 </script>
