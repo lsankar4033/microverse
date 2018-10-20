@@ -3,5 +3,6 @@ Smart contract for a fun new game
 ## TODO
 Contract:
 
-Web client:
-- hook up web3
+## Frontend Development
+`cd web`
+`npm run serve`
