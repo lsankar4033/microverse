@@ -31,6 +31,7 @@ export default {
   },
   mounted() {
     const web3 = window.web3
+    if (!web3) return
     const provider = web3.currentProvider
 
     web3.version.getNetwork((err, id) => {
