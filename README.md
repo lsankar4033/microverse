@@ -11,5 +11,6 @@ Contract:
 - perf testing of methods that iterate through all tiles
 - figure out definition of 'team'
 
-Web client:
-- hook up web3
+## Frontend Development
+`cd web`
+`npm run serve`
