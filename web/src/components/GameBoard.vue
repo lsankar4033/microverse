@@ -12,34 +12,10 @@
     <div class="section section-body">
       <p class="label">Click to acquire a world</p>
       <div class="grid">
-        <div class="row">
-          <GamePiece :owned="true" />
-          <GamePiece />
-          <GamePiece />
-        </div>
-        <div class="row">
-          <GamePiece />
-          <GamePiece />
-          <GamePiece />
-          <GamePiece />
-        </div>
-        <div class="row">
-          <GamePiece />
-          <GamePiece />
-          <GamePiece :value="true" />
-          <GamePiece />
-          <GamePiece />
-        </div>
-        <div class="row">
-          <GamePiece />
-          <GamePiece />
-          <GamePiece />
-          <GamePiece />
-        </div>
-        <div class="row">
-          <GamePiece />
-          <GamePiece />
-          <GamePiece />
+        <div v-for="(row, colIdx) in board" class="row">
+          <div v-for="(tile, rowIdx) in row">
+            <GamePiece :id="getId(rowIdx, colIdx)" />
+          </div>
         </div>
       </div>
     </div>
@@ -52,6 +28,24 @@ export default{
   name: 'GameBoard',
   components: {
     GamePiece,
-  }
+  },
+  data() {
+    return {
+      board: [
+        [{}, {}, {}, {}],
+        [{}, {}, {}, {}, {}],
+        [{}, {}, {}, {}, {}, {}],
+        [{}, {}, {}, {}, {}, {}, {}],
+        [{}, {}, {}, {}, {}, {}],
+        [{}, {}, {}, {}, {}],
+        [{}, {}, {}, {}],
+      ]
+    }
+  },
+  methods: {
+    getId(row, col) {
+      return `${row}, ${col}`
+    }
+  },
 }
 </script>
