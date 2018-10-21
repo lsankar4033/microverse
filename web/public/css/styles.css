@@ -291,9 +291,6 @@ input {
   header a, header .menu-items {
     margin: 0 auto;
   }
-  /* header .menu-items [
-    margin: 0 auto;
-  } */
   .hero h1 {
     font-size: 1rem;
     margin: 0 auto;
@@ -302,7 +299,7 @@ input {
     margin-bottom: -0.62rem;
   }
   .hero {
-    /* Put description at the bottom */
+    /* Puts description at the bottom */
     order: 1;
   }
 }
