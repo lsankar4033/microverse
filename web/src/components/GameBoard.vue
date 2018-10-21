@@ -54,9 +54,6 @@ export default{
   },
   methods: {
     ...mapActions(['getContract']),
-    getId(row, col) {
-      return `${row}, ${col}`
-    },
     async stage() {
       return await this.contractInstance.stage().toNumber()
     },
@@ -95,7 +92,7 @@ export default{
       }
 
       return rows;
-    }
+    },
   },
   computed: {
     ...mapGetters(['address', 'network', 'contract']),
