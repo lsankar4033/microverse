@@ -71,7 +71,6 @@ contract Microverse is
         // must be paying the full price!
         require(msg.value >= tax + price);
 
-        // NOTE: Team gets all proceeds of auction. Alternatively, this could be allocated to jackpot
         _sendToTeam(tax.add(price));
 
         tileToOwner[tileId] = msg.sender;
@@ -130,7 +129,6 @@ contract Microverse is
         }
     }
 
-    // NOTE: Currently callable by anyone
     function endGameRound() public atStage(Stage.GameRounds) {
         require(now >= roundStartTime.add(roundDuration));
 
@@ -222,7 +220,6 @@ contract Microverse is
         }
     }
 
-    // NOTE: Currently haven't implemented sidepot or 'referrals'
     function _distributeTax(uint256 tax) private {
         jackpot = jackpot.add(_jackpotTax(tax));
 
@@ -233,7 +230,6 @@ contract Microverse is
         nextJackpot = nextJackpot.add(_nextPotTax(tax));
     }
 
-    // NOTE: Perf test for Hex4 before deployment. Because loops
     function _distributeLandholderTax(uint256 tax) private {
         for (uint8 tile = minTileId; tile <= maxTileId; tile++) {
             if (tileToOwner[tile] != address(0) && tileToPrice[tile] != 0) {
