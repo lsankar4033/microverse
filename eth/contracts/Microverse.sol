@@ -63,6 +63,7 @@ contract Microverse is
 
     uint256 constant public auctionDuration = 7 days; // period over which land price decreases linearly
 
+    uint256 public numBoughtTiles;
     uint256 public auctionStartTime;
 
     function buyTileAuction(uint8 tileId, uint256 newPrice) public payable atStage(Stage.DutchAuction) {
@@ -73,12 +74,18 @@ contract Microverse is
         uint256 price = getTilePriceAuction();
 
         // must be paying the full price!
-        require(msg.value >= tax + price);
+        require(msg.value >= tax.add(price));
 
         _sendToTeam(tax.add(price));
 
         tileToOwner[tileId] = msg.sender;
         _changeTilePrice(tileId, newPrice);
+
+        numBoughtTiles = numBoughtTiles.add(1);
+
+        if (numBoughtTiles >= numTiles) {
+            endAuction();
+        }
     }
 
     function getTilePriceAuction() public view atStage(Stage.DutchAuction) returns (uint256) {
@@ -99,13 +106,9 @@ contract Microverse is
         }
     }
 
-    function endAuction() public atStage(Stage.DutchAuction) {
-        // All tiles must be sold to proceed!
-        for (uint8 tileId = minTileId; tileId <= maxTileId; tileId++) {
-            if (tileToOwner[tileId] == address(0)) {
-                require(false);
-            }
-        }
+    function endAuction() private {
+        // Slightly redundant check
+        require(numBoughtTiles >= numTiles);
 
         stage = Stage.GameRounds;
         _startGameRound();
@@ -113,6 +116,7 @@ contract Microverse is
 
     function _startAuction() private {
         auctionStartTime = now;
+        numBoughtTiles = 0;
     }
 
     ///////
