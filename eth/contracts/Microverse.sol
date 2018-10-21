@@ -1,9 +1,12 @@
 pragma solidity ^0.4.22;
 
+// Zeppelin libs
+import "./Math.sol";
 import "./Ownable.sol";
 import "./PullPayment.sol";
 import "./SafeMath.sol";
 
+// Microverse libs
 import "./HexBoard4.sol";
 import "./JackpotRules.sol";
 import "./TaxRules.sol";
@@ -15,6 +18,7 @@ contract Microverse is
     TaxRules,
     JackpotRules {
     using SafeMath for uint256;
+    using Math for uint256;
 
     // states this contract progresses through
     enum Stage {
@@ -116,9 +120,11 @@ contract Microverse is
     ///////
 
     // Used to ensure a round ends
-    uint256 constant public startingRoundDuration = 24 hours;
+    uint256 constant public startingRoundExtension = 24 hours;
     uint256 constant public halvingVolume = 100 ether; // tx volume before next duration halving
-    uint256 public curDurationVolume;
+    uint256 constant public minRoundExtension = 10 seconds; // could set to 1 second
+
+    uint256 public curExtensionVolume;
     uint256 public curRoundExtension;
 
     uint256 public roundEndTime;
@@ -143,8 +149,8 @@ contract Microverse is
     }
 
     function _startGameRound() private {
-        curDurationVolume = 0 ether;
-        curRoundExtension = startingRoundDuration;
+        curExtensionVolume = 0 ether;
+        curRoundExtension = startingRoundExtension;
 
         jackpot = nextJackpot;
         nextJackpot = 0;
@@ -154,6 +160,16 @@ contract Microverse is
 
     function _roundOver() private view returns (bool) {
         return now >= roundEndTime;
+    }
+
+    // NOTE: Must be called for all volume we want to count towards round extension halving
+    function _logRoundExtensionVolume(uint256 amount) private {
+        curExtensionVolume = curExtensionVolume.add(amount);
+
+        if (curExtensionVolume >= halvingVolume) {
+            curRoundExtension = curRoundExtension.div(2).max(minRoundExtension);
+            curExtensionVolume = 0 ether;
+        }
     }
 
     ////////////////////////
@@ -179,8 +195,10 @@ contract Microverse is
         _distributeTax(msg.value);
         _changeTilePrice(tileId, newPrice);
 
-        // NOTE: Currently we extend round for 'every' tile price change. May not want to do this
+        // NOTE: Currently we extend round for 'every' tile price change. Alternatively could do only on
+        // increases or decreases or changes exceeding some magnitude
         _extendRound();
+        _logRoundExtensionVolume(msg.value);
     }
 
     function buyTile(uint8 tileId, uint256 newPrice) public payable atStage(Stage.GameRounds) {
@@ -200,6 +218,7 @@ contract Microverse is
 
         _changeTilePrice(tileId, newPrice);
         _extendRound();
+        _logRoundExtensionVolume(msg.value);
     }
 
     ///////////////////////////////////////
@@ -231,7 +250,7 @@ contract Microverse is
             }
 
             complements[i] = priceComplement;
-            totalPriceComplement += priceComplement;
+            totalPriceComplement = totalPriceComplement.add(priceComplement);
         }
 
         // distribute jackpot
