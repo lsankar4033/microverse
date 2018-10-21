@@ -162,6 +162,11 @@ contract Microverse is
         return now >= roundEndTime;
     }
 
+    modifier duringRound() {
+        require(!_roundOver());
+        _;
+    }
+
     // NOTE: Must be called for all volume we want to count towards round extension halving
     function _logRoundExtensionVolume(uint256 amount) private {
         curExtensionVolume = curExtensionVolume.add(amount);
@@ -183,7 +188,11 @@ contract Microverse is
         _startGameRound();
     }
 
-    function setTilePrice(uint8 tileId, uint256 newPrice) public payable atStage(Stage.GameRounds) {
+    function setTilePrice(uint8 tileId, uint256 newPrice)
+        public
+        payable
+        atStage(Stage.GameRounds)
+        duringRound {
         // must be owner
         require(tileToOwner[tileId] == msg.sender);
 
@@ -201,7 +210,11 @@ contract Microverse is
         _logRoundExtensionVolume(msg.value);
     }
 
-    function buyTile(uint8 tileId, uint256 newPrice) public payable atStage(Stage.GameRounds) {
+    function buyTile(uint8 tileId, uint256 newPrice)
+        public
+        payable
+        atStage(Stage.GameRounds)
+        duringRound {
         // can't buy from self
         require(tileToOwner[tileId] != msg.sender);
 
