@@ -108,6 +108,9 @@ export default{
       })
     }
   },
+  computed: {
+    ...mapGetters(['address', 'network'])
+  },
 }
 </script>
 
