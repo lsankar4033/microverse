@@ -28,8 +28,8 @@
           </div>
         </div>
       </div>
-        </div>
     </div>
+  </div>
 </template>
 
 <script>
@@ -107,9 +107,6 @@ export default{
         this.contractInstance = instance
       })
     }
-  },
-  computed: {
-    ...mapGetters(['address', 'network'])
   },
 }
 </script>
