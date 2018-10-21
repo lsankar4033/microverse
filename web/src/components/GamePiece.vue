@@ -1,15 +1,14 @@
 <template>
   <svg id="game-piece" @click.prevent="openModal" xmlns="http://www.w3.org/2000/svg" version="1.1" :width="width" :height="height" xmlns:xlink="http://www.w3.org/1999/xlink">
     <polygon class="hex" :points="points"></polygon>
-    <text v-if="owned" x="50%" y="50%" alignment-baseline="middle" text-anchor="middle">hello</text>
-    <text v-if="value" x="50%" y="50%" alignment-baseline="middle" text-anchor="middle">world</text>
+    <text v-if="id" x="50%" y="50%" alignment-baseline="middle" text-anchor="middle">{{ id }}</text>
   </svg>
 </template>
 
 <script>
 export default {
   name: 'GamePiece',
-  props: ['owned', 'value'],
+  props: ['id'],
   data() {
     return {
       width: 100,
