@@ -29,15 +29,8 @@ export default {
       this.$store.commit('UPDATE_STATE', { key: 'address', value: address || '' })
     },
     setNetwork(id) {
-      this.$store.commit('UPDATE_STATE', { key: 'network', value: id || '' })
+      this.$store.commit('UPDATE_STATE', { key: 'network', value: id || ''})
     },
-    setContract(contract) {
-      // console.log('contract', contract)
-      const contractClone = Object.assign({}, contract)
-      // console.log('contractClone', contractClone)
-      // TODO: Fix this issue.
-      this.$store.commit('UPDATE_STATE', { key: 'contract', value: contractClone || {} })
-    }
   },
   mounted() {
     const web3 = window.web3
@@ -55,12 +48,11 @@ export default {
       this.setAddress(user.selectedAddress)
       this.setNetwork(user.networkVersion)
     })
-    this.$store.commit('UPDATE_STATE', { })
     const abstractContract = contract(MicroverseConfig)
     abstractContract.setProvider(provider)
     abstractContract.deployed().then(contractInstance => {
-      // console.log('contractInstance', contractInstance)
-      this.setContract(contractInstance)
+      // TODO: Put into state.
+      // this.setContract(contractInstance)
     })
   },
 }
