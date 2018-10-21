@@ -115,25 +115,55 @@ contract Microverse is
     // Game
     ///////
 
-    uint256 constant public roundDuration = 24 hours;
+    // Used to ensure a round ends
+    uint256 constant public startingRoundDuration = 24 hours;
+    uint256 constant public halvingVolume = 100 ether; // tx volume before next duration halving
+    uint256 public curDurationVolume;
+    uint256 public curRoundExtension;
 
-    uint256 public roundStartTime;
+    uint256 public roundEndTime;
+
     uint256 public jackpot;
     uint256 public nextJackpot;
 
+    ////////////////////////////////////
+    // [Game] Round extension management
+    ////////////////////////////////////
+
     function roundTimeRemaining() public view atStage(Stage.GameRounds) returns (uint256)  {
-        if (now <= roundStartTime.add(roundDuration)) {
+        if (_roundOver()) {
             return 0;
         } else {
-            return (roundStartTime.add(roundDuration)).sub(now);
+            return roundEndTime.sub(now);
         }
     }
 
+    function _extendRound() private {
+        roundEndTime = now + curRoundExtension;
+    }
+
+    function _startGameRound() private {
+        curDurationVolume = 0 ether;
+        curRoundExtension = startingRoundDuration;
+
+        jackpot = nextJackpot;
+        nextJackpot = 0;
+
+        _extendRound();
+    }
+
+    function _roundOver() private view returns (bool) {
+        return now >= roundEndTime;
+    }
+
+    ////////////////////////
+    // [Game] Player actions
+    ////////////////////////
+
     function endGameRound() public atStage(Stage.GameRounds) {
-        require(now >= roundStartTime.add(roundDuration));
+        require(_roundOver());
 
         _distributeJackpot();
-
         _startGameRound();
     }
 
@@ -147,8 +177,10 @@ contract Microverse is
         require(msg.value >= tax);
 
         _distributeTax(msg.value);
-
         _changeTilePrice(tileId, newPrice);
+
+        // NOTE: Currently we extend round for 'every' tile price change. May not want to do this
+        _extendRound();
     }
 
     function buyTile(uint8 tileId, uint256 newPrice) public payable atStage(Stage.GameRounds) {
@@ -167,17 +199,12 @@ contract Microverse is
         _distributeTax(actualTax);
 
         _changeTilePrice(tileId, newPrice);
+        _extendRound();
     }
 
-    function _startGameRound() private {
-        jackpot = nextJackpot;
-        nextJackpot = 0;
-        roundStartTime = now;
-    }
-
-    function _roundOver() private view returns (bool) {
-        return now >= roundStartTime.add(roundDuration);
-    }
+    ///////////////////////////////////////
+    // [Game] Dividend/jackpot distribution
+    ///////////////////////////////////////
 
     function _distributeJackpot() private {
         uint256 winnerJackpot = _winnerJackpot(jackpot);
@@ -185,7 +212,6 @@ contract Microverse is
         _distributeWinnerAndLandholderJackpot(winnerJackpot, landholderJackpot);
 
         _sendToTeam(_teamJackpot(jackpot));
-
         nextJackpot = nextJackpot.add(_nextPotJackpot(jackpot));
     }
 
@@ -224,9 +250,7 @@ contract Microverse is
         jackpot = jackpot.add(_jackpotTax(tax));
 
         _distributeLandholderTax(_totalLandholderTax(tax));
-
         _sendToTeam(_teamTax(tax));
-
         nextJackpot = nextJackpot.add(_nextPotTax(tax));
     }
 
