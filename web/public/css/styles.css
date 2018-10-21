@@ -99,7 +99,7 @@ header .logo {
 .grid .row {
 	display: flex;
 	flex-direction: row;
-	margin-bottom: -3rem;
+	margin-bottom: -1.25rem;
 	line-height: normal;
 }
 
@@ -110,7 +110,7 @@ header .logo {
 .grid .row .hex {
 	font-size: 4rem;
 	margin-right: -.6rem;
-	position: relative;
+  position: relative;
 }
 
 .grid .row .hex.owned {
