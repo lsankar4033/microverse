@@ -28,8 +28,8 @@
           </div>
         </div>
       </div>
+        </div>
     </div>
-  </div>
 </template>
 
 <script>
@@ -104,7 +104,7 @@ export default{
     contract: function() {
       if (!this.contract) return
       this.getContract().then(instance => {
-        this.contractInstance = instance 
+        this.contractInstance = instance
       })
     }
   },
