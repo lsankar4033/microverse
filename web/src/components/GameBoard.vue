@@ -19,8 +19,11 @@
       </template>
       <p class="label">Click to acquire a world</p>
       <div class="grid">
-        <div v-for="tileIdRow in tileIdRows" class="row">
-          <div v-for="tileId in tileIdRow">
+        <div v-for="(tileIdRow, rowIdx) in tileIdRows"
+             v-bind:key="rowIdx"
+             class="row">
+          <div v-for="tileId in tileIdRow"
+               v-bind:key="tileId">
             <GamePiece :id="tileId" />
           </div>
         </div>
