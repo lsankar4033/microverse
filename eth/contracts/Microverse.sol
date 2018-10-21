@@ -7,12 +7,12 @@ import "./PullPayment.sol";
 import "./SafeMath.sol";
 
 // Microverse libs
-import "./HexBoard4.sol";
+import "./HexBoard3.sol";
 import "./JackpotRules.sol";
 import "./TaxRules.sol";
 
 contract Microverse is
-    HexBoard4,
+    HexBoard3,
     PullPayment,
     Ownable,
     TaxRules,
