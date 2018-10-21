@@ -6,50 +6,50 @@ contract HexBoard4 {
 
   // To ease iteration
   uint8 constant public minTileId= 1;
-  uint8 constant public maxTileId = 7;
-  uint8 constant public numTiles = 7;
+  uint8 constant public maxTileId = 37;
+  uint8 constant public numTiles = 37;
 
   // Any 0s in the neighbor array represent non-neighbors. There might be a better way to do this, but w/e
   mapping(uint8 => uint8[6]) public tileToNeighbors;
   uint8 constant public nullNeighborValue = 0;
 
   constructor() public {
-    tileToNeighbors[1] = [2, 18, 19, 0, 0, 0];
-    tileToNeighbors[2] = [1, 3, 19, 20, 0, 0];
-    tileToNeighbors[3] = [2, 4, 20, 21, 0, 0];
-    tileToNeighbors[4] = [3, 5, 21, 0, 0, 0];
-    tileToNeighbors[5] = [4, 6, 21, 22, 0, 0];
-    tileToNeighbors[6] = [5, 7, 22, 23, 0, 0];
-    tileToNeighbors[7] = [6, 8, 23, 0, 0, 0];
-    tileToNeighbors[8] = [7, 9, 23, 24, 0, 0];
-    tileToNeighbors[9] = [8, 10, 24, 25, 0, 0];
-    tileToNeighbors[10] = [9, 11, 25, 0, 0, 0];
-    tileToNeighbors[11] = [10, 12, 25, 26, 0, 0];
-    tileToNeighbors[12] = [11, 13, 26, 27, 0, 0];
-    tileToNeighbors[13] = [12, 14, 27, 0, 0, 0];
-    tileToNeighbors[14] = [13, 15, 27, 28, 0, 0];
-    tileToNeighbors[15] = [14, 16, 28, 29, 0, 0];
-    tileToNeighbors[16] = [15, 17, 29, 0, 0, 0];
-    tileToNeighbors[17] = [16, 18, 29, 30, 0, 0];
-    tileToNeighbors[18] = [1, 17, 19, 30, 0, 0];
-    tileToNeighbors[19] = [1, 2, 18, 20, 30, 31];
-    tileToNeighbors[20] = [2, 3, 19, 21, 31, 32];
-    tileToNeighbors[21] = [3, 4, 5, 20, 22, 32];
-    tileToNeighbors[22] = [5, 6, 21, 23, 32, 33];
-    tileToNeighbors[23] = [6, 7, 8, 22, 24, 33];
-    tileToNeighbors[24] = [8, 9, 23, 25, 33, 34];
-    tileToNeighbors[25] = [9, 10, 11, 24, 26, 34];
-    tileToNeighbors[26] = [11, 12, 25, 27, 34, 35];
-    tileToNeighbors[27] = [12, 13, 14, 26, 28, 35];
-    tileToNeighbors[28] = [14, 15, 27, 29, 35, 36];
-    tileToNeighbors[29] = [15, 16, 17, 28, 30, 36];
-    tileToNeighbors[30] = [17, 18, 19, 29, 31, 36];
-    tileToNeighbors[31] = [19, 20, 30, 32, 36, 37];
-    tileToNeighbors[32] = [20, 21, 22, 31, 33, 37];
-    tileToNeighbors[33] = [22, 23, 24, 32, 34, 37];
-    tileToNeighbors[34] = [24, 25, 26, 33, 35, 37];
-    tileToNeighbors[35] = [26, 27, 28, 34, 36, 37];
-    tileToNeighbors[36] = [28, 29, 30, 31, 35, 37];
-    tileToNeighbors[37] = [31, 32, 33, 34, 35, 36];
+      tileToNeighbors[1] = [2, 5, 6, 0, 0, 0];
+      tileToNeighbors[2] = [1, 3, 6, 7, 0, 0];
+      tileToNeighbors[3] = [2, 4, 7, 8, 0, 0];
+      tileToNeighbors[4] = [3, 8, 9, 0, 0, 0];
+      tileToNeighbors[5] = [1, 6, 10, 11, 0, 0];
+      tileToNeighbors[6] = [1, 2, 5, 7, 11, 12];
+      tileToNeighbors[7] = [2, 3, 6, 8, 12, 13];
+      tileToNeighbors[8] = [3, 4, 7, 9, 13, 14];
+      tileToNeighbors[9] = [4, 8, 14, 15, 0, 0];
+      tileToNeighbors[10] = [5, 11, 16, 17, 0, 0];
+      tileToNeighbors[11] = [5, 6, 10, 12, 17, 18];
+      tileToNeighbors[12] = [6, 7, 11, 13, 18, 19];
+      tileToNeighbors[13] = [7, 8, 12, 14, 19, 20];
+      tileToNeighbors[14] = [8, 9, 13, 15, 20, 21];
+      tileToNeighbors[15] = [9, 14, 21, 22, 0, 0];
+      tileToNeighbors[16] = [10, 17, 23, 0, 0, 0];
+      tileToNeighbors[17] = [10, 11, 16, 18, 23, 24];
+      tileToNeighbors[18] = [11, 12, 17, 19, 24, 25];
+      tileToNeighbors[19] = [12, 13, 18, 20, 25, 26];
+      tileToNeighbors[20] = [13, 14, 19, 21, 26, 27];
+      tileToNeighbors[21] = [14, 15, 20, 22, 27, 28];
+      tileToNeighbors[22] = [15, 21, 28, 0, 0, 0];
+      tileToNeighbors[23] = [16, 17, 24, 29, 0, 0];
+      tileToNeighbors[24] = [17, 18, 23, 25, 29, 30];
+      tileToNeighbors[25] = [18, 19, 24, 26, 30, 31];
+      tileToNeighbors[26] = [19, 20, 25, 27, 31, 32];
+      tileToNeighbors[27] = [20, 21, 26, 28, 32, 33];
+      tileToNeighbors[28] = [21, 22, 27, 33, 0, 0];
+      tileToNeighbors[29] = [23, 24, 30, 34, 0, 0];
+      tileToNeighbors[30] = [24, 25, 29, 31, 34, 35];
+      tileToNeighbors[31] = [25, 26, 30, 32, 35, 36];
+      tileToNeighbors[32] = [26, 27, 31, 33, 36, 37];
+      tileToNeighbors[33] = [27, 28, 32, 37, 0, 0];
+      tileToNeighbors[34] = [29, 30, 35, 0, 0, 0];
+      tileToNeighbors[35] = [30, 31, 34, 36, 0, 0];
+      tileToNeighbors[36] = [31, 32, 35, 37, 0, 0];
+      tileToNeighbors[37] = [32, 33, 36, 0, 0, 0];
   }
 }
