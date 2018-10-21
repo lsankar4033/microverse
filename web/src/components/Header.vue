@@ -21,15 +21,21 @@
 <script>
 import MicroverseConfig from '@/Microverse.json'
 import contract from 'truffle-contract'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'Header',
   methods: {
+    ...mapActions(['getContract']),
+
     setAddress(address) {
       this.$store.commit('UPDATE_STATE', { key: 'address', value: address || '' })
     },
     setNetwork(id) {
-      this.$store.commit('UPDATE_STATE', { key: 'network', value: id || ''})
+      this.$store.commit('UPDATE_STATE', { key: 'network', value: id || '' })
+    },
+    setContract(contract) {
+      this.$store.commit('UPDATE_STATE', { key: 'contract', value: contract || {} })
     },
   },
   mounted() {
@@ -50,10 +56,7 @@ export default {
     })
     const abstractContract = contract(MicroverseConfig)
     abstractContract.setProvider(provider)
-    abstractContract.deployed().then(contractInstance => {
-      // TODO: Put into state.
-      // this.setContract(contractInstance)
-    })
+    this.setContract(abstractContract)
   },
 }
 </script>

@@ -10,11 +10,11 @@
       <p><b>Time left:</b> 11h 33m 22s</p>
     </div>
     <div class="section section-body">
-      <template v-if="!address || network != '1'">
+      <template v-if="!address || network != NETWORK_ID">
         <div class="overlay" />
         <div class="no-wallet-text">
           <h1 v-if="!address">Log into <a target="_blank" href="https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn?hl=en">metamask</a> or another browser wallet extension to play</h1>
-          <h1 v-if="address && !network != '1'">Make sure mainnet network is selected</h1>
+          <h1 v-if="address && !network != NETWORK_ID">Make sure mainnet network is selected</h1>
         </div>
       </template>
       <p class="label">Click to acquire a world</p>
@@ -31,7 +31,7 @@
 
 <script>
 import GamePiece from './GamePiece'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 export default{
   name: 'GameBoard',
@@ -46,16 +46,33 @@ export default{
         [{}, {}, {}, {}, {}],
         [{}, {}, {}, {}],
         [{}, {}, {}],
-      ]
+      ],
+      NETWORK_ID: '1540158046332',
+      contractInstance: null,
     }
   },
   methods: {
+    ...mapActions(['getContract']),
     getId(row, col) {
       return `${row}, ${col}`
+    },
+    async stage() {
+      return await this.contractInstance.stage().toNumber()
+    },
+    async auctionDuration() {
+      return await this.contractInstance.auctionDuration().toNumber()
     }
   },
   computed: {
-    ...mapGetters(['address', 'network'])
+    ...mapGetters(['address', 'network', 'contract']),
+  },
+  watch: {
+    contract: function() {
+      if (!this.contract) return
+      this.getContract().then(instance => {
+        this.contractInstance = instance 
+      })
+    }
   },
 }
 </script>

@@ -5,15 +5,15 @@ Vue.use(Vuex)
 const state = {
   address: '',
   network: '',
-  contract: {},
+  contract: null,
 }
 
-// No async actions required, yet.
-// const actions = {
-//   setAddress({ commit }, address) {
-//     updateAddress(...) {}
-//   }
-// }
+const actions = {
+  async getContract({ state }) {
+    const instance = await state.contract.deployed()
+    return instance
+  }
+}
 
 const mutations = {
   UPDATE_STATE(state, { key, value }) {
@@ -24,10 +24,12 @@ const mutations = {
 const getters = {
   address: state => state.address,
   network: state => state.network,
+  contract: state => state.contract,
 }
 
 export default new Vuex.Store({
   state,
   getters,
+  actions,
   mutations
 })
