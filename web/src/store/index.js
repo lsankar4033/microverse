@@ -5,6 +5,7 @@ Vue.use(Vuex)
 const state = {
   address: '',
   network: '',
+  contract: {},
 }
 
 // No async actions required, yet.
