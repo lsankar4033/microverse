@@ -164,6 +164,27 @@ contract Microverse is
     uint256 public jackpot;
     uint256 public nextJackpot;
 
+    // Only emitted if owner doesn't *also* change
+    event TilePriceChange(
+        uint8 indexed tileId,
+        address indexed owner,
+        uint256 oldPrice,
+        uint256 newPrice
+    );
+
+    event GameRoundStarted(
+        uint256 initJackpot,
+        uint256 endTime
+    );
+
+    event GameRoundExtended(
+        uint256 endTime
+    );
+
+    event GameRoundEnded(
+        uint256 jackpot
+    );
+
     ////////////////////////////////////
     // [Game] Round extension management
     ////////////////////////////////////
@@ -178,6 +199,8 @@ contract Microverse is
 
     function _extendRound() private {
         roundEndTime = now + curRoundExtension;
+
+        emit GameRoundExtended(roundEndTime);
     }
 
     function _startGameRound() private {
@@ -188,6 +211,8 @@ contract Microverse is
         nextJackpot = 0;
 
         _extendRound();
+
+        emit GameRoundStarted(jackpot, roundEndTime);
     }
 
     function _roundOver() private view returns (bool) {
@@ -217,6 +242,9 @@ contract Microverse is
         require(_roundOver());
 
         _distributeJackpot();
+
+        emit GameRoundEnded(jackpot);
+
         _startGameRound();
     }
 
@@ -233,6 +261,7 @@ contract Microverse is
         // must pay tax
         require(msg.value >= tax);
 
+        uint256 oldPrice = tileToPrice[tileId];
         _distributeTax(msg.value);
         _changeTilePrice(tileId, newPrice);
 
@@ -240,6 +269,8 @@ contract Microverse is
         // increases or decreases or changes exceeding some magnitude
         _extendRound();
         _logRoundExtensionVolume(msg.value);
+
+        emit TilePriceChange(tileId, tileToOwner[tileId], oldPrice, newPrice);
     }
 
     function buyTile(uint8 tileId, uint256 newPrice)
