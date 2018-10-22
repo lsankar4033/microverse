@@ -54,6 +54,14 @@ contract Microverse is
         totalTileValue = totalTileValue.add(newPrice.sub(oldPrice));
     }
 
+    event TileOwnerChange(
+        uint8 indexed tileId,
+        address indexed oldOwner,
+        address indexed newOwner,
+        uint256 oldPrice,
+        uint256 newPrice
+    );
+
     //////////
     // Auction
     //////////
@@ -93,6 +101,8 @@ contract Microverse is
         _changeTilePrice(tileId, newPrice);
 
         numBoughtTiles = numBoughtTiles.add(1);
+
+        emit TileOwnerChange(tileId, address(0), msg.sender, price, newPrice);
 
         if (numBoughtTiles >= numTiles) {
             endAuction();
@@ -238,22 +248,27 @@ contract Microverse is
         atStage(Stage.GameRounds)
         duringRound {
         // can't buy from self
-        require(tileToOwner[tileId] != msg.sender);
+        address oldOwner = tileToOwner[tileId];
+        require(oldOwner != msg.sender);
 
         uint256 tax = _priceToTax(newPrice);
 
         // must pay tax + seller price
-        require(msg.value >= tax.add(tileToPrice[tileId]));
+        uint256 oldPrice = tileToPrice[tileId];
+        require(msg.value >= tax.add(oldPrice));
 
         // pay seller
-        asyncSend(tileToOwner[tileId], tileToPrice[tileId]);
+        asyncSend(oldOwner, tileToPrice[tileId]);
+        tileToOwner[tileId] = msg.sender;
 
-        uint256 actualTax = msg.value.sub(tileToPrice[tileId]);
+        uint256 actualTax = msg.value.sub(oldPrice);
         _distributeTax(actualTax);
 
         _changeTilePrice(tileId, newPrice);
         _extendRound();
         _logRoundExtensionVolume(msg.value);
+
+        emit TileOwnerChange(tileId, oldOwner, msg.sender, oldPrice, newPrice);
     }
 
     ///////////////////////////////////////
