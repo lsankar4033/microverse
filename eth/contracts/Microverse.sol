@@ -58,6 +58,17 @@ contract Microverse is
     // Auction
     //////////
 
+    event AuctionStarted(
+        uint256 startingAuctionPrice,
+        uint256 endingAuctionPrice,
+        uint256 auctionDuration,
+        uint256 startTime
+    );
+
+    event AuctionEnded(
+        uint256 endTime
+    );
+
     uint256 constant public startingAuctionPrice = 1 ether;
     uint256 constant public endingAuctionPrice = 0.1 ether;
 
@@ -112,11 +123,18 @@ contract Microverse is
 
         stage = Stage.GameRounds;
         _startGameRound();
+
+        emit AuctionEnded(now);
     }
 
     function _startAuction() private {
         auctionStartTime = now;
         numBoughtTiles = 0;
+
+        emit AuctionStarted(startingAuctionPrice,
+                            endingAuctionPrice,
+                            auctionDuration,
+                            auctionStartTime);
     }
 
     ///////

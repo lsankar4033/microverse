@@ -11,5 +11,12 @@ Contract:
 - perf testing of methods that iterate through all tiles
 - figure out definition of 'team'
 
-Web client:
-- hook up web3
+## Contract Development
+`cd eth`
+`truffle migrate --reset`
+`./scripts/migrate_artifacts.sh`
+
+## Frontend Development
+`cd web`
+
+`npm run serve`
