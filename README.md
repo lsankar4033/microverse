@@ -11,7 +11,11 @@ Contract:
 - perf testing of methods that iterate through all tiles
 - figure out definition of 'team'
 
+## Contract Development
+`cd eth`
+`truffle migrate --reset`
+`./scripts/migrate_artifacts.sh`
+
 ## Frontend Development
 `cd web`
-
 `npm run serve`
