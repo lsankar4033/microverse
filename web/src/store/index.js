@@ -9,10 +9,12 @@ const state = {
 }
 
 const actions = {
-  async getContract({ state }) {
-    const instance = await state.contract.deployed()
-    return instance
-  }
+  // We can put the contract instance directly into state now?
+  // async getContract({ state }) {
+  //   if (!state.contract) return
+  //   const instance = await state.contract.deployed()
+  //   return instance
+  // }
 }
 
 const mutations = {

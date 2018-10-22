@@ -10,11 +10,11 @@
       <p><b>Time left:</b> 11h 33m 22s</p>
     </div>
     <div class="section section-body">
-      <template v-if="!address || network != NETWORK_ID">
+      <template v-if="!address || wrongNetwork">
         <div class="overlay" />
         <div class="no-wallet-text">
           <h1 v-if="!address">Log into <a target="_blank" href="https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn?hl=en">metamask</a> or another browser wallet extension to play</h1>
-          <h1 v-if="address && !network != NETWORK_ID">Make sure mainnet network is selected</h1>
+          <h1 v-if="address && wrongNetwork">Make sure mainnet network is selected</h1>
         </div>
       </template>
       <p class="label">Click to acquire a world</p>
@@ -52,13 +52,24 @@ export default{
       contractInstance: null,
     }
   },
+  computed: {
+    ...mapGetters(['address', 'network', 'contract']),
+    wrongNetwork() {
+      // TODO: Turn this check back on for prod
+      // return this.network != this.NETWORK_ID
+      return false
+    },
+  },
   methods: {
-    ...mapActions(['getContract']),
     async stage() {
-      return await this.contractInstance.stage().toNumber()
+      if (!this.contract) return
+      const x = await this.contract.stage()
+      return x.toNumber()
     },
     async auctionDuration() {
-      return await this.contractInstance.auctionDuration().toNumber()
+      if (!this.contract) return
+      const x = await this.contract.auctionDuration()
+      return x.toNumber()
     },
     generateTileIds(width) {
       var curId = 1
@@ -94,15 +105,11 @@ export default{
       return rows;
     },
   },
-  computed: {
-    ...mapGetters(['address', 'network', 'contract']),
-  },
   watch: {
-    contract: function() {
+    contract: async function() {
       if (!this.contract) return
-      this.getContract().then(instance => {
-        this.contractInstance = instance
-      })
+      const duration = await this.auctionDuration()
+      console.log('duration', duration)
     }
   },
 }

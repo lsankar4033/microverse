@@ -26,8 +26,6 @@ import { mapActions } from 'vuex'
 export default {
   name: 'Header',
   methods: {
-    ...mapActions(['getContract']),
-
     setAddress(address) {
       this.$store.commit('UPDATE_STATE', { key: 'address', value: address || '' })
     },
@@ -42,7 +40,6 @@ export default {
     const web3 = window.web3
 
     if (!web3) return
-
     const provider = web3.currentProvider
 
     web3.version.getNetwork((err, id) => {
@@ -60,11 +57,8 @@ export default {
     abstractContract.setProvider(provider)
 
     abstractContract.deployed().then(contractInstance => {
-      // console.log('contractInstance', contractInstance)
       this.setContract(contractInstance)
     })
-
-    this.setContract(abstractContract)
   },
 }
 </script>
