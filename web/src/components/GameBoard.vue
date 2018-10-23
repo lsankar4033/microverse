@@ -86,6 +86,7 @@ export default{
       tileIdRows,
       NETWORK_ID: '1540158046332',
       contractInstance: null,
+      timeLeft: 'Loading',
     }
   },
   computed: {
@@ -115,6 +116,17 @@ export default{
       if (!this.contract) return
       const instance = await this.contract.deployed()
       this.contractInstance = instance
+      const events = instance.allEvents({ fromBlock: 0, toBlock: 'latest' })
+      events.watch((err, e) => {
+        if (err) return
+        if (e.event === 'AuctionStarted') {
+          const start = e.args.startTime.toNumber()
+          const duration = e.args.auctionDuration.toNumber()
+          const end = this.$moment.unix(start + duration)
+          // TODO: Calculate remaining time from the end time
+          console.log('end time', end.format('MM/DD/YYYY HH:MM:SS'))
+        }
+      })
       const duration = await this.auctionDuration()
       this.setTilePrices({ rows: this.tileIdRows, mapping: instance.tileToPrice })
     }
