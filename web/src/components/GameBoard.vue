@@ -6,8 +6,8 @@
     </div>
     <div class="section section-accent">
       <p class="label">Simulation #001</p>
-      <p><b>Stimulus (jackpot):</b> Ξ203.55 ($10000)</p>
-      <p><b>Time left:</b> {{ timeLeft }} seconds</p>
+      <p><b>Stimulus (jackpot):</b> Ξ{{ jackpot }} (${{ jackpot | convertEthToUsd(ethToUsdRate) }})</p>
+      <p><b>Time left:</b> {{ timeLeft | formatSecondsToTime }}</p>
     </div>
     <div class="section section-body">
       <template v-if="!address || wrongNetwork">
@@ -112,6 +112,7 @@ export default{
         price: 0,
         owner: null,
       },
+      ethToUsdRate: 200,
     }
   },
   computed: {
@@ -121,6 +122,10 @@ export default{
       // return this.network != this.NETWORK_ID
       return false
     },
+    jackpot() {
+      if (!this.contractInstance) return 'Loading'
+      return this.contractInstance.jackpot
+    }
   },
   methods: {
     tileIsBuyable(id) {
@@ -136,6 +141,10 @@ export default{
         price,
         owner
       }
+    },
+    async getJackpot() {
+      if (!this.contractInstance) return
+
     },
     async initializeCountDown() {
       const timeLeft = await this.contractInstance.getTimeRemaining()

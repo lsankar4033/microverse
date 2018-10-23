@@ -4,6 +4,7 @@ class Contract {
     this.tiles = {}
     this.tilesLoaded = false
     this.gameStage = null
+    this.jackpot = null
     this.events = events
     this.update()
   }
@@ -12,6 +13,12 @@ class Contract {
     await this.setTiles()
     this.tilesLoaded = true
     this.gameStage = await this.stage()
+    this.jackpot = await this.getJackpot()
+  }
+
+  async getJackpot() {
+    const jackpot = await this.instance.jackpot()
+    return jackpot.toNumber()
   }
 
   async stage() {
