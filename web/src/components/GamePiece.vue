@@ -1,6 +1,6 @@
 <template>
   <svg id="game-piece" xmlns="http://www.w3.org/2000/svg" version="1.1" :width="width" :height="height" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <polygon class="hex" :points="points"></polygon>
+    <polygon :class="{hex: true, buyable}" :points="points"></polygon>
     <slot></slot>
   </svg>
 </template>
@@ -10,6 +10,7 @@ import { mapGetters } from 'vuex'
 
 export default {
   name: 'GamePiece',
+  props: ['buyable'],
   data() {
     return {
       width: 100,
@@ -39,6 +40,10 @@ export default {
 }
 
 #game-piece .hex {
+  fill: #888;
+}
+
+#game-piece .buyable {
   fill: #ffff00;
 }
 

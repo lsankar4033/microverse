@@ -7,7 +7,7 @@
     <div class="section section-accent">
       <p class="label">Simulation #001</p>
       <p><b>Stimulus (jackpot):</b> Ξ203.55 ($10000)</p>
-      <p><b>Time left:</b> 11h 33m 22s</p>
+      <p><b>Time left:</b> {{ timeLeft }} seconds</p>
     </div>
     <div class="section section-body">
       <template v-if="!address || wrongNetwork">
@@ -24,13 +24,13 @@
              class="row">
           <div @click.prevent="getTileDetails(tileId)" v-for="tileId in tileIdRow"
                :key="tileId">
-            <GamePiece>
+            <GamePiece :buyable="tileIsBuyable(tileId)">
               <text 
                 v-if="contractInstance && contractInstance.tilesLoaded" 
                 x="50%" y="50%" 
                 alignment-baseline="middle" 
                 text-anchor="middle">
-                {{ contractInstance.tiles[tileId].price }}
+                Ξ{{ contractInstance.tiles[tileId].price | weiToEth }}
               </text>
             </GamePiece>
           </div>
@@ -39,7 +39,7 @@
     </div>
     <div v-if="selectedTile.id >= 0" class="section tile-information">
       <h1>Tile {{ selectedTile.id }}</h1>
-      Ξ{{ selectedTile.price }}
+      Ξ{{ selectedTile.price | weiToEth }}
       {{ selectedTile.owner }}
       <template v-if="contractInstance.gameStage == 1 || !selectedTile.owner">
         <input v-model="newPrice" placeholder="Enter the new price" type="number"/>
@@ -51,7 +51,7 @@
 
 <script>
 import GamePiece from './GamePiece'
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters } from 'vuex'
 import { instantiateContract } from './contract'
 import MicroverseConfig from '@/Microverse.json'
 import contract from 'truffle-contract'
@@ -123,8 +123,10 @@ export default{
     },
   },
   methods: {
-    // ...mapActions(['setTiles', 'buyTile']),
-
+    tileIsBuyable(id) {
+      if (!this.contractInstance || !this.contractInstance.tilesLoaded) return false
+      return this.contractInstance.tiles[id].buyable
+    },
     async getTileDetails(id) {
       if (!this.contractInstance) return
       const price = await this.contractInstance.getTilePrice(id)
@@ -135,6 +137,28 @@ export default{
         owner
       }
     },
+    async initializeCountDown() {
+      const timeLeft = await this.contractInstance.getTimeRemaining()
+      this.timeLeft = timeLeft
+      this.timer(timeLeft)
+    },
+    timer(timeLeft) {
+      // https://stackoverflow.com/questions/29971898/how-to-create-an-accurate-timer-in-javascript
+      const interval = 1000; // ms
+      let expected = Date.now() + interval;
+      const that = this
+      setTimeout(step, interval);
+      function step() {
+          const dt = Date.now() - expected; // the drift (positive for overshooting)
+          if (dt > interval) {
+              // something really bad happened. Maybe the browser (tab) was inactive?
+              // possibly special handling to avoid futile "catch up" run
+          }
+          expected += interval;
+          that.timeLeft -= interval / 1000
+          setTimeout(step, Math.max(0, interval - dt)); // take into account drift
+      }
+    }
   },
   mounted() {
     if (!window.web3) return
@@ -142,6 +166,7 @@ export default{
     abstractContract.setProvider(window.web3.currentProvider)
     instantiateContract(abstractContract).then(instance => {
       this.contractInstance = instance
+      this.initializeCountDown()
     })
   },
 }

@@ -7,6 +7,11 @@ import moment from 'vue-moment'
 Vue.use(moment)
 Vue.config.productionTip = false
 
+Vue.filter('weiToEth', function(wei) {
+  if (!wei) return 0
+  return wei / 1e18
+})
+
 new Vue({
   router,
   store,
