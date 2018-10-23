@@ -5,26 +5,24 @@ Vue.use(Vuex)
 const state = {
   address: '',
   network: '',
-  contract: null,
 }
 
-const actions = {
-  async getContract({ state }) {
-    const instance = await state.contract.deployed()
-    return instance
-  }
-}
+const actions = {}
 
 const mutations = {
   UPDATE_STATE(state, { key, value }) {
     state[key] = value
+  },
+  SET_TILE(state, { id, price, owner }) {
+    const tiles = Object.assign({}, state.tiles)
+    tiles[id] = { price, owner }
+    state.tiles = tiles
   },
 }
 
 const getters = {
   address: state => state.address,
   network: state => state.network,
-  contract: state => state.contract,
 }
 
 export default new Vuex.Store({

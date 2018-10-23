@@ -1,14 +1,14 @@
 <template>
-  <svg id="game-piece" @click.prevent="openModal" xmlns="http://www.w3.org/2000/svg" version="1.1" :width="width" :height="height" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <polygon class="hex" :points="points"></polygon>
-    <text v-if="id" x="50%" y="50%" alignment-baseline="middle" text-anchor="middle">{{ id }}</text>
+  <svg id="game-piece" xmlns="http://www.w3.org/2000/svg" version="1.1" :width="width" :height="height" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <polygon :class="{hex: true, buyable}" :points="points"></polygon>
+    <slot></slot>
   </svg>
 </template>
 
 <script>
 export default {
   name: 'GamePiece',
-  props: ['id'],
+  props: ['buyable'],
   data() {
     return {
       width: 100,
@@ -23,10 +23,12 @@ export default {
       return `0,${0.25*h} ${0.5*w},0 ${w},${0.25*h} ${w},${0.75*h} ${0.5*w},${h} 0,${0.75*h}`
     },
   },
-  methods: {
-    openModal() {
-      this.$router.push({ path: 'buy' })
-    },
+  mounted() {
+  // TODO: Use a window listener -- breaks if user resizes screen w/o refresh
+    if (screen.width < 768 || window.innerWidth < 768) {
+      this.width = 60
+      this.height = 40
+    }
   }
 }
 </script>
@@ -39,6 +41,10 @@ export default {
 }
 
 #game-piece .hex {
+  fill: #888;
+}
+
+#game-piece .buyable {
   fill: #ffff00;
 }
 
