@@ -6,34 +6,37 @@ const state = {
   address: '',
   network: '',
   contract: null,
-  tile: null,
+  tilePrices: {},
 }
 
 const actions = {
-  // We can put the contract instance directly into state now?
-  // async getContract({ state }) {
-  //   if (!state.contract) return
-  //   const instance = await state.contract.deployed()
-  //   return instance
-  // }
-  async setTile({ commit }) {
-    console.log('here')
-    commit('UPDATE_STATE', { key: 'tile', value: 10})
+  setTilePrices({ commit }, { rows, mapping }) {
+    rows.forEach(row => {
+      row.forEach(async id => {
+        const rawPrice = await mapping(id)
+        const price = rawPrice.toNumber()
+        commit('SET_TILE_PRICE', { id, price })
+      })
+    })
   }
 }
 
 const mutations = {
   UPDATE_STATE(state, { key, value }) {
-    console.log('value', value)
     state[key] = value
   },
+  SET_TILE_PRICE(state, { id, price }) {
+    const tiles = Object.assign({}, state.tilePrices)
+    tiles[id] = price
+    state.tilePrices = tiles
+  }
 }
 
 const getters = {
   address: state => state.address,
   network: state => state.network,
   contract: state => state.contract,
-  tile: state => state.tile
+  price: state => id => state.tilePrices[id]
 }
 
 export default new Vuex.Store({

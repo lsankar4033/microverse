@@ -56,9 +56,6 @@ export default {
     const abstractContract = contract(MicroverseConfig)
     abstractContract.setProvider(provider)
     this.setContract(abstractContract)
-    // abstractContract.deployed().then(contractInstance => {
-    //   this.setContract(contractInstance)
-    // })
   },
 }
 </script>

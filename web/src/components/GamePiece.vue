@@ -1,7 +1,7 @@
 <template>
   <svg id="game-piece" @click.prevent="openModal" xmlns="http://www.w3.org/2000/svg" version="1.1" :width="width" :height="height" xmlns:xlink="http://www.w3.org/1999/xlink">
     <polygon class="hex" :points="points"></polygon>
-    <text v-if="id" x="50%" y="50%" alignment-baseline="middle" text-anchor="middle">{{ price }}</text>
+    <text v-if="id" x="50%" y="50%" alignment-baseline="middle" text-anchor="middle">{{ price(id) }}</text>
   </svg>
 </template>
 
@@ -10,7 +10,7 @@ import { mapGetters } from 'vuex'
 
 export default {
   name: 'GamePiece',
-  props: ['id', 'price'],
+  props: ['id'],
   data() {
     return {
       width: 100,
@@ -18,7 +18,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['contract']),
+    ...mapGetters(['price']),
 
     points() {
       const w = this.width

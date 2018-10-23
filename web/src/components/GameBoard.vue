@@ -24,7 +24,7 @@
              class="row">
           <div v-for="tileId in tileIdRow"
                :key="tileId">
-            <GamePiece :id="tileId" :price="0"/>
+            <GamePiece :id="tileId" />
           </div>
         </div>
       </div>
@@ -97,6 +97,8 @@ export default{
     },
   },
   methods: {
+    ...mapActions(['setTilePrices']),
+
     async stage() {
       if (!this.contractInstance) return
       const x = await this.contractInstance.stage()
@@ -114,8 +116,7 @@ export default{
       const instance = await this.contract.deployed()
       this.contractInstance = instance
       const duration = await this.auctionDuration()
-      this.$store.dispatch('setTile')
-      console.log('duration', duration)
+      this.setTilePrices({ rows: this.tileIdRows, mapping: instance.tileToPrice })
     }
   },
 }
