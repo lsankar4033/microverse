@@ -86,14 +86,18 @@ contract Microverse is
     uint256 public auctionStartTime;
 
     function buyTileAuction(uint8 tileId, uint256 newPrice) public payable atStage(Stage.DutchAuction) {
-        // tile must not already have been bought
-        require(tileToOwner[tileId] == address(0) && tileToOwner[tileId] == 0);
+        require(
+            tileToOwner[tileId] == address(0) && tileToPrice[tileId] == 0,
+            "Can't buy a tile that's already been auctioned off"
+        );
 
         uint256 tax = _priceToTax(newPrice);
         uint256 price = getTilePriceAuction();
 
-        // must be paying the full price!
-        require(msg.value >= tax.add(price));
+        require(
+            msg.value >= tax.add(price),
+            "Must pay the full price and tax for a tile on auction"
+        );
 
         _sendToTeam(tax.add(price));
 
@@ -128,8 +132,10 @@ contract Microverse is
     }
 
     function endAuction() private {
-        // Slightly redundant check
-        require(numBoughtTiles >= numTiles);
+        require(
+            numBoughtTiles >= numTiles,
+            "Can't end auction if are unbought tiles"
+        );
 
         stage = Stage.GameRounds;
         _startGameRound();
@@ -220,7 +226,10 @@ contract Microverse is
     }
 
     modifier duringRound() {
-        require(!_roundOver());
+        require(
+            !_roundOver(),
+            "Round can't be over!"
+        );
         _;
     }
 
@@ -239,7 +248,10 @@ contract Microverse is
     ////////////////////////
 
     function endGameRound() public atStage(Stage.GameRounds) {
-        require(_roundOver());
+        require(
+            _roundOver(),
+            "Round must be over!"
+        );
 
         _distributeJackpot();
 
@@ -253,13 +265,17 @@ contract Microverse is
         payable
         atStage(Stage.GameRounds)
         duringRound {
-        // must be owner
-        require(tileToOwner[tileId] == msg.sender);
+        require(
+            tileToOwner[tileId] == msg.sender,
+            "Can't set tile price for a tile you don't own!"
+        );
 
         uint256 tax = _priceToTax(newPrice);
 
-        // must pay tax
-        require(msg.value >= tax);
+        require(
+            msg.value >= tax,
+            "Must pay tax on new tile price!"
+        );
 
         uint256 oldPrice = tileToPrice[tileId];
         _distributeTax(msg.value);
@@ -278,15 +294,19 @@ contract Microverse is
         payable
         atStage(Stage.GameRounds)
         duringRound {
-        // can't buy from self
         address oldOwner = tileToOwner[tileId];
-        require(oldOwner != msg.sender);
+        require(
+            oldOwner != msg.sender,
+            "Can't buy a tile you already own"
+        );
 
         uint256 tax = _priceToTax(newPrice);
 
-        // must pay tax + seller price
         uint256 oldPrice = tileToPrice[tileId];
-        require(msg.value >= tax.add(oldPrice));
+        require(
+            msg.value >= tax.add(oldPrice),
+            "Must pay full price and tax for tile"
+        );
 
         // pay seller
         asyncSend(oldOwner, tileToPrice[tileId]);
