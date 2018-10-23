@@ -32,9 +32,6 @@ export default {
     setNetwork(id) {
       this.$store.commit('UPDATE_STATE', { key: 'network', value: id || '' })
     },
-    setContract(contract) {
-      this.$store.commit('UPDATE_STATE', { key: 'contract', value: contract || {} })
-    },
   },
   mounted() {
     const web3 = window.web3
@@ -53,9 +50,9 @@ export default {
       this.setAddress(user.selectedAddress)
       this.setNetwork(user.networkVersion)
     })
-    const abstractContract = contract(MicroverseConfig)
-    abstractContract.setProvider(provider)
-    this.setContract(abstractContract)
+    // const abstractContract = contract(MicroverseConfig)
+    // abstractContract.setProvider(provider)
+    // this.setContract(abstractContract)
   },
 }
 </script>

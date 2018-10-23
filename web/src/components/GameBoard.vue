@@ -22,9 +22,17 @@
         <div v-for="(tileIdRow, rowIdx) in tileIdRows"
              :key="rowIdx"
              class="row">
-          <div v-for="tileId in tileIdRow"
+          <div @click.prevent="getTileDetails(tileId)" v-for="tileId in tileIdRow"
                :key="tileId">
-            <GamePiece :id="tileId" />
+            <GamePiece>
+              <text 
+                v-if="contractInstance && contractInstance.tilesLoaded" 
+                x="50%" y="50%" 
+                alignment-baseline="middle" 
+                text-anchor="middle">
+                {{ contractInstance.tiles[tileId].price }}
+              </text>
+            </GamePiece>
           </div>
         </div>
       </div>
@@ -33,9 +41,9 @@
       <h1>Tile {{ selectedTile.id }}</h1>
       Ξ{{ selectedTile.price }}
       {{ selectedTile.owner }}
-      <template v-if="gameState !== 0 || !selectedTile.owner">
+      <template v-if="contractInstance.gameStage == 1 || !selectedTile.owner">
         <input v-model="newPrice" placeholder="Enter the new price" type="number"/>
-        <button @click.prevent="buyTile({ id: selectedTile.id, newPrice })">Buy</button>
+        <button @click.prevent="contractInstance.buyTile({ address, id: selectedTile.id, newPrice })">Buy</button>
       </template>
     </div>
   </div>
@@ -44,7 +52,9 @@
 <script>
 import GamePiece from './GamePiece'
 import { mapGetters, mapActions } from 'vuex'
-
+import { instantiateContract } from './contract'
+import MicroverseConfig from '@/Microverse.json'
+import contract from 'truffle-contract'
 // Width of top row of hex board.
 // TODO: Move to 'utils' file
 const BoardWidth =  3
@@ -101,11 +111,11 @@ export default{
         id: -1,
         price: 0,
         owner: null,
-      }
+      },
     }
   },
   computed: {
-    ...mapGetters(['address', 'network', 'contract', 'tile', 'gameState']),
+    ...mapGetters(['address', 'network']),
     wrongNetwork() {
       // TODO: Turn this check back on for prod
       // return this.network != this.NETWORK_ID
@@ -113,52 +123,26 @@ export default{
     },
   },
   methods: {
-    ...mapActions(['setTiles', 'buyTile']),
+    // ...mapActions(['setTiles', 'buyTile']),
 
-    async stage() {
+    async getTileDetails(id) {
       if (!this.contractInstance) return
-      const x = await this.contractInstance.stage()
-      return x.toNumber()
-    },
-    async auctionDuration() {
-      if (!this.contractInstance) return
-      const x = await this.contractInstance.auctionDuration()
-      return x.toNumber()
-    },
-    setTileDetails() {
-      const query = this.$route.query
-      if (!query) return
-      const id = query.tile
-      this.selectedTile.id = id
-      const tile = this.tile(id)
-      if (!tile) return
-      this.selectedTile.price = tile.price
-      this.selectedTile.owner = tile.owner
+      const price = await this.contractInstance.tileToPrice(id)
+      const owner = await this.contractInstance.tileToOwner(id)
+      this.selectedTile = {
+        id,
+        price,
+        owner
+      }
     },
   },
-  watch: {
-    contract: async function() {
-      if (!this.contract) return
-      const instance = await this.contract.deployed()
+  mounted() {
+    if (!window.web3) return
+    const abstractContract = contract(MicroverseConfig)
+    abstractContract.setProvider(window.web3.currentProvider)
+    instantiateContract(abstractContract).then(instance => {
       this.contractInstance = instance
-      const events = instance.allEvents({ fromBlock: 0, toBlock: 'latest' })
-      events.watch((err, e) => {
-        if (err) return
-        if (e.event === 'AuctionStarted') {
-          const start = e.args.startTime.toNumber()
-          const duration = e.args.auctionDuration.toNumber()
-          const end = this.$moment.unix(start + duration)
-          // TODO: Calculate remaining time from the end time
-          console.log('end time', end.format('MM/DD/YYYY HH:MM:SS'))
-        }
-      })
-      const stage = await instance.stage()
-      this.$store.commit('UPDATE_STATE', { key: 'gameState', value: stage.toNumber() })
-      this.setTiles({ rows: this.tileIdRows, priceMapping: instance.tileToPrice, ownerMapping: instance.tileToOwner })
-    },
-    '$route.query': async function() {
-      this.setTileDetails()
-    }
+    })
   },
 }
 </script>

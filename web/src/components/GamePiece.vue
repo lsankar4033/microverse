@@ -1,7 +1,7 @@
 <template>
-  <svg id="game-piece" @click.prevent="selectTile" xmlns="http://www.w3.org/2000/svg" version="1.1" :width="width" :height="height" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <svg id="game-piece" xmlns="http://www.w3.org/2000/svg" version="1.1" :width="width" :height="height" xmlns:xlink="http://www.w3.org/1999/xlink">
     <polygon class="hex" :points="points"></polygon>
-    <text v-if="id" x="50%" y="50%" alignment-baseline="middle" text-anchor="middle">{{ price(id) }}</text>
+    <slot></slot>
   </svg>
 </template>
 
@@ -10,7 +10,6 @@ import { mapGetters } from 'vuex'
 
 export default {
   name: 'GamePiece',
-  props: ['id'],
   data() {
     return {
       width: 100,
@@ -18,8 +17,6 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['price']),
-
     points() {
       const w = this.width
       const h = this.height
@@ -28,10 +25,6 @@ export default {
     },
   },
   methods: {
-    selectTile() {
-      const q = this.$route.query
-      this.$router.push({ query: { tile: this.id }})  
-    },
   },
   mounted() {
   },
