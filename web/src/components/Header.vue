@@ -19,10 +19,6 @@
 </template>
 
 <script>
-import MicroverseConfig from '@/Microverse.json'
-import contract from 'truffle-contract'
-import { mapActions } from 'vuex'
-
 export default {
   name: 'Header',
   methods: {
