@@ -1,3 +1,5 @@
+const GAS_LIMIT = 3000000
+
 class Contract {
   constructor(contractInstance, events) {
     this.instance = contractInstance
@@ -54,6 +56,16 @@ class Contract {
     return price.toNumber()
   }
 
+  async setTilePrice({ address, id, newPrice }) {
+    // TODO: test this
+    const owner = await this.tileToOwner(id)
+    if (owner !== address) return false
+    const transactionHash = 
+      this.instance.sendTransaction(parseInt(id), parseInt(newPrice), { from: address, value: parseInt(newPrice), gas: GAS_LIMIT})
+    if (transactionHash) return true
+    return false
+  }
+
   async getTilePrice(id) {
     const stage = await this.stage()
     const owner = await this.tileToOwner(id)
@@ -107,10 +119,12 @@ class Contract {
     } else {
       // TODO: Check if we need to use setTilePrice if this is the owner
       price = await this.tileToPrice(id)
-      price += Math.ceil(newPrice / 10)
+      price += Math.ceil(newPrice / 10) + 10000000
       method = this.instance.buyTile
     }
-    const transactionHash = await method.sendTransaction(parseInt(id), parseInt(newPrice), { from: address, value: price, gas: 3000000})
+    console.log('price', price)
+    console.log('id', id)
+    const transactionHash = await method.sendTransaction(parseInt(id), parseInt(newPrice), { from: address, value: parseInt(price), gas: GAS_LIMIT})
     if (transactionHash) return true
     return false
   }

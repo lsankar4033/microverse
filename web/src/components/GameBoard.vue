@@ -54,7 +54,8 @@
       </div>
       <div class="buy-tile-container" v-if="contractInstance.gameStage == 1 || !selectedTile.owner">
         <input v-model="newPrice" placeholder="Enter the new price" type="number"/>
-        <button class="button" @click.prevent="handleBuyTile">Buy</button>
+        <button v-if="selectedTile.owner === address" class="button" @click.prevent="handleChangePrice">Buy</button>
+        <button v-else class="button" @click.prevent="handleBuyTile">Buy</button>
       </div>
     </div>
   </div>
@@ -152,6 +153,9 @@ export default{
       }
       // TODO: Add social sharing link on success.
       console.log('success', success)
+    },
+    async handleChangePrice() {
+      console.log('TODO')
     },
     async getTileDetails(id) {
       if (!this.contractInstance) return
