@@ -41,6 +41,13 @@ class Contract {
     return price.toNumber()
   }
 
+  async getTilePrice(id) {
+    const stage = await this.stage()
+    const owner = await this.tileToOwner(id)
+    if (stage === 0 && !owner) return this.getTilePriceAuction()
+    return this.tileToPrice(id)
+  }
+
   async tileToOwner(id) {
     const owner = await this.instance.tileToOwner(id)
     const nullAddress = '0x0000000000000000000000000000000000000000'
@@ -63,7 +70,7 @@ class Contract {
     const maxId = await this.maxTileId()
     for(let id = minId; id <= maxId; id++) {
       const owner = await this.tileToOwner(id)
-      const price = await this.tileToPrice(id)
+      const price = await this.getTilePrice(id)
       this.tiles[id] = { owner, price }
     }
   }

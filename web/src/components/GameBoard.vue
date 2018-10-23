@@ -127,7 +127,7 @@ export default{
 
     async getTileDetails(id) {
       if (!this.contractInstance) return
-      const price = await this.contractInstance.tileToPrice(id)
+      const price = await this.contractInstance.getTilePrice(id)
       const owner = await this.contractInstance.tileToOwner(id)
       this.selectedTile = {
         id,
