@@ -54,7 +54,7 @@ contract Microverse is
         totalTileValue = totalTileValue.add(newPrice.sub(oldPrice));
     }
 
-    event TileOwnerChange(
+    event TileOwnerChanged(
         uint8 indexed tileId,
         address indexed oldOwner,
         address indexed newOwner,
@@ -102,7 +102,7 @@ contract Microverse is
 
         numBoughtTiles = numBoughtTiles.add(1);
 
-        emit TileOwnerChange(tileId, address(0), msg.sender, price, newPrice);
+        emit TileOwnerChanged(tileId, address(0), msg.sender, price, newPrice);
 
         if (numBoughtTiles >= numTiles) {
             endAuction();
@@ -165,7 +165,7 @@ contract Microverse is
     uint256 public nextJackpot;
 
     // Only emitted if owner doesn't *also* change
-    event TilePriceChange(
+    event TilePriceChanged(
         uint8 indexed tileId,
         address indexed owner,
         uint256 oldPrice,
@@ -270,7 +270,7 @@ contract Microverse is
         _extendRound();
         _logRoundExtensionVolume(msg.value);
 
-        emit TilePriceChange(tileId, tileToOwner[tileId], oldPrice, newPrice);
+        emit TilePriceChanged(tileId, tileToOwner[tileId], oldPrice, newPrice);
     }
 
     function buyTile(uint8 tileId, uint256 newPrice)
@@ -299,7 +299,7 @@ contract Microverse is
         _extendRound();
         _logRoundExtensionVolume(msg.value);
 
-        emit TileOwnerChange(tileId, oldOwner, msg.sender, oldPrice, newPrice);
+        emit TileOwnerChanged(tileId, oldOwner, msg.sender, oldPrice, newPrice);
     }
 
     ///////////////////////////////////////
