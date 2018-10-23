@@ -20,11 +20,11 @@
       <p class="label">Click to acquire a world</p>
       <div class="grid">
         <div v-for="(tileIdRow, rowIdx) in tileIdRows"
-             v-bind:key="rowIdx"
+             :key="rowIdx"
              class="row">
           <div v-for="tileId in tileIdRow"
-               v-bind:key="tileId">
-            <GamePiece :id="tileId" />
+               :key="tileId">
+            <GamePiece :id="tileId" :price="0"/>
           </div>
         </div>
       </div>
@@ -40,6 +40,42 @@ import { mapGetters, mapActions } from 'vuex'
 // TODO: Move to 'utils' file
 const BoardWidth =  3
 
+const generateTileIds = width => {
+  var curId = 1
+  let rows = []
+
+  // Increasing rows
+  var curRowSize = width
+  for (var i = 0; i < width; i++) {
+    let row = []
+    for (var j = 0; j < curRowSize; j++) {
+      row.push(curId)
+      curId++;
+    }
+
+    rows.push(row)
+    curRowSize++;
+  }
+
+  // Decreasing rows
+  curRowSize--;
+  curRowSize--;
+  for (i = 0; i < (width-1); i++) {
+    let row = []
+    for (j = 0; j < curRowSize; j++) {
+      row.push(curId)
+      curId++;
+    }
+
+    rows.push(row)
+    curRowSize--;
+  }
+
+  return rows;
+}
+
+const tileIdRows = generateTileIds(BoardWidth)
+
 export default{
   name: 'GameBoard',
   components: {
@@ -47,7 +83,7 @@ export default{
   },
   data() {
     return {
-      tileIdRows: this.generateTileIds(BoardWidth),
+      tileIdRows,
       NETWORK_ID: '1540158046332',
       contractInstance: null,
     }
@@ -62,53 +98,23 @@ export default{
   },
   methods: {
     async stage() {
-      if (!this.contract) return
-      const x = await this.contract.stage()
+      if (!this.contractInstance) return
+      const x = await this.contractInstance.stage()
       return x.toNumber()
     },
     async auctionDuration() {
-      if (!this.contract) return
-      const x = await this.contract.auctionDuration()
+      if (!this.contractInstance) return
+      const x = await this.contractInstance.auctionDuration()
       return x.toNumber()
-    },
-    generateTileIds(width) {
-      var curId = 1
-      let rows = []
-
-      // Increasing rows
-      var curRowSize = width
-      for (var i = 0; i < width; i++) {
-        let row = []
-        for (var j = 0; j < curRowSize; j++) {
-          row.push(curId)
-          curId++;
-        }
-
-        rows.push(row)
-        curRowSize++;
-      }
-
-      // Decreasing rows
-      curRowSize--;
-      curRowSize--;
-      for (i = 0; i < (width-1); i++) {
-        let row = []
-        for (j = 0; j < curRowSize; j++) {
-          row.push(curId)
-          curId++;
-        }
-
-        rows.push(row)
-        curRowSize--;
-      }
-
-      return rows;
     },
   },
   watch: {
     contract: async function() {
       if (!this.contract) return
+      const instance = await this.contract.deployed()
+      this.contractInstance = instance
       const duration = await this.auctionDuration()
+      this.$store.dispatch('setTile')
       console.log('duration', duration)
     }
   },
