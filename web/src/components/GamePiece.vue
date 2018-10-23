@@ -23,10 +23,13 @@ export default {
       return `0,${0.25*h} ${0.5*w},0 ${w},${0.25*h} ${w},${0.75*h} ${0.5*w},${h} 0,${0.75*h}`
     },
   },
-  methods: {
-  },
   mounted() {
-  },
+  // TODO: Use a window listener -- breaks if user resizes screen w/o refresh
+    if (screen.width < 768 || window.innerWidth < 768) {
+      this.width = 60
+      this.height = 40
+    }
+  }
 }
 </script>
 
