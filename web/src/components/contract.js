@@ -110,7 +110,9 @@ class Contract {
       price += Math.ceil(newPrice / 10)
       method = this.instance.buyTile
     }
-    method.sendTransaction(parseInt(id), parseInt(newPrice), { from: address, value: price, gas: 3000000})
+    const transactionHash = await method.sendTransaction(parseInt(id), parseInt(newPrice), { from: address, value: price, gas: 3000000})
+    if (transactionHash) return true
+    return false
   }
 }
 

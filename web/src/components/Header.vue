@@ -6,12 +6,12 @@
       </router-link>
 
       <div class="menu-items">
-        <router-link to="/tutorial">
+        <router-link :to="{query: {section: 'rules'}}">
           <span>How to play</span>
         </router-link>
 
-        <router-link to="/my_vault">
-          <span>My vault</span>
+        <router-link :to="{query: {section: 'worlds'}}">
+          <span>My worlds</span>
         </router-link>
       </div>
     </header>

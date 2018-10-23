@@ -1,8 +1,16 @@
 <template>
   <div id="game-board">
     <div class="section hero">
-      <h1>Welcome to simulation #001</h1>
-      <p>Microverse is a simulation. Acquire worlds and power them up to earn a slice of Microverse trade. When trade slows, the simulation stops and riches are airdropped to the least powerful worlds. And the simulation starts over.</p>
+      <template v-if="$route.query.section == 'rules'">
+        rules here
+      </template>
+      <template v-if="$route.query.section == 'worlds'">
+        worlds here
+      </template>
+      <template v-if="!$route.query.section">
+        <h1>Welcome to simulation #001</h1>
+        <p>Microverse is a simulation. Acquire worlds and power them up to earn a slice of Microverse trade. When trade slows, the simulation stops and riches are airdropped to the least powerful worlds. And the simulation starts over.</p>
+      </template>
     </div>
     <div class="section section-accent">
       <p class="label">Simulation #001</p>
@@ -17,7 +25,8 @@
           <h1 v-if="address && wrongNetwork">Make sure mainnet network is selected</h1>
         </div>
       </template>
-      <p class="label">Click to acquire a world</p>
+      <p v-if="selectedTile.id < 0" class="label">Click to acquire a world</p>
+      <p v-if="selectedTile.id >= 0" class="label">Viewing world {{ selectedTile.id }}</p>
       <div class="grid">
         <div v-for="(tileIdRow, rowIdx) in tileIdRows"
              :key="rowIdx"
@@ -37,14 +46,16 @@
         </div>
       </div>
     </div>
-    <div v-if="selectedTile.id >= 0" class="section tile-information">
-      <h1>Tile {{ selectedTile.id }}</h1>
-      Ξ{{ selectedTile.price | weiToEth }}
-      {{ selectedTile.owner }}
-      <template v-if="contractInstance.gameStage == 1 || !selectedTile.owner">
+    <div v-if="selectedTile.id >= 0" class="section">
+      <h1>World {{ selectedTile.id }}</h1>
+      <div class="tile-information">
+        <span>Ξ{{ selectedTile.price | weiToEth }}</span>
+        <span>{{ selectedTile.owner }}</span>
+      </div>
+      <div class="buy-tile-container" v-if="contractInstance.gameStage == 1 || !selectedTile.owner">
         <input v-model="newPrice" placeholder="Enter the new price" type="number"/>
-        <button @click.prevent="contractInstance.buyTile({ address, id: selectedTile.id, newPrice })">Buy</button>
-      </template>
+        <button class="button" @click.prevent="handleBuyTile">Buy</button>
+      </div>
     </div>
   </div>
 </template>
@@ -132,6 +143,16 @@ export default{
       if (!this.contractInstance || !this.contractInstance.tilesLoaded) return false
       return this.contractInstance.tiles[id].buyable
     },
+    async handleBuyTile() {
+      let success = false
+      try {
+        success = await this.contractInstance.buyTile({ address: this.address, id: this.selectedTile.id, newPrice: this.newPrice })
+      } catch (err) {
+        console.log('err', err)
+      }
+      // TODO: Add social sharing link on success.
+      console.log('success', success)
+    },
     async getTileDetails(id) {
       if (!this.contractInstance) return
       const price = await this.contractInstance.getTilePrice(id)
@@ -200,5 +221,19 @@ export default{
 .no-wallet-text h1 {
   margin: auto;
   text-align: center;
+}
+.buy-tile-container {
+  display: flex;
+  margin-bottom: 26px;
+}
+.buy-tile-container input {
+  border: 1px solid #222;
+}
+.buy-tile-container button {
+  background: green;
+}
+.tile-information {
+  margin: 8px 0 10px;
+  font-size: 16pt;
 }
 </style>

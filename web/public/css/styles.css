@@ -205,7 +205,7 @@ header .logo {
   text-transform: uppercase;
   font-family: 'Space Mono', monospace;
   font-weight: 700;
-  border-radius: 10rem;
+  /* border-radius: 10rem; */
 }
 
 .button:hover {
@@ -281,7 +281,7 @@ header .logo {
 input {
   padding: .5rem .5rem;
   margin-right: .5rem;
-  border-radius: 10rem;
+  /* border-radius: 10rem; */
 }
 
 @media only screen and (max-width: 768px) {
