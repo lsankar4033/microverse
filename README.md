@@ -14,9 +14,10 @@ Contract:
 ## Contract Development
 `cd eth`
 `truffle migrate --reset`
-`./scripts/migrate_artifacts.sh`
 
 ## Frontend Development
 `cd web`
 
 `npm run serve`
+
+`./scripts/migrate_artifacts.sh`
