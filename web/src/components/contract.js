@@ -35,11 +35,13 @@ class Contract {
       const duration = rawDuration.toNumber()
       const end = start + duration
       const now = + new Date() / 1000
-      const timeRemaining = end - now
-      return timeRemaining
+      return end - now
     }
-    const timeRemaining = await this.instance.roundTimeRemaining()
-    return timeRemaining
+    // instance.roundTimeRemaining() was always returning 24hr
+    const rawEndTime = await this.instance.roundEndTime()
+    const end = rawEndTime.toNumber()
+    const now = + new Date() / 1000
+    return end - now
   }
 
   async getTilePriceAuction() {
@@ -100,9 +102,12 @@ class Contract {
     let method
     if (stage === 0) {
       price = await this.getTilePriceAuction()
+      // TODO: Investigate if we need to charge tax here?
       method = this.instance.buyTileAuction
     } else {
+      // TODO: Check if we need to use setTilePrice if this is the owner
       price = await this.tileToPrice(id)
+      price += Math.ceil(newPrice / 10)
       method = this.instance.buyTile
     }
     method.sendTransaction(parseInt(id), parseInt(newPrice), { from: address, value: price, gas: 3000000})

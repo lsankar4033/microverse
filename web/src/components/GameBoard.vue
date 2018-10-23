@@ -6,7 +6,7 @@
     </div>
     <div class="section section-accent">
       <p class="label">Simulation #001</p>
-      <p><b>Stimulus (jackpot):</b> Ξ{{ jackpot }} (${{ jackpot | convertEthToUsd(ethToUsdRate) }})</p>
+      <p><b>Stimulus (jackpot):</b> Ξ{{ jackpot | weiToEth }} (${{ jackpot | weiToEth | convertEthToUsd(ethToUsdRate) }})</p>
       <p><b>Time left:</b> {{ timeLeft | formatSecondsToTime }}</p>
     </div>
     <div class="section section-body">
@@ -142,16 +142,12 @@ export default{
         owner
       }
     },
-    async getJackpot() {
-      if (!this.contractInstance) return
-
-    },
     async initializeCountDown() {
       const timeLeft = await this.contractInstance.getTimeRemaining()
       this.timeLeft = timeLeft
-      this.timer(timeLeft)
+      this.startTimer()
     },
-    timer(timeLeft) {
+    startTimer() {
       // https://stackoverflow.com/questions/29971898/how-to-create-an-accurate-timer-in-javascript
       const interval = 1000; // ms
       let expected = Date.now() + interval;
