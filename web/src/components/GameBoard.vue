@@ -29,6 +29,15 @@
         </div>
       </div>
     </div>
+    <div v-if="selectedTile.id >= 0" class="section tile-information">
+      <h1>Tile {{ selectedTile.id }}</h1>
+      Ξ{{ selectedTile.price }}
+      {{ selectedTile.owner }}
+      <template v-if="gameState !== 0 || !selectedTile.owner">
+        <input v-model="newPrice" placeholder="Enter the new price" type="number"/>
+        <button @click.prevent="buyTile({ id: selectedTile.id, newPrice })">Buy</button>
+      </template>
+    </div>
   </div>
 </template>
 
@@ -87,10 +96,16 @@ export default{
       NETWORK_ID: '1540158046332',
       contractInstance: null,
       timeLeft: 'Loading',
+      newPrice: null,
+      selectedTile: {
+        id: -1,
+        price: 0,
+        owner: null,
+      }
     }
   },
   computed: {
-    ...mapGetters(['address', 'network', 'contract']),
+    ...mapGetters(['address', 'network', 'contract', 'tile', 'gameState']),
     wrongNetwork() {
       // TODO: Turn this check back on for prod
       // return this.network != this.NETWORK_ID
@@ -98,7 +113,7 @@ export default{
     },
   },
   methods: {
-    ...mapActions(['setTilePrices']),
+    ...mapActions(['setTiles', 'buyTile']),
 
     async stage() {
       if (!this.contractInstance) return
@@ -109,6 +124,16 @@ export default{
       if (!this.contractInstance) return
       const x = await this.contractInstance.auctionDuration()
       return x.toNumber()
+    },
+    setTileDetails() {
+      const query = this.$route.query
+      if (!query) return
+      const id = query.tile
+      this.selectedTile.id = id
+      const tile = this.tile(id)
+      if (!tile) return
+      this.selectedTile.price = tile.price
+      this.selectedTile.owner = tile.owner
     },
   },
   watch: {
@@ -127,8 +152,12 @@ export default{
           console.log('end time', end.format('MM/DD/YYYY HH:MM:SS'))
         }
       })
-      const duration = await this.auctionDuration()
-      this.setTilePrices({ rows: this.tileIdRows, mapping: instance.tileToPrice })
+      const stage = await instance.stage()
+      this.$store.commit('UPDATE_STATE', { key: 'gameState', value: stage.toNumber() })
+      this.setTiles({ rows: this.tileIdRows, priceMapping: instance.tileToPrice, ownerMapping: instance.tileToOwner })
+    },
+    '$route.query': async function() {
+      this.setTileDetails()
     }
   },
 }

@@ -1,5 +1,5 @@
 <template>
-  <svg id="game-piece" @click.prevent="openModal" xmlns="http://www.w3.org/2000/svg" version="1.1" :width="width" :height="height" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <svg id="game-piece" @click.prevent="selectTile" xmlns="http://www.w3.org/2000/svg" version="1.1" :width="width" :height="height" xmlns:xlink="http://www.w3.org/1999/xlink">
     <polygon class="hex" :points="points"></polygon>
     <text v-if="id" x="50%" y="50%" alignment-baseline="middle" text-anchor="middle">{{ price(id) }}</text>
   </svg>
@@ -28,14 +28,12 @@ export default {
     },
   },
   methods: {
-    openModal() {
-      this.$router.push({ path: 'buy' })
-    },
-    getPrice() {
-      return 10
+    selectTile() {
+      const q = this.$route.query
+      this.$router.push({ query: { tile: this.id }})  
     },
   },
-  mounted() { 
+  mounted() {
   },
 }
 </script>
