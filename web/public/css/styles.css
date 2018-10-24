@@ -293,6 +293,9 @@ input {
   header a, header .menu-items {
     margin: 0 auto;
   }
+  header .menu-items span:first-child {
+    margin-right: 0;
+  }
   .hero h1 {
     font-size: 1rem;
     margin: 0 auto;
@@ -303,5 +306,8 @@ input {
   .hero {
     /* Puts description at the bottom */
     order: 1;
+  }
+  .section-accent {
+    flex-direction: column;
   }
 }

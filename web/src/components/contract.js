@@ -23,6 +23,17 @@ class Contract {
     return jackpot.toNumber()
   }
 
+  async getBalance(address) {
+    const payment = await this.instance.payments(address)
+    console.log('payment.toNumber()', payment.toNumber())
+    return payment.toNumber()
+  }
+
+  async withdraw(address) {
+    const transactionHash = await this.instance.withdrawPayments.sendTransaction({ from: address, gas: GAS_LIMIT })
+    return transactionHash ? true : false
+  }
+
   async stage() {
     const s = await this.instance.stage()
     return s.toNumber()

@@ -14,12 +14,10 @@
         <button v-else class="button" @click.prevent="handleBuyTile">Buy</button>
       </div>
     </template>
-    <template v-if="status">
+    <template v-else-if="status">
       <h1 v-if="status == 'tileBought'">Tell your friends you own a microverse world</h1>
       <h1 v-if="status == 'priceChanged'">Tell your friends your microverse world is on sale for Ξ{{ newPrice }}</h1>
-      <SocialIcon type="facebook" />
-      <SocialIcon type="twitter" />
-      <SocialIcon type="mail" />
+      <SocialShare />
     </template>
   </SectionShell>
 </template>
@@ -27,14 +25,14 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import SectionShell from './SectionShell'
-import SocialIcon from './SocialIcon'
+import SocialShare from './SocialShare'
 
 export default {
   name: 'BuyForm',
   props: ['contract'],
   components: {
     SectionShell,
-    SocialIcon
+    SocialShare
   },
   data() {
     return {
