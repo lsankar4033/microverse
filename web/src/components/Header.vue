@@ -6,13 +6,13 @@
       </router-link>
 
       <div class="menu-items">
-        <router-link :to="{query: {section: 'rules'}}">
+        <router-link to="rules" v-if="$route.path == '/'">
           <span>How to play</span>
         </router-link>
-
-        <router-link :to="{query: {section: 'worlds'}}">
-          <span>My worlds</span>
+        <router-link to="/" v-else>
+          <span>Back to game</span>
         </router-link>
+
       </div>
     </header>
   </div>

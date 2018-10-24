@@ -1,21 +1,20 @@
 <template>
   <div id="game-board">
     <div class="section hero">
-      <template v-if="$route.query.section == 'rules'">
-        rules here
-      </template>
-      <template v-if="$route.query.section == 'worlds'">
-        worlds here
-      </template>
-      <template v-if="!$route.query.section">
-        <h1>Welcome to simulation #001</h1>
-        <p>Microverse is a simulation. Acquire worlds and power them up to earn a slice of Microverse trade. When trade slows, the simulation stops and riches are airdropped to the least powerful worlds. And the simulation starts over.</p>
-      </template>
+      <h1>Welcome to simulation #001</h1>
+      <p>Microverse is a simulation. Acquire worlds and power them up to earn a slice of Microverse trade. When trade slows, the simulation stops and riches are airdropped to the least powerful worlds. And the simulation starts over.</p>
     </div>
     <div class="section section-accent">
-      <p class="label">Simulation #001</p>
-      <p><b>Stimulus (jackpot):</b> Ξ{{ jackpot | weiToEth }} (${{ jackpot | weiToEth | convertEthToUsd(ethToUsdRate) }})</p>
-      <p><b>Time left:</b> {{ timeLeft | formatSecondsToTime }}</p>
+      <div>
+        <p class="label">Simulation #001</p>
+        <p><b>Stimulus (jackpot):</b> Ξ{{ jackpot | weiToEth }} (${{ jackpot | weiToEth | convertEthToUsd(ethToUsdRate) }})</p>
+        <p><b>Time left:</b> {{ timeLeft | formatSecondsToTime }}</p>
+      </div>
+      <div class="withdraw-container" v-if="balance > 0">
+        <p class="label">Balance</p>
+        <p>Ξ{{ balance }}</p>
+        <button class="button">Withdraw</button>
+      </div>
     </div>
     <div class="section section-body">
       <template v-if="!address || wrongNetwork">
@@ -124,6 +123,7 @@ export default{
         price: 0,
         owner: null,
       },
+      balance: 100.43243,
       ethToUsdRate: 200,
     }
   },
@@ -239,5 +239,12 @@ export default{
 .tile-information {
   margin: 8px 0 10px;
   font-size: 16pt;
+}
+.section-header {
+  display: flex;
+  justify-content: space-between;
+}
+.withdraw-container p {
+  text-align: right;
 }
 </style>

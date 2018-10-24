@@ -1,10 +1,11 @@
 <template>
-  <h1>Buy land?</h1>
+  <div>
+    TODO: Rules
+  </div>
 </template>
 
 <script>
 export default {
-  name: 'BuyModal',
+  name: 'Rules'
 }
 </script>
-

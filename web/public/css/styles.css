@@ -137,7 +137,9 @@ header .logo {
 }
 
 .section-accent {
-	background-color: rgba(243,244,123,1)
+  background-color: rgba(243,244,123,1);
+  flex-direction: row;
+  justify-content: space-between;
 }
 
 .label {
