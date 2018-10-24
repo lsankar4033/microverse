@@ -1,23 +1,31 @@
 <template>
   <SectionShell>
-    <h1>World {{ tile.id }}</h1>
-    <div class="tile-information">
-      <span>Ξ{{ tile.price | weiToEth }}</span>
-      <span>{{ tile.owner }}</span>
-    </div>
-    <div class="buy-tile-container" v-if="contract && contract.gameStage == 1 || !tile.owner">
-      <input v-model="newPrice" placeholder="Enter the new price" type="number"/>
-      <button v-if="tile.owner === address" class="button" @click.prevent="handleChangePrice">Buy</button>
-      <button v-else class="button" @click.prevent="handleBuyTile">Buy</button>
-    </div>
-    <SocialIcon type="facebook" />
-    <SocialIcon type="twitter" />
-    <SocialIcon type="mail" />
+    <template v-if="tile.id >= 0">
+      <h1>World {{ tile.id }}</h1>
+      <div class="tile-information">
+        <div>Ξ{{ tile.price | weiToEth }}</div>
+        <h2 v-if="tile.owner == address">You own this world</h2>
+        <h2 v-else-if="tile.owner">{{ tile.owner }} owns this world</h2>
+        <h2 v-else>Nobody owns this world</h2>
+      </div>
+      <div class="buy-tile-container" v-if="contract && contract.gameStage == 1 || !tile.owner">
+        <input v-model="newPrice" placeholder="Enter the new price" type="number"/>
+        <button v-if="tile.owner === address" class="button" @click.prevent="handleChangePrice">Change Price</button>
+        <button v-else class="button" @click.prevent="handleBuyTile">Buy</button>
+      </div>
+    </template>
+    <template v-if="status">
+      <h1 v-if="status == 'tileBought'">Tell your friends you own a microverse world</h1>
+      <h1 v-if="status == 'priceChanged'">Tell your friends your microverse world is on sale for Ξ{{ newPrice }}</h1>
+      <SocialIcon type="facebook" />
+      <SocialIcon type="twitter" />
+      <SocialIcon type="mail" />
+    </template>
   </SectionShell>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import SectionShell from './SectionShell'
 import SocialIcon from './SocialIcon'
 
@@ -31,12 +39,16 @@ export default {
   data() {
     return {
       newPrice: null,
+      // tileBought, priceChanged
+      status: '',
     }
   },
   computed: {
     ...mapGetters(['address', 'tile']),
   },
   methods: {
+    ...mapActions(['deselectTile']),
+
     async handleBuyTile() {
       let success = false
       try {
@@ -45,10 +57,15 @@ export default {
         console.log('err', err)
       }
       // TODO: Add social sharing link on success.
+      if (!success) return
+      this.deselectTile()
+      this.status = 'tileBought'
       console.log('success', success)
     },
     async handleChangePrice() {
       console.log('TODO')
+      this.deselectTile()
+      this.status = 'priceChanged'
     },
   }
 }

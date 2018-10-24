@@ -9,13 +9,13 @@
       </template>
       <p v-if="tile.id < 0" class="label">Click to acquire a world</p>
       <p v-if="tile.id >= 0" class="label">Viewing world {{ tile.id }}</p>
-      <div class="grid">
+      <div @click="deselectTile" class="grid">
         <div v-for="(tileIdRow, rowIdx) in tileIdRows"
              :key="rowIdx"
              class="row">
-          <div @click.prevent="selectTile(tileId)" v-for="tileId in tileIdRow"
+          <div @click.stop.prevent="selectTile(tileId)" v-for="tileId in tileIdRow"
                :key="tileId">
-            <GamePiece :buyable="tileIsBuyable(tileId)">
+            <GamePiece :buyable="tileIsBuyable(tileId)" :owned-by-user="tileIsOwnedByUser(tileId)">
               <text 
                 v-if="contract && contract.tilesLoaded" 
                 x="50%" y="50%" 
@@ -32,7 +32,7 @@
 
 <script>
 import SectionShell from './SectionShell'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import GamePiece from './GamePiece'
 
 // Width of top row of hex board.
@@ -97,8 +97,14 @@ export default {
     },
   },
   methods: {
+    ...mapActions(['deselectTile']),
+
     setTile(tile) {
       this.$store.commit('UPDATE_STATE', { key: 'tile', value: tile })
+    },
+    tileIsOwnedByUser(id) {
+      if (!this.contract || !this.contract.tilesLoaded) return false
+      return this.contract.tiles[id].owner === this.address
     },
     tileIsBuyable(id) {
       if (!this.contract || !this.contract.tilesLoaded) return false
@@ -108,6 +114,7 @@ export default {
       const tile = await this.getTileDetails(id)
       this.setTile(tile)
     },
+
     async getTileDetails(id) {
       if (!this.contract) return
       const price = await this.contract.getTilePrice(id)

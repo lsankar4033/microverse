@@ -2,17 +2,23 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 Vue.use(Vuex)
 
+const deselectedTile = {
+  id: -1,
+  price: 0,
+  owner: null,
+}
+
 const state = {
   address: '',
   network: '',
-  tile: {
-    id: -1,
-    price: 0,
-    owner: null,
-  },
+  tile: deselectedTile,
 }
 
-const actions = {}
+const actions = {
+  deselectTile({ commit }) {
+    commit('UPDATE_STATE', { key: 'tile', value: deselectedTile })
+  }
+}
 
 const mutations = {
   UPDATE_STATE(state, { key, value }) {

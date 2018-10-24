@@ -1,14 +1,16 @@
 <template>
   <svg id="game-piece" xmlns="http://www.w3.org/2000/svg" version="1.1" :width="width" :height="height" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <polygon :class="{hex: true, buyable}" :points="points"></polygon>
+    <polygon :class="{hex: true, buyable, 'owned-by-user': ownedByUser}" :points="points"></polygon>
     <slot></slot>
   </svg>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   name: 'GamePiece',
-  props: ['buyable'],
+  props: ['buyable', 'ownedByUser'],
   data() {
     return {
       width: 100,
@@ -16,6 +18,8 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['address']),
+
     points() {
       const w = this.width
       const h = this.height
@@ -46,6 +50,10 @@ export default {
 
 #game-piece .buyable {
   fill: #ffff00;
+}
+
+#game-piece .owned-by-user {
+  fill: #fffff0;
 }
 
 #game-piece:hover .hex {
