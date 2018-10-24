@@ -5,6 +5,11 @@ Vue.use(Vuex)
 const state = {
   address: '',
   network: '',
+  tile: {
+    id: -1,
+    price: 0,
+    owner: null,
+  },
 }
 
 const actions = {}
@@ -13,16 +18,12 @@ const mutations = {
   UPDATE_STATE(state, { key, value }) {
     state[key] = value
   },
-  SET_TILE(state, { id, price, owner }) {
-    const tiles = Object.assign({}, state.tiles)
-    tiles[id] = { price, owner }
-    state.tiles = tiles
-  },
 }
 
 const getters = {
   address: state => state.address,
   network: state => state.network,
+  tile: state => state.tile,
 }
 
 export default new Vuex.Store({
