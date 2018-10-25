@@ -25,7 +25,6 @@ class Contract {
 
   async getBalance(address) {
     const payment = await this.instance.payments(address)
-    console.log('payment.toNumber()', payment.toNumber())
     return payment.toNumber()
   }
 
@@ -126,16 +125,31 @@ class Contract {
     if (stage === 0) {
       price = await this.getTilePriceAuction()
       // TODO: Investigate if we need to charge tax here?
+      price += await this.getTax(newPrice)
       method = this.instance.buyTileAuction
     } else {
       // TODO: Check if we need to use setTilePrice if this is the owner
       price = await this.tileToPrice(id)
-      price += Math.ceil(newPrice / 10) + 10000000
+      price += await this.getTax(newPrice)
+      // price += Math.ceil(newPrice / 10)
       method = this.instance.buyTile
     }
-    const transactionHash = await method.sendTransaction(parseInt(id), parseInt(newPrice), { from: address, value: parseInt(price), gas: GAS_LIMIT})
+    const transactionHash = await method.sendTransaction(parseInt(id), parseInt(newPrice), { from: address, value: parseInt(price), gas: GAS_LIMIT })
     if (transactionHash) return true
     return false
+  }
+
+  async getTax(value) {
+    // TODO: pull tax constant from contract
+    const tax = await this.instance._priceToTax(value)
+    return tax.toNumber()
+  }
+
+  async setTilePrice({ address, id, newPrice }) {
+    // const tax = Math.ceil(newPrice / 10)
+    const tax = await this.getTax(newPrice) + 1
+    const transactionHash = await this.instance.setTilePrice.sendTransaction(parseInt(id), parseInt(newPrice), { from: address, value: tax, gas: GAS_LIMIT })
+    return transactionHash ? true : false
   }
 }
 

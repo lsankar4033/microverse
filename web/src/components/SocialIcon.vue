@@ -1,5 +1,5 @@
 <template>
-    <svg class="social-icon" version="1.1" role="presentation" width="25" height="25" viewBox="0 0 512 512"><path :d="mapping[type]"></path></svg>
+  <svg @click.prevent="handleClick" class="social-icon" version="1.1" role="presentation" width="25" height="25" viewBox="0 0 512 512"><path :d="mapping[type]"></path></svg>
 </template>
 
 <script>
@@ -15,7 +15,29 @@ export default {
     return {
       mapping,
     }
+  },
+  methods: {
+    handleClick() {
+      switch(this.type) {
+        case 'facebook':
+          console.log('this.type', this.type)
+          break
+        case 'twitter':
+          console.log('this.type', this.type)
+          break
+        case 'mail':
+          console.log('this.type', this.type)
+          break
+      }
+    }
   }
 }
 </script>
+
+<style scoped>
+  svg {
+    cursor: pointer
+  }
+</style>
+
 

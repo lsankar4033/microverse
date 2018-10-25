@@ -44,6 +44,7 @@ export default {
   },
   methods: {
     async getBalance() {
+      this.status = ''
       this.balance = await this.contract.getBalance(this.address)
     },
     async withdraw() {

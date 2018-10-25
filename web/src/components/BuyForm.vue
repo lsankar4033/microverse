@@ -58,10 +58,15 @@ export default {
       if (!success) return
       this.deselectTile()
       this.status = 'tileBought'
-      console.log('success', success)
     },
     async handleChangePrice() {
-      console.log('TODO')
+      let success = false
+      try {
+        success = await this.contract.setTilePrice({ address: this.address, id: this.tile.id, newPrice: this.newPrice })
+      } catch (err) {
+        console.log('err', err)
+      }
+      if (!success) return
       this.deselectTile()
       this.status = 'priceChanged'
     },
