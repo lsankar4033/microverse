@@ -7,23 +7,15 @@
           <h1 v-if="address && wrongNetwork">Make sure mainnet network is selected</h1>
         </div>
       </template>
-      <p v-if="tile.id < 0" class="label">Click to acquire a world</p>
-      <p v-if="tile.id >= 0" class="label">Viewing world {{ tile.id }}</p>
+      <p v-if="selectedTile.id < 0" class="label">Click to acquire a world</p>
+      <p v-if="selectedTile.id >= 0" class="label">Viewing world {{ selectedTile.id }}</p>
       <div @click="deselectTile" class="grid">
         <div v-for="(tileIdRow, rowIdx) in tileIdRows"
              :key="rowIdx"
              class="row">
           <div @click.stop.prevent="selectTile(tileId)" v-for="tileId in tileIdRow"
                :key="tileId">
-            <GamePiece :id="tileId" :buyable="tileIsBuyable(tileId)" :owned-by-user="tileIsOwnedByUser(tileId)">
-              <text 
-                v-if="contract && contract.tilesLoaded" 
-                x="50%" y="50%" 
-                alignment-baseline="middle" 
-                text-anchor="middle">
-                Ξ{{ contract.tiles[tileId].price | weiToEth | setPrecision(4) }}
-              </text>
-            </GamePiece>
+            <GamePiece :id="tileId">{{ setTileDetails(tileId) }}</GamePiece>
           </div>
         </div>
       </div>
@@ -89,7 +81,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['address', 'tile', 'network']),
+    ...mapGetters(['address', 'selectedTile', 'network']),
     wrongNetwork() {
       // TODO: Turn this check back on for prod
       // return this.network != this.NETWORK_ID
@@ -99,32 +91,19 @@ export default {
   methods: {
     ...mapActions(['deselectTile']),
 
-    setTile(tile) {
-      this.$store.commit('UPDATE_STATE', { key: 'tile', value: tile })
-    },
-    tileIsOwnedByUser(id) {
-      if (!this.contract || !this.contract.tilesLoaded) return false
-      return this.contract.tiles[id].owner === this.address
-    },
-    tileIsBuyable(id) {
-      if (!this.contract || !this.contract.tilesLoaded) return false
-      return this.contract.tiles[id].buyable
+    setSelectedTile(tile) {
+      this.$store.commit('UPDATE_STATE', { key: 'selectedTile', value: tile })
     },
     async selectTile(id) {
-      const tile = await this.getTileDetails(id)
-      this.setTile(tile)
+      if (!this.contract) return
+      const tile = await this.contract.getTile(id)
+      this.setSelectedTile(tile)
     },
 
-    async getTileDetails(id) {
+    async setTileDetails(id) {
       if (!this.contract) return
-      const price = await this.contract.getTilePrice(id)
-      const owner = await this.contract.tileToOwner(id)
-      const tile = {
-        id,
-        price,
-        owner
-      }
-      return tile
+      const tile = await this.contract.getTile(id)
+      this.$store.commit('UPDATE_TILE', { id, tile })
     },
   },
 }

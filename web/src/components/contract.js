@@ -1,23 +1,43 @@
 const GAS_LIMIT = 3000000
 
 class Contract {
-  constructor(contractInstance, events) {
+  constructor(contractInstance) {
     this.instance = contractInstance
     this.tiles = {}
-    this.tilesLoaded = false
+    // this.tilesLoaded = false
     this.gameStage = null
     this.jackpot = null
-    this.events = events
+    // this.tilesLoadedById = {}
+    // this.events = events
     this.auctionPrice = null
+    this.instance.TileOwnerChanged((err, res) => {
+      console.log('err toc', err)
+      console.log('res', res)
+      this.update()
+    })
+    this.instance.TilePriceChanged((err, res) => {
+      console.log('err tpc', err)
+      console.log('res', res)
+      this.update()
+    })
     this.update()
   }
 
   async update() {
-    await this.setTiles()
-    this.tilesLoaded = true
+    console.log('updating')
     this.gameStage = await this.stage()
     this.jackpot = await this.getJackpot()
     this.auctionPrice = await this.getTilePriceAuction()
+  }
+
+  async getTile(id) {
+    // this.tiles[id] = { loaded: false }
+    const owner = await this.tileToOwner(id)
+    const price = await this.getTilePrice(id)
+    const buyable = await this.tileIsBuyable(id)
+    const loaded = true
+    const tile = { owner, price, buyable, loaded, id }
+    return tile
   }
 
   async getJackpot() {
@@ -68,16 +88,6 @@ class Contract {
     return price.toNumber()
   }
 
-  // async setTilePrice({ address, id, newPrice }) {
-  //   // TODO: test this
-  //   const owner = await this.tileToOwner(id)
-  //   if (owner !== address) return false
-  //   const transactionHash = 
-  //     this.instance.sendTransaction(parseInt(id), parseInt(newPrice), { from: address, value: parseInt(newPrice), gas: GAS_LIMIT})
-  //   if (transactionHash) return true
-  //   return false
-  // }
-
   async getTilePrice(id) {
     const stage = await this.stage()
     const owner = await this.tileToOwner(id)
@@ -102,17 +112,6 @@ class Contract {
     return max.toNumber()
   }
 
-  async setTiles() {
-    const minId = await this.minTileId()
-    const maxId = await this.maxTileId()
-    for(let id = minId; id <= maxId; id++) {
-      const owner = await this.tileToOwner(id)
-      const price = await this.getTilePrice(id)
-      const buyable = await this.tileIsBuyable(id)
-      this.tiles[id] = { owner, price, buyable }
-    }
-  }
-
   async tileIsBuyable(id) {
     const stage = await this.stage()
     const owner = await this.tileToOwner(id)
@@ -130,10 +129,8 @@ class Contract {
       price += await this.getTax(newPrice)
       method = this.instance.buyTileAuction
     } else {
-      // TODO: Check if we need to use setTilePrice if this is the owner
       price = await this.tileToPrice(id)
       price += await this.getTax(newPrice)
-      // price += Math.ceil(newPrice / 10)
       method = this.instance.buyTile
     }
     const transactionHash = await method.sendTransaction(parseInt(id), parseInt(newPrice), { from: address, value: parseInt(price), gas: GAS_LIMIT })
@@ -143,13 +140,11 @@ class Contract {
   }
 
   async getTax(value) {
-    // TODO: pull tax constant from contract
     const tax = await this.instance._priceToTax(value)
     return tax.toNumber()
   }
 
   async setTilePrice({ address, id, newPrice }) {
-    // const tax = Math.ceil(newPrice / 10)
     const tax = await this.getTax(newPrice) + 1
     const transactionHash = await this.instance.setTilePrice.sendTransaction(parseInt(id), parseInt(newPrice), { from: address, value: tax, gas: GAS_LIMIT })
     return transactionHash ? true : false
@@ -158,6 +153,13 @@ class Contract {
 
 export const instantiateContract = async (contract) => {
   const instance = await contract.deployed()
-  const events = instance.allEvents({ fromBlock: 0, toBlock: 'latest' })
-  return new Contract(instance, events)
+  // const events = instance.allEvents({ fromBlock: 0, toBlock: 'latest' })
+  // const events = {
+  //   tileOwnerChanged: instance.TileOwnerChanged(function(err, result) {
+  //     console.log('err, result', err, result)
+  //     this.update()
+  //   })
+  // }
+  // const tileOwnerChanged 
+  return new Contract(instance)
 }

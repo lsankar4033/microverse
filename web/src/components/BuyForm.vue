@@ -1,18 +1,18 @@
 <template>
   <SectionShell>
-    <template v-if="tile.id >= 0">
-      <h1>World {{ tile.id }}</h1>
+    <template v-if="selectedTile.id >= 0">
+      <h1>World {{ selectedTile.id }}</h1>
       <div class="tile-information">
-        <div>Ξ{{ tile.price | weiToEth }}</div>
-        <h2 v-if="tile.owner == address">You own this world</h2>
-        <h2 v-else-if="tile.owner">{{ tile.owner | hashShorten }} owns this world</h2>
+        <div>Ξ{{ selectedTile.price | weiToEth }}</div>
+        <h2 v-if="selectedTile.owner == address">You own this world</h2>
+        <h2 v-else-if="selectedTile.owner">{{ selectedTile.owner | hashShorten }} owns this world</h2>
         <h2 v-else>Nobody owns this world</h2>
       </div>
-      <div class="buy-tile-container" v-if="contract && contract.gameStage == 1 || !tile.owner">
+      <div class="buy-tile-container" v-if="contract && contract.gameStage == 1 || !selectedTile.owner">
         <span class="price-input"><small>Ξ</small>
           <input v-model="newPrice" placeholder="Enter the new price" type="number"/>
         </span>
-        <button v-if="tile.owner === address" class="button" @click.prevent="handleChangePrice">Change Price</button>
+        <button v-if="selectedTile.owner === address" class="button" @click.prevent="handleChangePrice">Change Price</button>
         <button v-else class="button" @click.prevent="handleBuyTile">Buy</button>
       </div>
     </template>
@@ -44,7 +44,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['address', 'tile', 'domain']),
+    ...mapGetters(['address', 'selectedTile', 'domain']),
 
     newPriceInWei() {
       return this.$options.filters.ethToWei(this.newPrice)
@@ -61,7 +61,7 @@ export default {
     async handleBuyTile() {
       let success = false
       try {
-        success = await this.contract.buyTile({ address: this.address, id: this.tile.id, newPrice: this.newPriceInWei })
+        success = await this.contract.buyTile({ address: this.address, id: this.selectedTile.id, newPrice: this.newPriceInWei })
       } catch (err) {
         console.log('err', err)
       }
@@ -72,7 +72,7 @@ export default {
     async handleChangePrice() {
       let success = false
       try {
-        success = await this.contract.setTilePrice({ address: this.address, id: this.tile.id, newPrice: this.newPriceInWei })
+        success = await this.contract.setTilePrice({ address: this.address, id: this.selectedTile.id, newPrice: this.newPriceInWei })
       } catch (err) {
         console.log('err', err)
       }

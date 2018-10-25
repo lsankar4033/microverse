@@ -1,7 +1,20 @@
 <template>
   <svg class="game-piece" xmlns="http://www.w3.org/2000/svg" version="1.1" :width="width" :height="height" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <polygon :class="{hex: true, buyable, 'owned-by-user': ownedByUser, selected: tile.id == id}" :points="points"></polygon>
-    <slot></slot>
+    <polygon
+      :class="{
+        hex: true,
+        buyable: tile(id) ? tile(id).buyable : false,
+        'owned-by-user': tile(id) ? (tile(id).owner == this.address) : false,
+        selected: selectedTile.id == id
+      }"
+      :points="points" />
+    <text 
+      v-if="tile(id)" 
+      x="50%" y="50%" 
+      alignment-baseline="middle" 
+      text-anchor="middle">
+      Ξ{{ tile(id).price | weiToEth | setPrecision(4) }}
+    </text>
   </svg>
 </template>
 
@@ -10,7 +23,7 @@ import { mapGetters } from 'vuex'
 
 export default {
   name: 'GamePiece',
-  props: ['id', 'buyable', 'ownedByUser'],
+  props: ['id'],
   data() {
     return {
       width: 100,
@@ -18,7 +31,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['address', 'tile']),
+    ...mapGetters(['address', 'selectedTile', 'tile']),
 
     points() {
       const w = this.width
@@ -28,12 +41,12 @@ export default {
     },
   },
   mounted() {
-  // TODO: Use a window listener -- breaks if user resizes screen w/o refresh
+    // TODO: Use a window listener -- breaks if user resizes screen w/o refresh
     if (screen.width < 768 || window.innerWidth < 768) {
       this.width = 60
       this.height = 40
     }
-  }
+  },
 }
 </script>
 
