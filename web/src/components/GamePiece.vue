@@ -1,6 +1,6 @@
 <template>
-  <svg id="game-piece" xmlns="http://www.w3.org/2000/svg" version="1.1" :width="width" :height="height" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <polygon :class="{hex: true, buyable, 'owned-by-user': ownedByUser}" :points="points"></polygon>
+  <svg class="game-piece" xmlns="http://www.w3.org/2000/svg" version="1.1" :width="width" :height="height" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <polygon :class="{hex: true, buyable, 'owned-by-user': ownedByUser, selected: tile.id == id}" :points="points"></polygon>
     <slot></slot>
   </svg>
 </template>
@@ -10,7 +10,7 @@ import { mapGetters } from 'vuex'
 
 export default {
   name: 'GamePiece',
-  props: ['buyable', 'ownedByUser'],
+  props: ['id', 'buyable', 'ownedByUser'],
   data() {
     return {
       width: 100,
@@ -18,7 +18,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['address']),
+    ...mapGetters(['address', 'tile']),
 
     points() {
       const w = this.width
@@ -42,25 +42,28 @@ export default {
   fill-opacity: 0.4;
   stroke: #000;
   stroke-width: 1;
-}
-
-#game-piece .hex {
   fill: #888;
+  cursor: pointer;
 }
 
-#game-piece .buyable {
+.buyable {
   fill: #ffff00;
 }
 
-#game-piece .owned-by-user {
+.owned-by-user {
   fill: #fffff0;
 }
 
-#game-piece:hover .hex {
+.hex:hover {
   fill: #ffff99;
 }
 
-#game-piece {
+.selected {
+  stroke: #005507;
+  stroke-width: 5;
+}
+
+.game-piece text {
   cursor: pointer;
 }
 </style>

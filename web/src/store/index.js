@@ -11,6 +11,7 @@ const deselectedTile = {
 const state = {
   address: '',
   network: '',
+  domain: 'http://microverse.com',
   tile: deselectedTile,
 }
 
@@ -30,6 +31,7 @@ const getters = {
   address: state => state.address,
   network: state => state.network,
   tile: state => state.tile,
+  domain: state => state.domain,
 }
 
 export default new Vuex.Store({

@@ -12,9 +12,14 @@ Vue.filter('weiToEth', function(wei) {
   return wei / 1e18
 })
 
+Vue.filter('ethToWei', function(eth) {
+  if (!eth) return 0
+  return eth * 1e18
+})
+
 Vue.filter('formatSecondsToTime', function(sec) {
   // https://stackoverflow.com/questions/1322732/convert-seconds-to-hh-mm-ss-with-javascript
-  if (!sec) return 'Loading'
+  if (!sec || sec < 0) return null
   let totalSeconds = sec
   let hours = Math.floor(totalSeconds / 3600)
   const days = Math.floor(hours / 24)
@@ -27,8 +32,18 @@ Vue.filter('formatSecondsToTime', function(sec) {
 
 Vue.filter('convertEthToUsd', function(eth, rate) {
   if (!eth) return 0
-
   return eth * rate
+})
+
+Vue.filter('setPrecision', function(value, precision) {
+  if (!value) return '0'
+  if (!precision) return value
+  return value.toPrecision(precision)
+})
+
+Vue.filter('hashShorten', function(hash) {
+  if (!hash) return ''
+  return `${hash.substr(0,6)}...${hash.substr(hash.length - 6)}`
 })
 
 

@@ -8,6 +8,7 @@ class Contract {
     this.gameStage = null
     this.jackpot = null
     this.events = events
+    this.auctionPrice = null
     this.update()
   }
 
@@ -16,6 +17,7 @@ class Contract {
     this.tilesLoaded = true
     this.gameStage = await this.stage()
     this.jackpot = await this.getJackpot()
+    this.auctionPrice = await this.getTilePriceAuction()
   }
 
   async getJackpot() {
@@ -66,15 +68,15 @@ class Contract {
     return price.toNumber()
   }
 
-  async setTilePrice({ address, id, newPrice }) {
-    // TODO: test this
-    const owner = await this.tileToOwner(id)
-    if (owner !== address) return false
-    const transactionHash = 
-      this.instance.sendTransaction(parseInt(id), parseInt(newPrice), { from: address, value: parseInt(newPrice), gas: GAS_LIMIT})
-    if (transactionHash) return true
-    return false
-  }
+  // async setTilePrice({ address, id, newPrice }) {
+  //   // TODO: test this
+  //   const owner = await this.tileToOwner(id)
+  //   if (owner !== address) return false
+  //   const transactionHash = 
+  //     this.instance.sendTransaction(parseInt(id), parseInt(newPrice), { from: address, value: parseInt(newPrice), gas: GAS_LIMIT})
+  //   if (transactionHash) return true
+  //   return false
+  // }
 
   async getTilePrice(id) {
     const stage = await this.stage()
@@ -135,8 +137,9 @@ class Contract {
       method = this.instance.buyTile
     }
     const transactionHash = await method.sendTransaction(parseInt(id), parseInt(newPrice), { from: address, value: parseInt(price), gas: GAS_LIMIT })
-    if (transactionHash) return true
-    return false
+    // if (transactionHash) return true
+    // return false
+    return transactionHash ? true : false
   }
 
   async getTax(value) {

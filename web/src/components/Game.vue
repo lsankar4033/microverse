@@ -28,7 +28,7 @@ export default{
   data() {
     return {
       contractInstance: null,
-      timeLeft: 'Loading',
+      timeLeft: null,
     }
   },
   methods: {

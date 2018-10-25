@@ -1,5 +1,5 @@
 <template>
-  <SectionShell>
+  <SectionShell class="board-container">
     <template v-if="!address || wrongNetwork">
         <div class="overlay" />
         <div class="no-wallet-text">
@@ -15,13 +15,13 @@
              class="row">
           <div @click.stop.prevent="selectTile(tileId)" v-for="tileId in tileIdRow"
                :key="tileId">
-            <GamePiece :buyable="tileIsBuyable(tileId)" :owned-by-user="tileIsOwnedByUser(tileId)">
+            <GamePiece :id="tileId" :buyable="tileIsBuyable(tileId)" :owned-by-user="tileIsOwnedByUser(tileId)">
               <text 
                 v-if="contract && contract.tilesLoaded" 
                 x="50%" y="50%" 
                 alignment-baseline="middle" 
                 text-anchor="middle">
-                Ξ{{ contract.tiles[tileId].price | weiToEth }}
+                Ξ{{ contract.tiles[tileId].price | weiToEth | setPrecision(4) }}
               </text>
             </GamePiece>
           </div>
@@ -149,6 +149,9 @@ export default {
 .no-wallet-text h1 {
   margin: auto;
   text-align: center;
+}
+.board-container {
+  position: relative;
 }
 </style>
 
