@@ -5,7 +5,10 @@
       <p>Microverse is a simulation. Acquire worlds and power them up to earn a slice of Microverse trade. When trade slows, the simulation stops and riches are airdropped to the least powerful worlds. And the simulation starts over.</p>
     </div>
     <GameInformation :timeLeft="timeLeft" :contract="contractInstance"/>
-    <!--<ReferralLink />-->
+
+    <hr/>
+
+    <ReferralPrompt :contract="contractInstance"/>
     <Board :contract="contractInstance"/>
     <BuyForm :contract="contractInstance" :referrer="referrer"/>
   </div>
@@ -18,6 +21,7 @@ import contract from 'truffle-contract'
 import BuyForm from './BuyForm'
 import Board from './Board'
 import GameInformation from './GameInformation'
+import ReferralPrompt from './ReferralPrompt'
 
 export default{
   name: 'Game',
@@ -26,6 +30,7 @@ export default{
     BuyForm,
     GameInformation,
     Board,
+    ReferralPrompt,
   },
   data() {
     return {
