@@ -11,7 +11,11 @@ export default new Router({
     {
       path: '/',
       name: 'game',
-      component: Game
+      component: Game,
+      props: (route) => {
+        let referrer = typeof(route.query.ref) === 'undefined' ? '0x0' : route.query.ref
+        return {referrer: referrer}
+      }
     },
     {
       path: '/rules',

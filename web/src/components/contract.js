@@ -66,16 +66,6 @@ class Contract {
     return price.toNumber()
   }
 
-  //async setTilePrice({ address, id, newPrice }) {
-    //// TODO: test this
-    //const owner = await this.tileToOwner(id)
-    //if (owner !== address) return false
-    //const transactionHash =
-      //this.instance.sendTransaction(parseInt(id), parseInt(newPrice), { from: address, value: parseInt(newPrice), gas: GAS_LIMIT})
-    //if (transactionHash) return true
-    //return false
-  //}
-
   async getTilePrice(id) {
     const stage = await this.stage()
     const owner = await this.tileToOwner(id)
@@ -118,7 +108,7 @@ class Contract {
     return true
   }
 
-  async buyTile({ address, id, newPrice }) {
+  async buyTile({ address, id, newPrice, referrer }) {
     const stage = await this.stage()
     let price
     let method
@@ -134,7 +124,12 @@ class Contract {
       // price += Math.ceil(newPrice / 10)
       method = this.instance.buyTile
     }
-    const transactionHash = await method.sendTransaction(parseInt(id), parseInt(newPrice), { from: address, value: parseInt(price), gas: GAS_LIMIT })
+    const transactionHash = await method.sendTransaction(
+      parseInt(id),
+      parseInt(newPrice),
+      referrer,
+      { from: address, value: parseInt(price), gas: GAS_LIMIT }
+    )
     if (transactionHash) return true
     return false
   }
@@ -145,10 +140,15 @@ class Contract {
     return tax.toNumber()
   }
 
-  async setTilePrice({ address, id, newPrice }) {
+  async setTilePrice({ address, id, newPrice, referrer }) {
     // const tax = Math.ceil(newPrice / 10)
     const tax = await this.getTax(newPrice) + 1
-    const transactionHash = await this.instance.setTilePrice.sendTransaction(parseInt(id), parseInt(newPrice), { from: address, value: tax, gas: GAS_LIMIT })
+    const transactionHash = await this.instance.setTilePrice.sendTransaction(
+      parseInt(id),
+      parseInt(newPrice),
+      referrer,
+      { from: address, value: tax, gas: GAS_LIMIT }
+    )
     return transactionHash ? true : false
   }
 }
