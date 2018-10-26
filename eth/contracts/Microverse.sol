@@ -35,8 +35,14 @@ contract Microverse is
         _;
     }
 
-    constructor() public {
-        _startAuction();
+    // NOTE: stage arg for debugging purposes only!
+    constructor(uint startingStage) public {
+        if (startingStage == uint(Stage.GameRounds)) {
+            stage = Stage.GameRounds;
+            _startGameRound();
+        } else {
+            _startAuction();
+        }
     }
 
     mapping(uint8 => address) public tileToOwner;
@@ -260,7 +266,7 @@ contract Microverse is
         _startGameRound();
     }
 
-    function setTilePrice(uint8 tileId, uint256 newPrice)
+    function setTilePrice(uint8 tileId, uint256 newPrice, address referrer)
         public
         payable
         atStage(Stage.GameRounds)
@@ -278,7 +284,7 @@ contract Microverse is
         );
 
         uint256 oldPrice = tileToPrice[tileId];
-        _distributeTax(msg.value);
+        _distributeTax(msg.value, referrer);
         _changeTilePrice(tileId, newPrice);
 
         // NOTE: Currently we extend round for 'every' tile price change. Alternatively could do only on
@@ -289,7 +295,7 @@ contract Microverse is
         emit TilePriceChanged(tileId, tileToOwner[tileId], oldPrice, newPrice);
     }
 
-    function buyTile(uint8 tileId, uint256 newPrice)
+    function buyTile(uint8 tileId, uint256 newPrice, address referrer)
         public
         payable
         atStage(Stage.GameRounds)
@@ -313,7 +319,7 @@ contract Microverse is
         tileToOwner[tileId] = msg.sender;
 
         uint256 actualTax = msg.value.sub(oldPrice);
-        _distributeTax(actualTax);
+        _distributeTax(actualTax, referrer);
 
         _changeTilePrice(tileId, newPrice);
         _extendRound();
@@ -366,12 +372,16 @@ contract Microverse is
         }
     }
 
-    function _distributeTax(uint256 tax) private {
+    function _distributeTax(uint256 tax, address referrer) private {
         jackpot = jackpot.add(_jackpotTax(tax));
 
         _distributeLandholderTax(_totalLandholderTax(tax));
-        _sendToTeam(_teamTax(tax));
         nextJackpot = nextJackpot.add(_nextPotTax(tax));
+
+        // NOTE: referrer tax comes out of dev team tax
+        bool hasReferrer = referrer != address(0);
+        _sendToTeam(_teamTax(tax, hasReferrer));
+        asyncSend(referrer, _referrerTax(tax, hasReferrer));
     }
 
     function _distributeLandholderTax(uint256 tax) private {

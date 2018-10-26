@@ -29,7 +29,7 @@ import SocialShare from './SocialShare'
 
 export default {
   name: 'BuyForm',
-  props: ['contract'],
+  props: ['contract', 'referrer'],
   components: {
     SectionShell,
     SocialShare
@@ -49,11 +49,20 @@ export default {
 
     async handleBuyTile() {
       let success = false
+
       try {
-        success = await this.contract.buyTile({ address: this.address, id: this.tile.id, newPrice: this.newPrice })
+        success = await this.contract.buyTile(
+          {
+            address: this.address,
+            id: this.tile.id,
+            newPrice: this.newPrice,
+            referrer: this.referrer
+          }
+        )
       } catch (err) {
         console.log('err', err)
       }
+
       // TODO: Add social sharing link on success.
       if (!success) return
       this.deselectTile()
@@ -62,7 +71,13 @@ export default {
     async handleChangePrice() {
       let success = false
       try {
-        success = await this.contract.setTilePrice({ address: this.address, id: this.tile.id, newPrice: this.newPrice })
+        success = await this.contract.setTilePrice(
+        {
+          address: this.address,
+          id: this.tile.id,
+          newPrice: this.newPrice,
+          referrer: this.referrer
+        })
       } catch (err) {
         console.log('err', err)
       }
