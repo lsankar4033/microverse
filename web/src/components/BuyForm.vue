@@ -52,7 +52,7 @@ export default {
       try {
         success = await this.contract.buyTile({ address: this.address, id: this.tile.id, newPrice: this.newPrice })
       } catch (err) {
-        console.log('err', err)
+        // console.log('err', err)
       }
       // TODO: Add social sharing link on success.
       if (!success) return
@@ -64,7 +64,7 @@ export default {
       try {
         success = await this.contract.setTilePrice({ address: this.address, id: this.tile.id, newPrice: this.newPrice })
       } catch (err) {
-        console.log('err', err)
+        // console.log('err', err)
       }
       if (!success) return
       this.deselectTile()

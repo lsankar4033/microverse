@@ -66,15 +66,15 @@ class Contract {
     return price.toNumber()
   }
 
-  async setTilePrice({ address, id, newPrice }) {
-    // TODO: test this
-    const owner = await this.tileToOwner(id)
-    if (owner !== address) return false
-    const transactionHash = 
-      this.instance.sendTransaction(parseInt(id), parseInt(newPrice), { from: address, value: parseInt(newPrice), gas: GAS_LIMIT})
-    if (transactionHash) return true
-    return false
-  }
+  //async setTilePrice({ address, id, newPrice }) {
+    //// TODO: test this
+    //const owner = await this.tileToOwner(id)
+    //if (owner !== address) return false
+    //const transactionHash =
+      //this.instance.sendTransaction(parseInt(id), parseInt(newPrice), { from: address, value: parseInt(newPrice), gas: GAS_LIMIT})
+    //if (transactionHash) return true
+    //return false
+  //}
 
   async getTilePrice(id) {
     const stage = await this.stage()

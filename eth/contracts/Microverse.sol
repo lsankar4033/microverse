@@ -35,8 +35,14 @@ contract Microverse is
         _;
     }
 
-    constructor() public {
-        _startAuction();
+    // NOTE: stage arg for debugging purposes only!
+    constructor(uint startingStage) public {
+        if (startingStage == uint(Stage.GameRounds)) {
+            stage = Stage.GameRounds;
+            _startGameRound();
+        } else {
+            _startAuction();
+        }
     }
 
     mapping(uint8 => address) public tileToOwner;
