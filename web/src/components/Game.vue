@@ -12,6 +12,7 @@
 
 <script>
 import { instantiateContract } from './contract'
+import { mapActions } from 'vuex'
 import MicroverseConfig from '@/Microverse.json'
 import contract from 'truffle-contract'
 import BuyForm from './BuyForm'
@@ -32,6 +33,8 @@ export default{
     }
   },
   methods: {
+    ...mapActions(['setTile']),
+
     async initializeCountDown() {
       const timeLeft = await this.contractInstance.getTimeRemaining()
       this.timeLeft = timeLeft
@@ -59,8 +62,15 @@ export default{
     if (!window.web3) return
     const abstractContract = contract(MicroverseConfig)
     abstractContract.setProvider(window.web3.currentProvider)
-    instantiateContract(abstractContract).then(instance => {
-      this.contractInstance = instance
+    instantiateContract(abstractContract).then(contractInstance => {
+      this.contractInstance = contractInstance
+      contractInstance.instance.TileOwnerChanged((err, res) => {
+        this.setTile({ id: res.args.tileId.toNumber(), contract: contractInstance })
+      })
+      contractInstance.instance.TilePriceChanged((err, res) => {
+        this.setTile({ id: res.args.tileId.toNumber(), contract: contractInstance })
+
+      })
       this.initializeCountDown()
     })
   },

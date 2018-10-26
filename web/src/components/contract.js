@@ -1,4 +1,5 @@
-const GAS_LIMIT = 3000000
+// TODO: Figure out why certain txns fail due to gas.
+const GAS_LIMIT = 4712388
 
 class Contract {
   constructor(contractInstance) {
@@ -10,24 +11,23 @@ class Contract {
     // this.tilesLoadedById = {}
     // this.events = events
     this.auctionPrice = null
-    this.instance.TileOwnerChanged((err, res) => {
-      console.log('err toc', err)
-      console.log('res', res)
-      this.update()
-    })
-    this.instance.TilePriceChanged((err, res) => {
-      console.log('err tpc', err)
-      console.log('res', res)
-      this.update()
-    })
+    // this.instance.TileOwnerChanged((err, res) => {
+    //   console.log('err toc', err)
+    //   console.log('res', res)
+    //   this.update()
+    // })
+    // this.instance.TilePriceChanged((err, res) => {
+    //   console.log('err tpc', err)
+    //   console.log('res', res)
+    //   this.update()
+    // })
     this.update()
   }
 
   async update() {
-    console.log('updating')
     this.gameStage = await this.stage()
-    this.jackpot = await this.getJackpot()
-    this.auctionPrice = await this.getTilePriceAuction()
+    if (this.gameStage == 0) this.auctionPrice = await this.getTilePriceAuction()
+    if (this.gameStage == 1) this.jackpot = await this.getJackpot()
   }
 
   async getTile(id) {
@@ -123,6 +123,7 @@ class Contract {
     const stage = await this.stage()
     let price
     let method
+    let tax
     if (stage === 0) {
       price = await this.getTilePriceAuction()
       // TODO: Investigate if we need to charge tax here?
@@ -130,10 +131,10 @@ class Contract {
       method = this.instance.buyTileAuction
     } else {
       price = await this.tileToPrice(id)
-      price += await this.getTax(newPrice)
+      tax = await this.getTax(newPrice) + 1
       method = this.instance.buyTile
     }
-    const transactionHash = await method.sendTransaction(parseInt(id), parseInt(newPrice), { from: address, value: parseInt(price), gas: GAS_LIMIT })
+    const transactionHash = await method.sendTransaction(parseInt(id), parseInt(newPrice), { from: address, value: parseInt(price + tax), gas: GAS_LIMIT })
     // if (transactionHash) return true
     // return false
     return transactionHash ? true : false

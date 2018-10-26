@@ -20,6 +20,12 @@ const actions = {
   deselectTile({ commit }) {
     commit('UPDATE_STATE', { key: 'selectedTile', value: deselectedTile })
   },
+  async setTile({ commit }, { id, contract }) {
+    if (!contract) return
+    const tile = await contract.getTile(id)
+    commit('UPDATE_TILE', { id, tile })
+    return tile
+  }
 }
 
 const mutations = {

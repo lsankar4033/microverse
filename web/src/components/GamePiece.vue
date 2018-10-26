@@ -3,8 +3,8 @@
     <polygon
       :class="{
         hex: true,
-        buyable: tile(id) ? tile(id).buyable : false,
-        'owned-by-user': tile(id) ? (tile(id).owner == this.address) : false,
+        buyable,
+        'owned-by-user': ownedByUser,
         selected: selectedTile.id == id
       }"
       :points="points" />
@@ -32,7 +32,16 @@ export default {
   },
   computed: {
     ...mapGetters(['address', 'selectedTile', 'tile']),
-
+    buyable() {
+      const tile = this.tile(this.id)
+      if (!tile) return false
+      return tile.buyable
+    },
+    ownedByUser() {
+      const tile = this.tile(this.id)
+      if (!tile) return false
+      return tile.owner == this.address
+    },
     points() {
       const w = this.width
       const h = this.height
@@ -47,6 +56,15 @@ export default {
       this.height = 40
     }
   },
+  // TODO: Figure out how to reactively update game piece. Ideally without watchers
+  // watch: {
+  //   buyable() {
+  //     console.log('this.buy', this.buyable)
+  //   },
+  //   ownedByUser() {
+  //     console.log('this.owner', this.ownedByUser)
+  //   },
+  // }
 }
 </script>
 

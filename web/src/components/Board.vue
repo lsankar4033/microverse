@@ -15,7 +15,7 @@
              class="row">
           <div @click.stop.prevent="selectTile(tileId)" v-for="tileId in tileIdRow"
                :key="tileId">
-            <GamePiece :id="tileId">{{ setTileDetails(tileId) }}</GamePiece>
+            <GamePiece :id="tileId">{{ setTile({id: tileId, contract}) }}</GamePiece>
           </div>
         </div>
       </div>
@@ -89,21 +89,14 @@ export default {
     },
   },
   methods: {
-    ...mapActions(['deselectTile']),
+    ...mapActions(['deselectTile', 'setTile']),
 
     setSelectedTile(tile) {
       this.$store.commit('UPDATE_STATE', { key: 'selectedTile', value: tile })
     },
     async selectTile(id) {
-      if (!this.contract) return
-      const tile = await this.contract.getTile(id)
+      const tile = await this.setTile({ id, contract: this.contract })
       this.setSelectedTile(tile)
-    },
-
-    async setTileDetails(id) {
-      if (!this.contract) return
-      const tile = await this.contract.getTile(id)
-      this.$store.commit('UPDATE_TILE', { id, tile })
     },
   },
 }

@@ -17,8 +17,7 @@
       </div>
     </template>
     <template v-else-if="status">
-      <h1 v-if="status == 'tileBought'">Tell your friends you own a microverse world</h1>
-      <h1 v-if="status == 'priceChanged'">Tell your friends your microverse world is on sale for Ξ{{ newPrice }}</h1>
+      <h1>Tell your friends your microverse world is on sale for Ξ{{ newPrice }}</h1>
       <SocialShare :tweet="tweet" />
     </template>
   </SectionShell>
