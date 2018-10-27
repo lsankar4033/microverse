@@ -56,15 +56,6 @@ export default {
       this.height = 40
     }
   },
-  // TODO: Figure out how to reactively update game piece. Ideally without watchers
-  // watch: {
-  //   buyable() {
-  //     console.log('this.buy', this.buyable)
-  //   },
-  //   ownedByUser() {
-  //     console.log('this.owner', this.ownedByUser)
-  //   },
-  // }
 }
 </script>
 

@@ -1,37 +1,24 @@
 // TODO: Figure out why certain txns fail due to gas.
-const GAS_LIMIT = 4712388
+const GAS_LIMIT = 3000000
 
 class Contract {
   constructor(contractInstance) {
     this.instance = contractInstance
     this.tiles = {}
-    // this.tilesLoaded = false
     this.gameStage = null
     this.jackpot = null
-    // this.tilesLoadedById = {}
-    // this.events = events
     this.auctionPrice = null
-    // this.instance.TileOwnerChanged((err, res) => {
-    //   console.log('err toc', err)
-    //   console.log('res', res)
-    //   this.update()
-    // })
-    // this.instance.TilePriceChanged((err, res) => {
-    //   console.log('err tpc', err)
-    //   console.log('res', res)
-    //   this.update()
-    // })
     this.update()
   }
 
   async update() {
     this.gameStage = await this.stage()
     if (this.gameStage == 0) this.auctionPrice = await this.getTilePriceAuction()
+    // TODO: Can the gameStage potentially be higher than 1?
     if (this.gameStage == 1) this.jackpot = await this.getJackpot()
   }
 
   async getTile(id) {
-    // this.tiles[id] = { loaded: false }
     const owner = await this.tileToOwner(id)
     const price = await this.getTilePrice(id)
     const buyable = await this.tileIsBuyable(id)
@@ -123,7 +110,8 @@ class Contract {
     const stage = await this.stage()
     let price
     let method
-    let tax
+    let tax = 0
+    let gas = GAS_LIMIT
     if (stage === 0) {
       price = await this.getTilePriceAuction()
       // TODO: Investigate if we need to charge tax here?
@@ -134,14 +122,19 @@ class Contract {
       tax = await this.getTax(newPrice) + 1
       method = this.instance.buyTile
     }
+    // TODO: Estimate gas instead of using hardcoded value to prevent errors
+    // try {
+    //   // This is silently failing if the tile has an owner.
+    //   gas = await method.estimateGas(parseInt(id), parseInt(newPrice), referrer, { from: address, value: parseInt(price + tax) })
+    // } catch (err) {
+    //   console.log('err', err)
+    // }
     const transactionHash = await method.sendTransaction(
       parseInt(id),
       parseInt(newPrice),
       referrer,
-      { from: address, value: parseInt(price + tax), gas: GAS_LIMIT }
+      { from: address, value: parseInt(price + tax), gas }
     )
-    // if (transactionHash) return true
-    // return false
     return transactionHash ? true : false
   }
 
@@ -164,13 +157,5 @@ class Contract {
 
 export const instantiateContract = async (contract) => {
   const instance = await contract.deployed()
-  // const events = instance.allEvents({ fromBlock: 0, toBlock: 'latest' })
-  // const events = {
-  //   tileOwnerChanged: instance.TileOwnerChanged(function(err, result) {
-  //     console.log('err, result', err, result)
-  //     this.update()
-  //   })
-  // }
-  // const tileOwnerChanged 
   return new Contract(instance)
 }
