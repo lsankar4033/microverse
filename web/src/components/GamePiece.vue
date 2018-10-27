@@ -63,6 +63,10 @@ export default {
       this.width = 60
       this.height = 40
     }
+    // Hacky fix to issue where owner on mount isn't set
+    const tile = this.tile(this.id)
+    if (!tile) return
+    this.ownedByUser = tile.owner == this.address
   },
   watch: {
     // TODO: Optimization, come up with solution that doesn't require a watcher.
