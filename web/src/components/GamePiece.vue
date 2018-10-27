@@ -72,6 +72,9 @@ export default {
     // TODO: Optimization, come up with solution that doesn't require a watcher.
     owner() {
       if (this.id) this.setOwnedByUser(this.id)
+    },
+    address() {
+      this.setOwnedByUser(this.id)
     }
   }
 }
