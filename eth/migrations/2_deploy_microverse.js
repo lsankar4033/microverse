@@ -1,6 +1,12 @@
 var Microverse = artifacts.require("./Microverse.sol");
 
+var TestAuction = artifacts.require("./test/TestAuction.sol");
+
 module.exports = (deployer, network) => {
   // NOTE: Constructor arg here determines which contract stage to start in
-  deployer.deploy(Microverse, 1);
+  deployer.deploy(Microverse, 0);
+
+  if (network == "development") {
+    deployer.deploy(TestAuction);
+  }
 };

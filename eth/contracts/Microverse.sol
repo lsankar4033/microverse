@@ -35,7 +35,7 @@ contract Microverse is
         _;
     }
 
-    // NOTE: stage arg for debugging purposes only!
+    // NOTE: stage arg for debugging purposes only! Should just be set to 0 by default
     constructor(uint startingStage) public {
         if (startingStage == uint(Stage.GameRounds)) {
             stage = Stage.GameRounds;
