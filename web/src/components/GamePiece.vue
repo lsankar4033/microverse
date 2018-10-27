@@ -28,6 +28,7 @@ export default {
     return {
       width: 100,
       height: 80,
+      ownedByUser: false,
     }
   },
   computed: {
@@ -37,10 +38,10 @@ export default {
       if (!tile) return false
       return tile.buyable
     },
-    ownedByUser() {
+    owner() {
       const tile = this.tile(this.id)
       if (!tile) return false
-      return tile.owner == this.address
+      return tile.owner
     },
     points() {
       const w = this.width
@@ -49,6 +50,11 @@ export default {
       return `0,${0.25*h} ${0.5*w},0 ${w},${0.25*h} ${w},${0.75*h} ${0.5*w},${h} 0,${0.75*h}`
     },
   },
+  methods: {
+    setOwnedByUser(address) {
+      this.ownedByUser = address == this.address
+    }
+  },
   mounted() {
     // TODO: Use a window listener -- breaks if user resizes screen w/o refresh
     if (screen.width < 768 || window.innerWidth < 768) {
@@ -56,6 +62,12 @@ export default {
       this.height = 40
     }
   },
+  watch: {
+    // TODO: Optimization, come up with solution that doesn't require a watcher.
+    owner() {
+      if (this.owner) this.setOwnedByUser(this.owner)
+    }
+  }
 }
 </script>
 
