@@ -23,7 +23,7 @@ import { mapGetters } from 'vuex'
 
 export default {
   name: 'GamePiece',
-  props: ['id'],
+  props: ['id', 'contract'],
   data() {
     return {
       width: 100,
@@ -51,8 +51,10 @@ export default {
     },
   },
   methods: {
-    setOwnedByUser(address) {
-      this.ownedByUser = address == this.address
+    async setOwnedByUser(tileId) {
+      if (!this.contract) return
+      const owner = await this.contract.tileToOwner(tileId)
+      this.ownedByUser = owner == this.address
     }
   },
   mounted() {
@@ -65,7 +67,7 @@ export default {
   watch: {
     // TODO: Optimization, come up with solution that doesn't require a watcher.
     owner() {
-      if (this.owner) this.setOwnedByUser(this.owner)
+      if (this.id) this.setOwnedByUser(this.id)
     }
   }
 }

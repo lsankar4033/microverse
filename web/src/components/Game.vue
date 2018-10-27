@@ -76,7 +76,20 @@ export default{
       })
       contractInstance.instance.TilePriceChanged((err, res) => {
         this.setTile({ id: res.args.tileId.toNumber(), contract: contractInstance })
-
+      })
+      contractInstance.instance.GameRoundStarted((err, res) => {
+        const initJackpot = res.args.initJackpot.toNumber()
+        console.log('initJackpot', initJackpot)
+        const endTime = res.args.endTime.toNumber()
+        console.log('endTime', endTime)
+      })
+      contractInstance.instance.GameRoundExtended((err, res) => {
+        const endTime = res.args.endTime.toNumber()
+        console.log('res', endTime)
+      })
+      contractInstance.instance.GameRoundEnded((err, res) => {
+        const jackpot = res.args.jackpot.toNumber()
+        console.log('jackpot', jackpot)
       })
       this.initializeCountDown()
     })
