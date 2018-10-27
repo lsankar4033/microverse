@@ -112,29 +112,30 @@ class Contract {
     let method
     let tax = 0
     let gas = GAS_LIMIT
+    let transactionHash = null
     if (stage === 0) {
       price = await this.getTilePriceAuction()
-      // TODO: Investigate if we need to charge tax here?
-      price += await this.getTax(newPrice)
+      // TODO: Do we need to charge tax here?
+      tax = await this.getTax(newPrice)
       method = this.instance.buyTileAuction
+      // TODO: Estimate gas here
+      transactionHash = await method.sendTransaction(
+        parseInt(id),
+        parseInt(newPrice),
+        { from: address, value: parseInt(price + tax), gas }
+      )
     } else {
       price = await this.tileToPrice(id)
       tax = await this.getTax(newPrice) + 1
       method = this.instance.buyTile
+      // TODO: Estimate gas here
+      transactionHash = await method.sendTransaction(
+        parseInt(id),
+        parseInt(newPrice),
+        referrer,
+        { from: address, value: parseInt(price + tax), gas }
+      )
     }
-    // TODO: Estimate gas instead of using hardcoded value to prevent errors
-    // try {
-    //   // This is silently failing if the tile has an owner.
-    //   gas = await method.estimateGas(parseInt(id), parseInt(newPrice), referrer, { from: address, value: parseInt(price + tax) })
-    // } catch (err) {
-    //   console.log('err', err)
-    // }
-    const transactionHash = await method.sendTransaction(
-      parseInt(id),
-      parseInt(newPrice),
-      referrer,
-      { from: address, value: parseInt(price + tax), gas }
-    )
     return transactionHash ? true : false
   }
 
