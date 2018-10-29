@@ -35,7 +35,7 @@ contract("Microverse", async (accounts) => {
       assert.equal(newOwner, accounts[2])
     })
 
-    it("each time can only be bought once", async () => {
+    it("each tile can only be bought once", async () => {
       let tileId = 2
       var tilePrice = await microverse.getTilePriceAuction();
       var newPrice = 1000
@@ -43,7 +43,6 @@ contract("Microverse", async (accounts) => {
       var totalPrice = await calculateTotalBuyPrice(tilePrice, newPrice, microverse)
       await microverse.buyTileAuction(tileId, newPrice, {from: accounts[2], value: totalPrice})
 
-      // TODO: Try buying again from another account
       tilePrice = await microverse.getTilePriceAuction();
       newPrice = 100
 
@@ -55,7 +54,5 @@ contract("Microverse", async (accounts) => {
       } catch (e) {
       }
     })
-
   })
-
 })
