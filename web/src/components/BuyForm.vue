@@ -1,23 +1,24 @@
 <template>
   <SectionShell>
-    <template v-if="tile.id >= 0">
-      <h1>World {{ tile.id }}</h1>
+    <template v-if="selectedTile.id >= 0">
+      <h1>World {{ selectedTile.id }}</h1>
       <div class="tile-information">
-        <div>Ξ{{ tile.price | weiToEth }}</div>
-        <h2 v-if="tile.owner == address">You own this world</h2>
-        <h2 v-else-if="tile.owner">{{ tile.owner }} owns this world</h2>
+        <div>Ξ{{ selectedTile.price | weiToEth }}</div>
+        <h2 v-if="selectedTile.owner == address">You own this world</h2>
+        <h2 v-else-if="selectedTile.owner">{{ selectedTile.owner | hashShorten }} owns this world</h2>
         <h2 v-else>Nobody owns this world</h2>
       </div>
-      <div class="buy-tile-container" v-if="contract && contract.gameStage == 1 || !tile.owner">
-        <input v-model="newPrice" placeholder="Enter the new price" type="number"/>
-        <button v-if="tile.owner === address" class="button" @click.prevent="handleChangePrice">Change Price</button>
+      <div class="buy-tile-container" v-if="contract && contract.gameStage == 1 || !selectedTile.owner">
+        <span class="price-input"><small>Ξ</small>
+          <input v-model="newPrice" placeholder="Enter the new price" type="number"/>
+        </span>
+        <button v-if="selectedTile.owner === address" class="button" @click.prevent="handleChangePrice">Change Price</button>
         <button v-else class="button" @click.prevent="handleBuyTile">Buy</button>
       </div>
     </template>
     <template v-else-if="status">
-      <h1 v-if="status == 'tileBought'">Tell your friends you own a microverse world</h1>
-      <h1 v-if="status == 'priceChanged'">Tell your friends your microverse world is on sale for Ξ{{ newPrice }}</h1>
-      <SocialShare />
+      <h1>Tell your friends your microverse world is on sale for Ξ{{ newPrice }}</h1>
+      <SocialShare :tweet="tweet" />
     </template>
   </SectionShell>
 </template>
@@ -37,12 +38,21 @@ export default {
   data() {
     return {
       newPrice: null,
-      // tileBought, priceChanged
+      // tileBought or priceChanged
       status: '',
     }
   },
   computed: {
-    ...mapGetters(['address', 'tile']),
+    ...mapGetters(['address', 'selectedTile', 'domain']),
+
+    newPriceInWei() {
+      return this.$options.filters.ethToWei(this.newPrice)
+    },
+    tweet() {
+      return status == 'tileBought'
+        ? `I just bought a tile in Microverse ${this.domain}`
+        : `My microverse world is on sale for ${this.newPrice} eth at ${this.domain}`
+    },
   },
   methods: {
     ...mapActions(['deselectTile']),
@@ -54,16 +64,13 @@ export default {
         success = await this.contract.buyTile(
           {
             address: this.address,
-            id: this.tile.id,
-            newPrice: this.newPrice,
-            referrer: this.referrer
-          }
-        )
+            id: this.selectedTile.id,
+            newPrice: this.newPriceInWei,
+            referrer: this.referrer 
+          })
       } catch (err) {
         console.log('err', err)
       }
-
-      // TODO: Add social sharing link on success.
       if (!success) return
       this.deselectTile()
       this.status = 'tileBought'
@@ -72,12 +79,12 @@ export default {
       let success = false
       try {
         success = await this.contract.setTilePrice(
-        {
-          address: this.address,
-          id: this.tile.id,
-          newPrice: this.newPrice,
-          referrer: this.referrer
-        })
+          {
+            address: this.address,
+            id: this.selectedTile.id,
+            newPrice: this.newPriceInWei,
+            referrer: this.referrer
+          })
       } catch (err) {
         console.log('err', err)
       }
@@ -103,6 +110,15 @@ export default {
 .tile-information {
   margin: 8px 0 10px;
   font-size: 16pt;
+}
+.price-input {
+  border: 1px inset #ccc;
+}
+.price-input small {
+  padding: 0 4px;
+}
+.price-input input {
+  border: 0;
 }
 </style>
 

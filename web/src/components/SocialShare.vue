@@ -1,8 +1,8 @@
 <template>
   <div class="social-icons">
     <SocialIcon type="facebook" />
-    <SocialIcon type="twitter" />
-    <SocialIcon type="mail" />
+    <SocialIcon type="twitter" :tweet="tweet" />
+    <!-- <SocialIcon type="mail" /> -->
   </div>
 </template>
 
@@ -11,6 +11,7 @@ import SocialIcon from './SocialIcon'
 
 export default {
   name: 'SocialShare',
+  props: ['tweet'],
   components: {
     SocialIcon
   },

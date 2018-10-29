@@ -16,6 +16,7 @@
 
 <script>
 import { instantiateContract } from './contract'
+import { mapActions } from 'vuex'
 import MicroverseConfig from '@/Microverse.json'
 import contract from 'truffle-contract'
 import BuyForm from './BuyForm'
@@ -35,10 +36,12 @@ export default{
   data() {
     return {
       contractInstance: null,
-      timeLeft: 'Loading',
+      timeLeft: null,
     }
   },
   methods: {
+    ...mapActions(['setTile']),
+
     async initializeCountDown() {
       const timeLeft = await this.contractInstance.getTimeRemaining()
       this.timeLeft = timeLeft
@@ -66,8 +69,28 @@ export default{
     if (!window.web3) return
     const abstractContract = contract(MicroverseConfig)
     abstractContract.setProvider(window.web3.currentProvider)
-    instantiateContract(abstractContract).then(instance => {
-      this.contractInstance = instance
+    instantiateContract(abstractContract).then(contractInstance => {
+      this.contractInstance = contractInstance
+      contractInstance.instance.TileOwnerChanged((err, res) => {
+        this.setTile({ id: res.args.tileId.toNumber(), contract: contractInstance })
+      })
+      contractInstance.instance.TilePriceChanged((err, res) => {
+        this.setTile({ id: res.args.tileId.toNumber(), contract: contractInstance })
+      })
+      contractInstance.instance.GameRoundStarted((err, res) => {
+        const initJackpot = res.args.initJackpot.toNumber()
+        console.log('initJackpot', initJackpot)
+        const endTime = res.args.endTime.toNumber()
+        console.log('endTime', endTime)
+      })
+      contractInstance.instance.GameRoundExtended((err, res) => {
+        const endTime = res.args.endTime.toNumber()
+        console.log('res', endTime)
+      })
+      contractInstance.instance.GameRoundEnded((err, res) => {
+        const jackpot = res.args.jackpot.toNumber()
+        console.log('jackpot', jackpot)
+      })
       this.initializeCountDown()
     })
   },

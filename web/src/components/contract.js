@@ -1,21 +1,30 @@
+// TODO: Figure out why certain txns fail due to gas.
 const GAS_LIMIT = 3000000
 
 class Contract {
-  constructor(contractInstance, events) {
+  constructor(contractInstance) {
     this.instance = contractInstance
     this.tiles = {}
-    this.tilesLoaded = false
     this.gameStage = null
     this.jackpot = null
-    this.events = events
+    this.auctionPrice = null
     this.update()
   }
 
   async update() {
-    await this.setTiles()
-    this.tilesLoaded = true
     this.gameStage = await this.stage()
-    this.jackpot = await this.getJackpot()
+    if (this.gameStage == 0) this.auctionPrice = await this.getTilePriceAuction()
+    // TODO: Can the gameStage potentially be higher than 1?
+    if (this.gameStage == 1) this.jackpot = await this.getJackpot()
+  }
+
+  async getTile(id) {
+    const owner = await this.tileToOwner(id)
+    const price = await this.getTilePrice(id)
+    const buyable = await this.tileIsBuyable(id)
+    const loaded = true
+    const tile = { owner, price, buyable, loaded, id }
+    return tile
   }
 
   async getJackpot() {
@@ -90,17 +99,6 @@ class Contract {
     return max.toNumber()
   }
 
-  async setTiles() {
-    const minId = await this.minTileId()
-    const maxId = await this.maxTileId()
-    for(let id = minId; id <= maxId; id++) {
-      const owner = await this.tileToOwner(id)
-      const price = await this.getTilePrice(id)
-      const buyable = await this.tileIsBuyable(id)
-      this.tiles[id] = { owner, price, buyable }
-    }
-  }
-
   async tileIsBuyable(id) {
     const stage = await this.stage()
     const owner = await this.tileToOwner(id)
@@ -112,36 +110,41 @@ class Contract {
     const stage = await this.stage()
     let price
     let method
+    let tax = 0
+    let gas = GAS_LIMIT
+    let transactionHash = null
     if (stage === 0) {
       price = await this.getTilePriceAuction()
-      // TODO: Investigate if we need to charge tax here?
-      price += await this.getTax(newPrice)
+      // TODO: Do we need to charge tax here?
+      tax = await this.getTax(newPrice)
       method = this.instance.buyTileAuction
+      // TODO: Estimate gas here
+      transactionHash = await method.sendTransaction(
+        parseInt(id),
+        parseInt(newPrice),
+        { from: address, value: parseInt(price + tax), gas }
+      )
     } else {
-      // TODO: Check if we need to use setTilePrice if this is the owner
       price = await this.tileToPrice(id)
-      price += await this.getTax(newPrice)
-      // price += Math.ceil(newPrice / 10)
+      tax = await this.getTax(newPrice) + 1
       method = this.instance.buyTile
+      // TODO: Estimate gas here
+      transactionHash = await method.sendTransaction(
+        parseInt(id),
+        parseInt(newPrice),
+        referrer,
+        { from: address, value: parseInt(price + tax), gas }
+      )
     }
-    const transactionHash = await method.sendTransaction(
-      parseInt(id),
-      parseInt(newPrice),
-      referrer,
-      { from: address, value: parseInt(price), gas: GAS_LIMIT }
-    )
-    if (transactionHash) return true
-    return false
+    return transactionHash ? true : false
   }
 
   async getTax(value) {
-    // TODO: pull tax constant from contract
     const tax = await this.instance._priceToTax(value)
     return tax.toNumber()
   }
 
   async setTilePrice({ address, id, newPrice, referrer }) {
-    // const tax = Math.ceil(newPrice / 10)
     const tax = await this.getTax(newPrice) + 1
     const transactionHash = await this.instance.setTilePrice.sendTransaction(
       parseInt(id),
@@ -155,6 +158,5 @@ class Contract {
 
 export const instantiateContract = async (contract) => {
   const instance = await contract.deployed()
-  const events = instance.allEvents({ fromBlock: 0, toBlock: 'latest' })
-  return new Contract(instance, events)
+  return new Contract(instance)
 }

@@ -2,15 +2,16 @@
   <SectionShell class="section-accent">
     <div>
       <p class="label">Simulation #001</p>
-      <p><b>Stimulus (jackpot):</b> Ξ{{ jackpot | weiToEth }} (${{ jackpot | weiToEth | convertEthToUsd(ethToUsdRate) }})</p>
-      <p><b>Time left:</b> {{ timeLeft | formatSecondsToTime }}</p>
+      <p v-if="jackpot"><b>Stimulus (jackpot):</b> Ξ{{ jackpot | weiToEth }} (${{ jackpot | weiToEth | convertEthToUsd(ethToUsdRate) }})</p>
+      <p v-if="auctionPrice"><b>Auction Tile Price:</b> Ξ{{ auctionPrice | weiToEth | setPrecision(8) }}</p>
+      <p v-if="timeLeft"><b>Time left:</b> {{ timeLeft | formatSecondsToTime }}</p>
     </div>
-    <div class="withdraw-container">
+    <div v-if="contract" class="withdraw-container">
       <p @click.prevent="getBalance" class="label link">Check Balance</p>
       <footer>
-        <p><span v-if="status">Tell your friends you earned</span> Ξ{{ balance | weiToEth }}</p>
+        <p><span v-if="status">Tell your friends you earned</span> Ξ{{ balance | weiToEth | setPrecision(8) }}</p>
         <button v-if="balance > 0 && !status" class="button" @click="withdraw">Withdraw</button>
-        <SocialShare v-if="status" />
+        <SocialShare v-if="status" :tweet="`I just earned ${balanceInEth} eth in Microverse ${domain}`" />
       </footer>
     </div>
   </SectionShell>
@@ -36,11 +37,18 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['address']),
+    ...mapGetters(['address', 'domain']),
     jackpot() {
-      if (!this.contract) return 'Loading'
+      if (!this.contract) return null
       return this.contract.jackpot
     },
+    auctionPrice() {
+      if (!this.contract) return null
+      return this.contract.auctionPrice
+    },
+    balanceInEth() {
+      return this.$options.filters.weiToEth(this.balance)
+    }
   },
   methods: {
     async getBalance() {
