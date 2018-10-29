@@ -1,5 +1,16 @@
 # How to play
 
+## Testnet instructions
+
+Thank you for testing the prototype of Microverse! The only thing you need to know in addition to what's below is that the game is on Ropsten. So you'll have to switch your network from Mainnet to Ropsten in Metamask. If you don't have Ropsten Ether, visit:
+
+* https://faucet.ropsten.be/
+* https://faucet.metamask.io/
+
+And get 1 ETH from each. 
+
+Please just play the game like a self-interested player (want to earn money, have fun). If you can break the game, that would be awesome. The player with the most winnings in the testnet round will get something special. 
+
 ## Game overview
 
 Microverse is a simulated universe controlled by powerful aliens. The universe has many worlds that can be bought, sold, and powered. Owners of these worlds receive a cut of the Microverse economy. Worlds are always for sale, so ambitious Microverse-ians are always scheming for a big cut.
@@ -10,8 +21,8 @@ The aliens are happy if the Microverse economy grows, but if too much time passe
 
 There are two games to play and win in Microverse.
 
-1. Owners of worlds receive a cut of the Microverse economy. Acquiring and powering worlds to optimize your share can be very profitable as the simulation runs.
-2. When a simulation ends, the worlds that are least powerful relative to their neighbors receive a huge stimulus. Timing the end of the simulation just right and positioning your worlds to win the stimulus could help you win the jackpot.
+1. Owners of worlds receive a cut of the Microverse economy. The higher the price of your world, the larger cut of each Microverse transaction you get.
+2. When a simulation ends, the cheapest world in the universe receives a huge stimulus. Timing the end of the simulation just right and positioning your worlds to win the stimulus could help you win the jackpot.
 
 ## The rules
 
@@ -28,25 +39,23 @@ There are two games to play and win in Microverse.
 
 Every ETH that flows through the Microverse economy is allocated as follows:
 
-* 45% to the stimulus
-* 40% to current owners of worlds
+* 40% to the stimulus
+* 38% to current owners of worlds
+* 12% to developers
 * 5% to the referrer
 * 5% to seed the stimulus of the next simulation
-* 5% to developers
 
 ### Stimulus splits
 
-At the end of a simulation, 45% of the stimulus is sent directly to the owner of the world least powerful relative to its neighbors and 5% is sent to the Microverse community fund.
+At the end of a simulation, 45% of the stimulus is sent directly to the owner of the world with the lowest price and 5% is sent to devs.
 
 The remaining 50% is distributed as follows:
-* 40% to the owners of worlds, sorted by least powerful relative to its neighbors
+* 40% to the owners of worlds, sorted by lowest price
 * 10% to seed the next round
 
-### Microverse community fund
+## Refer your friends and earn money
 
-The Microverse community fund covers the costs of development and rewards contributions to the Microverse ecosystem. If you do awesome things like translate the game to other languages or something else that helps Microverse grow, you might get your address added to the payroll.
-
-More details to come on the help we need.
+Invite your friends to play and earn 5% of what they spend when they use your link. No fee to them. You can find your referral link on the [homepage](/).
 
 ## Setup
 
@@ -54,5 +63,4 @@ You will need ETH and a crypto browser to play Microverse.
 
 * For playing on desktop, please use [metamask](https://metamask.io/)
 * For playing on mobile, please download the mobile crypto wallet you prefer. We recommend [Coinbase Wallet](https://wallet.coinbase.com/) or [Trust Wallet](https://trustwalletapp.com/)
-
 
