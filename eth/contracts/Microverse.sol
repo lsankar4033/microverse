@@ -164,7 +164,7 @@ contract Microverse is
     ///////
 
     // Used to ensure a round ends
-    uint256 constant public startingRoundExtension = 24 hours;
+    uint256 constant public startingRoundExtension = 5 minutes;
     uint256 constant public halvingVolume = 100 ether; // tx volume before next duration halving
     uint256 constant public minRoundExtension = 10 seconds; // could set to 1 second
 
