@@ -122,6 +122,7 @@ class Contract {
       transactionHash = await method.sendTransaction(
         parseInt(id),
         parseInt(newPrice),
+        referrer,
         { from: address, value: parseInt(price + tax), gas }
       )
     } else {

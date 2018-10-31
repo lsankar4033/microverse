@@ -91,8 +91,7 @@ contract Microverse is
     uint256 public numBoughtTiles;
     uint256 public auctionStartTime;
 
-    // TODO: Add referrer
-    function buyTileAuction(uint8 tileId, uint256 newPrice) public payable atStage(Stage.DutchAuction) {
+    function buyTileAuction(uint8 tileId, uint256 newPrice, address referrer) public payable atStage(Stage.DutchAuction) {
         require(
             tileToOwner[tileId] == address(0) && tileToPrice[tileId] == 0,
             "Can't buy a tile that's already been auctioned off"
@@ -107,7 +106,7 @@ contract Microverse is
         );
 
         // NOTE: *entire* payment distributed as Game taxes
-        _distributeAuctionTax(msg.value);
+        _distributeAuctionTax(msg.value, referrer);
 
         tileToOwner[tileId] = msg.sender;
         _changeTilePrice(tileId, newPrice);
@@ -121,15 +120,18 @@ contract Microverse is
         }
     }
 
-    // TODO: add referrer
-    function _distributeAuctionTax(uint256 tax) private {
+    // NOTE: Some common logic with _distributeTax
+    function _distributeAuctionTax(uint256 tax, address referrer) private {
         _distributeLandholderTax(_totalLandholderTax(tax));
 
         // NOTE: Because no notion of 'current jackpot', everything added to next pot
         uint256 totalJackpotTax = _jackpotTax(tax).add(_nextPotTax(tax));
         nextJackpot = nextJackpot.add(totalJackpotTax);
 
-        _sendToTeam(_teamTax(tax, false));
+        // NOTE: referrer tax comes out of dev team tax
+        bool hasReferrer = referrer != address(0);
+        _sendToTeam(_teamTax(tax, hasReferrer));
+        asyncSend(referrer, _referrerTax(tax, hasReferrer));
     }
 
     function getTilePriceAuction() public view atStage(Stage.DutchAuction) returns (uint256) {
