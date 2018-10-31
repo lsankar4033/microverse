@@ -1,6 +1,6 @@
 <template>
     <div id="referral-prompt" class="section section-accent">
-        <p>Refer friends and earn 10% of what they spend. No fee to them.</p>
+        <p>Refer friends and earn 5% of all taxes they pay. No fee to them.</p>
         <p>
             <input id="referral-url" readonly="readonly" v-bind:value="referralUrl()"/>
 
