@@ -5,7 +5,9 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "heroku-postbuild": "npm install --no-shrinkwrap && npm run build",
+    "start": "node server.js"
   },
   "dependencies": {
     "truffle-contract": "^3.0.6",
@@ -18,6 +20,13 @@
     "@vue/cli-plugin-babel": "^3.0.5",
     "@vue/cli-plugin-eslint": "^3.0.5",
     "@vue/cli-service": "^3.0.5",
+    "@vue/cli-plugin-unit-jest": "^3.0.0-beta.15",
+    "@vue/eslint-config-prettier": "^3.0.0-rc.3",
+    "@vue/test-utils": "^1.0.0-beta.16",
+    "babel-core": "7.0.0-bridge.0",
+    "babel-jest": "^23.0.1",
+    "less": "^3.0.4",
+    "less-loader": "^4.1.0",
     "vue-template-compiler": "^2.5.17"
   },
   "eslintConfig": {
@@ -43,5 +52,8 @@
     "> 1%",
     "last 2 versions",
     "not ie <= 8"
-  ]
+  ],
+  "engines": {
+    "node": "8.9.0"
+  }
 }
