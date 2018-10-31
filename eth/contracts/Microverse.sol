@@ -84,7 +84,7 @@ contract Microverse is
     );
 
     // NOTE: Beta test values
-    uint256 constant public startingAuctionPrice = 0.5 ether;
+    uint256 constant public startingAuctionPrice = 0.1 ether;
     uint256 constant public endingAuctionPrice = 0.01 ether;
     uint256 constant public auctionDuration = 2 days; // period over which land price decreases linearly
 
@@ -179,7 +179,7 @@ contract Microverse is
     ///////
 
     // NOTE: Beta test values
-    uint256 constant public startingRoundExtension = 5 minutes;
+    uint256 constant public startingRoundExtension = 4 hours;
     uint256 constant public halvingVolume = 10 ether; // tx volume before next duration halving
     uint256 constant public minRoundExtension = 10 seconds; // could set to 1 second
 
