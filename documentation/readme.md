@@ -22,18 +22,18 @@ The aliens are happy if the Microverse economy grows, but if too much time passe
 There are two games to play and win in Microverse.
 
 1. Owners of worlds receive a cut of the Microverse economy. The higher the price of your world, the larger cut of each Microverse transaction you get.
-2. When a simulation ends, the cheapest world in the universe receives a huge stimulus. Timing the end of the simulation just right and positioning your worlds to win the stimulus could help you win the jackpot.
+2. When a simulation ends, the lowest priced world in the universe receives a huge stimulus. Timing the end of the simulation just right and positioning your worlds to win the stimulus could help you win the jackpot.
 
 ## The rules
 
-* Microverse contains 37 worlds
+* Microverse contains 19 worlds
 * Every world is always for sale
-* At the start of the simulation, worlds are unowned, and are sold via an hour long dutch auction where the price slowly declines towards zero until the world is sold
-* Owners can change the price of their worlds, but have to pay a 10% tax on the difference between the current price and a higher price (no tax for decreasing the price). To decrease the price, users pay a flat 0.01 ETH fee (this is simply to prevent spam)
+* At the start of the simulation, worlds are unowned, and are sold via dutch auction where the price slowly declines towards zero until the world is sold
+* Owners can change the price of their worlds, but have to pay a 10% tax on the new price
 * All transactions in Microverse go directly through the Microverse economy (see figure below for the exact splits), with roughly half going towards the stimulus (jackpot) and the other half going instantly to the owners of worlds
-* As soon as the first world is sold, a 24 hour countdown begins. When the countdown reaches zero, the simulation ends and the stimulus is distributed
-* Each time a world is purchased or the price is changed the timer goes up 30 seconds to a maximum of 24 hours.
-* At the end of the simulation, the player who owns the world that is least powerful compared to its neighbors (lowest market price compared to the average of all its neighbors) wins half of the stimulus. The rest is distributed proportionally to the next least powerful worlds.
+* As soon all worlds are sold, a the round begins and the round timer starts counting down from 4 hours
+* Each time a world is purchased or the price is changed the timer is reset, starting with 4 hours and halving every 10 ETH that flow through the Microverse
+* At the end of the simulation, the player who owns the lowest price world wins half of the stimulus. The rest is distributed proportionally rest of the worlds
 
 ### Microverse economy splits
 
