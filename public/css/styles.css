@@ -30,10 +30,6 @@ span, article, footer, time, small {
   background: transparent;
 }
 
-ul {
-  list-style: none;
-}
-
 img {
   display: block;
   width: 100%;
