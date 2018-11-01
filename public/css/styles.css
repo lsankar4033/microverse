@@ -307,3 +307,11 @@ input {
     flex-direction: column;
   }
 }
+
+ol, ul {
+  padding-left: 2.5rem
+}
+
+a {
+  color: blue;
+}
