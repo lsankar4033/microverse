@@ -30,13 +30,12 @@ export default {
     },
     loadWeb3(web3) {
       const provider = web3.currentProvider
-
       web3.version.getNetwork((err, id) => {
         if (id) this.setNetwork(id)
       })
-      provider.enable().then(address => {
-        if (address && address.length > 0) this.setAddress(address[0])
-      })
+      this.setAddress(web3.eth.accounts[0])
+
+      // NOTE: Metamask specific!
       provider.publicConfigStore.on('update', user => {
         // NOTE: user.selectedAddress may be undefined.
         this.setAddress(user.selectedAddress)
