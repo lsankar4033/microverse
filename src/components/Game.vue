@@ -8,9 +8,9 @@
 
     <hr/>
 
-    <ReferralPrompt :contract="contractInstance"/>
     <Board :contract="contractInstance"/>
     <BuyForm :contract="contractInstance" :referrer="referrer"/>
+    <ReferralPrompt :contract="contractInstance"/>
   </div>
 </template>
 

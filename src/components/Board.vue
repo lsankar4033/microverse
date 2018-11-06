@@ -2,9 +2,18 @@
   <SectionShell class="board-container">
     <template v-if="!address || wrongNetwork">
         <div class="overlay" />
-        <div class="no-wallet-text">
+        <div class="overlay-text">
           <h1 v-if="!address">Log into <a target="_blank" href="https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn?hl=en">metamask</a> or another browser wallet extension to play</h1>
           <h1 v-if="address && wrongNetwork">Make sure mainnet network is selected</h1>
+        </div>
+      </template>
+      <template v-if="message.active">
+        <div class="overlay" />
+        <div class="overlay-text">
+          <div class="message-box">
+            <h1> {{ message.text }}</h1>
+            <button class="button" @click="HIDE_MESSAGE">Ok</button>
+          </div>
         </div>
       </template>
       <p v-if="selectedTile.id < 0" class="label">Click to acquire a world</p>
@@ -24,7 +33,7 @@
 
 <script>
 import SectionShell from './SectionShell'
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters, mapActions, mapMutations } from 'vuex'
 import GamePiece from './GamePiece'
 
 // Width of top row of hex board.
@@ -81,7 +90,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['address', 'selectedTile', 'network']),
+    ...mapGetters(['address', 'selectedTile', 'network', 'message']),
     wrongNetwork() {
       // TODO: Turn this check back on for prod
       // return this.network != this.NETWORK_ID
@@ -90,6 +99,7 @@ export default {
   },
   methods: {
     ...mapActions(['deselectTile', 'setTile']),
+    ...mapMutations(['HIDE_MESSAGE']),
 
     setSelectedTile(tile) {
       this.$store.commit('UPDATE_STATE', { key: 'selectedTile', value: tile })
@@ -110,7 +120,7 @@ export default {
   opacity: 0.8;
   background: #fff;
 }
-.no-wallet-text {
+.overlay-text {
   position: absolute;
   height: 100%;
   width: 100%;
@@ -118,12 +128,17 @@ export default {
   align-items: center;
   justify-content: center;
 }
-.no-wallet-text h1 {
+.overlay-text h1 {
   margin: auto;
   text-align: center;
 }
 .board-container {
   position: relative;
+}
+.message-box {
+  display: flex;
+  flex-direction: column;
+  width: 250px;
 }
 </style>
 
