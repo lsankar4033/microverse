@@ -356,31 +356,50 @@ contract Microverse is
         nextJackpot = nextJackpot.add(_nextPotJackpot(jackpot));
     }
 
+    function _calculatePriceComplement(uint8 tileId) private view returns (uint256) {
+        return totalTileValue.sub(tileToPrice[tileId]);
+    }
+
+    // NOTE: These are bundled together so that we only have to compute complements once
     function _distributeWinnerAndLandholderJackpot(uint256 winnerJackpot, uint256 landholderJackpot) private {
         uint256[] memory complements = new uint256[](numTiles + 1); // inc necessary b/c tiles are 1-indexed
         uint256 totalPriceComplement = 0;
 
         uint256 bestComplement = 0;
-        uint8 winningTile = 0;
+        uint8 lastWinningTileId = 0;
         for (uint8 i = minTileId; i <= maxTileId; i++) {
-            uint256 priceComplement = totalTileValue.sub(tileToPrice[i]);
+            uint256 priceComplement = _calculatePriceComplement(i);
 
             // update winner
             if (bestComplement == 0 || priceComplement > bestComplement) {
                 bestComplement = priceComplement;
-                winningTile = i;
+                lastWinningTileId = i;
             }
 
             complements[i] = priceComplement;
             totalPriceComplement = totalPriceComplement.add(priceComplement);
         }
+        uint256 numWinners = 0;
+        for (i = minTileId; i <= maxTileId; i++) {
+            if (_calculatePriceComplement(i) == bestComplement) {
+                numWinners++;
+            }
+        }
 
-        // distribute jackpot
-        asyncSend(tileToOwner[winningTile], winnerJackpot);
+        // distribute jackpot among all winners. save time on the majority (1-winner) case
+        if (numWinners == 1) {
+            asyncSend(tileToOwner[lastWinningTileId], winnerJackpot);
+        } else {
+            for (i = minTileId; i <= maxTileId; i++) {
+                if (_calculatePriceComplement(i) == bestComplement) {
+                    asyncSend(tileToOwner[i], winnerJackpot.div(numWinners));
+                }
+            }
+        }
 
         // distribute landholder things
         for (i = minTileId; i <= maxTileId; i++) {
-            // NOTE: We don't exclude the jackpot winner here, so the winner is paid 'twice'
+            // NOTE: We don't exclude the jackpot winner(s) here, so the winner(s) is paid 'twice'
             uint256 landholderAllocation = complements[i].mul(landholderJackpot).div(totalPriceComplement);
 
             asyncSend(tileToOwner[i], landholderAllocation);
