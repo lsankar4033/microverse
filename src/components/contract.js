@@ -32,6 +32,10 @@ class Contract {
     return jackpot.toNumber()
   }
 
+  async endGameRound(address) {
+    await this.instance.endGameRound({ from: address })
+  }
+
   async getBalance(address) {
     const payment = await this.instance.payments(address)
     return payment.toNumber()
