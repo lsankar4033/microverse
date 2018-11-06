@@ -20,13 +20,13 @@ contract("Microverse", async (accounts) => {
       let newPrice = 1000
 
       try {
-        await microverse.buyTileAuction(tileId, newPrice, {from: accounts[2], value: tilePrice})
+        await microverse.buyTileAuction(tileId, newPrice, "0x0", {from: accounts[2], value: tilePrice})
         assert(false)
       } catch (e) {
       }
 
       let totalPrice = await calculateTotalBuyPrice(tilePrice, newPrice, microverse)
-      await microverse.buyTileAuction(tileId, newPrice, {from: accounts[2], value: totalPrice})
+      await microverse.buyTileAuction(tileId, newPrice, "0x0", {from: accounts[2], value: totalPrice})
 
       let actualNewPrice = await microverse.tileToPrice(1)
       assert.equal(newPrice, actualNewPrice.toNumber())
@@ -41,7 +41,7 @@ contract("Microverse", async (accounts) => {
       var newPrice = 1000
 
       var totalPrice = await calculateTotalBuyPrice(tilePrice, newPrice, microverse)
-      await microverse.buyTileAuction(tileId, newPrice, {from: accounts[2], value: totalPrice})
+      await microverse.buyTileAuction(tileId, newPrice, "0x0", {from: accounts[2], value: totalPrice})
 
       tilePrice = await microverse.getTilePriceAuction();
       newPrice = 100
@@ -49,7 +49,7 @@ contract("Microverse", async (accounts) => {
       totalPrice = await calculateTotalBuyPrice(tilePrice, newPrice, microverse)
 
       try {
-        await microverse.buyTileAuction(tileId, newPrice, {from: accounts[3], value: totalPrice})
+        await microverse.buyTileAuction(tileId, newPrice, "0x0", {from: accounts[3], value: totalPrice})
         assert(false)
       } catch (e) {
       }
