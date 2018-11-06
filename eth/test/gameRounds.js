@@ -15,6 +15,7 @@ contract("Microverse", async (accounts) => {
 
     // TODO:
     // - test round extension shrinking mechanism
+    // - test jackpot distribution (i.e. jackpot ties)
 
     it("should extend game round on any action", async () => {
       let endTime1 = await microverse.roundEndTime();
@@ -34,5 +35,6 @@ contract("Microverse", async (accounts) => {
 
       assert(endTime3.toNumber() > endTime2.toNumber())
     })
+
   })
 })
