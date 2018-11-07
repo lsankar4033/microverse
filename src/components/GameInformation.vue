@@ -9,9 +9,10 @@
     <div v-if="contract" class="withdraw-container">
       <p @click.prevent="getBalance" class="label link">Check Balance</p>
       <footer>
-        <p><span v-if="status">Tell your friends you earned</span> Ξ{{ balance | weiToEth | setPrecision(8) }}</p>
+        <p v-if="status != 'noBalance'"><span v-if="status == 'withdrawSuccess'">Tell your friends you earned</span> Ξ{{ balance | weiToEth | setPrecision(8) }}</p>
         <button v-if="balance > 0 && !status" class="button" @click="withdraw">Withdraw</button>
-        <SocialShare v-if="status" :tweet="`I just earned ${balanceInEth} eth in Microverse ${domain}`" />
+        <p v-if="status == 'noBalance'">No balance.</p>
+        <SocialShare v-if="status == 'withdrawSuccess'" :tweet="`I just earned ${balanceInEth} eth in Microverse ${domain}`" />
       </footer>
     </div>
   </SectionShell>
@@ -21,6 +22,7 @@
 import { mapGetters } from 'vuex'
 import SectionShell from './SectionShell'
 import SocialShare from './SocialShare'
+import axios from 'axios'
 
 export default {
   name: 'GameInformation',
@@ -32,7 +34,7 @@ export default {
   data() {
     return {
       balance: 0,
-      ethToUsdRate: 200,
+      ethToUsdRate: 0,
       status: '',
     }
   },
@@ -54,12 +56,20 @@ export default {
     async getBalance() {
       this.status = ''
       this.balance = await this.contract.getBalance(this.address)
+      if (!this.balance || this.balance == 0) this.status = 'noBalance'
     },
     async withdraw() {
       const success = await this.contract.withdraw(this.address)
       if (!success) return
       this.status = 'withdrawSuccess'
     },
+  },
+  mounted() {
+    axios.get('https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=ETH,USD').then(res => {
+      if (!res || !res.data) return
+      const price = res.data.USD
+      this.ethToUsdRate = price
+    })
   }
 }
 </script>
