@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters, mapActions, mapMutations } from 'vuex'
 import SectionShell from './SectionShell'
 import SocialShare from './SocialShare'
 
@@ -56,15 +56,17 @@ export default {
   },
   methods: {
     ...mapActions(['deselectTile']),
+    ...mapMutations(['SHOW_MESSAGE']),
 
     async handleBuyTile() {
       let success = false
-
+      const id = this.selectedTile.id
+      this.SHOW_MESSAGE({ text: 'Check your wallet provider to complete buying this world.' })
       try {
         success = await this.contract.buyTile(
           {
             address: this.address,
-            id: this.selectedTile.id,
+            id,
             newPrice: this.newPriceInWei,
             referrer: this.referrer 
           })
@@ -77,11 +79,13 @@ export default {
     },
     async handleChangePrice() {
       let success = false
+      const id = this.selectedTile.id
+      this.SHOW_MESSAGE({ text: 'Check your wallet provider to complete changing this world\'s price.' })
       try {
         success = await this.contract.setTilePrice(
           {
             address: this.address,
-            id: this.selectedTile.id,
+            id,
             newPrice: this.newPriceInWei,
             referrer: this.referrer
           })

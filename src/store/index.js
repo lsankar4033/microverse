@@ -11,6 +11,10 @@ const deselectedTile = {
 const state = {
   address: '',
   network: '',
+  message: {
+    active: false,
+    text: '',
+  },
   domain: 'http://microverse.com',
   selectedTile: deselectedTile,
   tiles: {},
@@ -36,7 +40,18 @@ const mutations = {
     const tiles = Object.assign({}, state.tiles)
     tiles[id] = tile
     state.tiles = tiles
-  }
+  },
+  SHOW_MESSAGE(state, { text }) {
+    const message = Object.assign({}, state.message)
+    message.text = text
+    message.active = true
+    state.message = message
+  },
+  HIDE_MESSAGE(state) {
+    const message = Object.assign({}, state.message)
+    message.active = false
+    state.message = message
+  },
 }
 
 const getters = {
@@ -44,7 +59,8 @@ const getters = {
   network: state => state.network,
   selectedTile: state => state.selectedTile,
   domain: state => state.domain,
-  tile: state => id => state.tiles[id]
+  tile: state => id => state.tiles[id],
+  message: state => state.message,
 }
 
 export default new Vuex.Store({
