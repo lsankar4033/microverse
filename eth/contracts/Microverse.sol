@@ -57,7 +57,7 @@ contract Microverse is
     function _changeTilePrice(uint8 tileId, uint256 newPrice) private {
         uint256 oldPrice = tileToPrice[tileId];
         tileToPrice[tileId] = newPrice;
-        totalTileValue = totalTileValue.add(newPrice.sub(oldPrice));
+        totalTileValue = (totalTileValue.sub(oldPrice)).add(newPrice);
     }
 
     event TileOwnerChanged(
