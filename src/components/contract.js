@@ -1,5 +1,28 @@
-// TODO: Figure out why certain txns fail due to gas.
-const GAS_LIMIT = 3000000
+// TODO: Scrape from ethgasstation
+const defaultGasPrice = 7000000000 // 7 gwei
+
+function getGasLimit(gasEstimate) {
+  return gasEstimate * 5
+}
+
+async function callContractMethod(method, args, msg) {
+  let estimationArgs = args.slice(0)
+  estimationArgs.push(msg)
+  let gasEstimate = await method.estimateGas(...estimationArgs)
+
+  console.log(`Gas estimate: ${gasEstimate}`)
+
+  const actualMsg = {
+    ...msg,
+    gas: getGasLimit(gasEstimate),
+    gasPrice: defaultGasPrice,
+  };
+  const actualArgs = args.slice(0)
+  actualArgs.push(actualMsg)
+
+  let txHash = await method.sendTransaction(...actualArgs)
+  return txHash
+}
 
 class Contract {
   constructor(contractInstance) {
@@ -42,7 +65,12 @@ class Contract {
   }
 
   async withdraw(address) {
-    const transactionHash = await this.instance.withdrawPayments.sendTransaction({ from: address, gas: GAS_LIMIT })
+    const transactionHash = await callContractMethod(
+      this.instance.withdrawPayments,
+      [],
+      { from: address }
+    )
+
     return transactionHash ? true : false
   }
 
@@ -115,30 +143,27 @@ class Contract {
     let price
     let method
     let tax = 0
-    let gas = GAS_LIMIT
     let transactionHash = null
     if (stage === 0) {
       price = await this.getTilePriceAuction()
       // TODO: Do we need to charge tax here?
       tax = await this.getTax(newPrice)
       method = this.instance.buyTileAuction
-      // TODO: Estimate gas here
-      transactionHash = await method.sendTransaction(
-        parseInt(id),
-        parseInt(newPrice),
-        referrer,
-        { from: address, value: parseInt(price + tax), gas }
+
+      const transactionHash = await callContractMethod(
+        method,
+        [parseInt(id), parseInt(newPrice), referrer],
+        { from: address, value: parseInt(price + tax) }
       )
     } else {
       price = await this.tileToPrice(id)
       tax = await this.getTax(newPrice) + 1
       method = this.instance.buyTile
-      // TODO: Estimate gas here
-      transactionHash = await method.sendTransaction(
-        parseInt(id),
-        parseInt(newPrice),
-        referrer,
-        { from: address, value: parseInt(price + tax), gas }
+
+      const transactionHash = await callContractMethod(
+        method,
+        [parseInt(id), parseInt(newPrice), referrer],
+        { from: address, value: parseInt(price + tax) }
       )
     }
     return transactionHash ? true : false
@@ -151,12 +176,13 @@ class Contract {
 
   async setTilePrice({ address, id, newPrice, referrer }) {
     const tax = await this.getTax(newPrice) + 1
-    const transactionHash = await this.instance.setTilePrice.sendTransaction(
-      parseInt(id),
-      parseInt(newPrice),
-      referrer,
-      { from: address, value: tax, gas: GAS_LIMIT }
+
+    const transactionHash = await callContractMethod(
+      this.instance.setTilePrice,
+      [parseInt(id), parseInt(newPrice), referrer],
+      { from: address, value: parseInt(tax) }
     )
+
     return transactionHash ? true : false
   }
 }
