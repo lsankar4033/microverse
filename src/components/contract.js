@@ -150,7 +150,7 @@ class Contract {
       tax = await this.getTax(newPrice)
       method = this.instance.buyTileAuction
 
-      const transactionHash = await callContractMethod(
+      transactionHash = await callContractMethod(
         method,
         [parseInt(id), parseInt(newPrice), referrer],
         { from: address, value: parseInt(price + tax) }
@@ -160,7 +160,7 @@ class Contract {
       tax = await this.getTax(newPrice) + 1
       method = this.instance.buyTile
 
-      const transactionHash = await callContractMethod(
+      transactionHash = await callContractMethod(
         method,
         [parseInt(id), parseInt(newPrice), referrer],
         { from: address, value: parseInt(price + tax) }
