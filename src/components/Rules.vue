@@ -22,11 +22,11 @@
       <li>Microverse contains 37 worlds</li>
       <li>Every world is always for sale</li>
       <li>At the start of the simulation, worlds are unowned, and are sold via an hour long dutch auction where the price slowly declines towards zero until the world is sold</li>
-      <li>Owners can change the price of their worlds, but have to pay a 10% tax on the difference between the current price and a higher price (no tax for decreasing the price). To decrease the price, users pay a flat 0.01 ETH fee (this is simply to prevent spam)</li>
+      <li>Owners can change the price of their worlds, but have to pay a 10% tax on the new world price.</li>
       <li>All transactions in Microverse go directly through the Microverse economy (see figure below for the exact splits), with roughly half going towards the stimulus (jackpot) and the other half going instantly to the owners of worlds</li>
-      <li>As soon as the first world is sold, a 24 hour countdown begins. When the countdown reaches zero, the simulation ends and the stimulus is distributed</li>
-      <li>Each time a world is purchased or the price is changed the timer goes up 30 seconds to a maximum of 24 hours.</li>
-      <li>At the end of the simulation, the player who owns the world that is least powerful compared to its neighbors (lowest market price compared to the average of all its neighbors) wins half of the stimulus. The rest is distributed proportionally to the next least powerful worlds.</li>
+      <li>As soon as the first world is sold, a 4 hour countdown begins. When the countdown reaches zero, the simulation ends and the stimulus is distributed</li>
+      <li>Each time a world is purchased or the price is changed the countdown timer is extended. Initially this extension is 4 hours, but the length of the extension is halved for every 10 ETH contributed to the Microverse economy.</li>
+      <li>At the end of the simulation, the player who owns the world with the lowest price wins half of the stimulus. In the event of a tie, this portion of the stimulus is split evenly among all tied worlds. The rest is distributed proportionally to the next least powerful worlds.</li>
     </ul>
 
     <br/>
@@ -44,11 +44,11 @@
     <br/>
 
     <h2 id="stimulus-splits">Stimulus splits</h2>
-    <p>At the end of a simulation, 45% of the stimulus is sent directly to the owner of the world with the lowest price and 5% is sent to devs.</p>
-    <p>The remaining 50% is distributed as follows:</p>
+    <p>At the end of a simulation, 50% of the stimulus is sent directly to the owner of the world with the lowest price and 5% is sent to devs.</p>
+    <p>The remaining 45% is distributed as follows:</p>
     <ul>
       <li>40% to the owners of worlds, sorted by lowest price</li>
-      <li>10% to seed the next round</li>
+      <li>5% to seed the next round</li>
     </ul>
     <h2 id="refer-your-friends-and-earn-money">Refer your friends and earn money</h2>
     <p>Invite your friends to play and earn 5% of what they spend when they use your link. No fee to them. You can find your referral link on the <a href="/">homepage</a>.</p>
