@@ -8,7 +8,7 @@
 
     <hr/>
 
-    <Board :contract="contractInstance"/>
+    <Board :timeLeft="timeLeft" :contract="contractInstance"/>
     <BuyForm :contract="contractInstance" :referrer="referrer"/>
     <ReferralPrompt :contract="contractInstance"/>
   </div>
