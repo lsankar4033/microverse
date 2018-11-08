@@ -9,7 +9,7 @@
     <hr/>
 
     <ReferralPrompt :contract="contractInstance"/>
-    <Board :contract="contractInstance"/>
+    <Board :timeLeft="timeLeft" :contract="contractInstance"/>
     <BuyForm :contract="contractInstance" :referrer="referrer"/>
   </div>
 </template>

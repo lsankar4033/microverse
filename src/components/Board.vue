@@ -7,8 +7,11 @@
           <h1 v-if="address && wrongNetwork">Make sure mainnet network is selected</h1>
         </div>
       </template>
-      <p v-if="selectedTile.id < 0" class="label">Click to acquire a world</p>
-      <p v-if="selectedTile.id >= 0" class="label">Viewing world {{ selectedTile.id }}</p>
+      <div class="ui-text">
+        <h2 v-if="selectedTile.id < 0" class="label">Click to acquire a world</h2>
+        <h2 v-if="selectedTile.id >= 0" class="label">Viewing world {{ selectedTile.id }}</h2>
+        <button v-if="contract && timeLeft <= 0" @click="endRound">End Round</button>
+      </div>
       <div @click="deselectTile" class="grid">
         <div v-for="(tileIdRow, rowIdx) in tileIdRows"
              :key="rowIdx"
@@ -69,7 +72,7 @@ const tileIdRows = generateTileIds(BoardWidth)
 
 export default {
   name: 'Board',
-  props: ['contract'],
+  props: ['contract', 'timeLeft'],
   components: {
     GamePiece,
     SectionShell,
@@ -77,7 +80,7 @@ export default {
   data() {
     return {
       tileIdRows,
-      NETWORK_ID: "1",
+      NETWORK_ID: '1',
     }
   },
   computed: {
@@ -97,6 +100,9 @@ export default {
     async selectTile(id) {
       const tile = await this.setTile({ id, contract: this.contract })
       this.setSelectedTile(tile)
+    },
+    async endRound() {
+      await this.contract.endGameRound(this.address)
     },
   },
 }
@@ -124,6 +130,17 @@ export default {
 }
 .board-container {
   position: relative;
+}
+.ui-text {
+  display: flex;
+  justify-content: space-between;
+}
+.ui-text h2 {
+  margin-bottom: 0;
+}
+.ui-text button {
+  border: 1px solid black;
+  padding: 4px;
 }
 </style>
 
