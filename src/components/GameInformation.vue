@@ -2,16 +2,17 @@
   <SectionShell class="section-accent">
     <div>
       <p class="label">Simulation #001</p>
-      <p v-if="jackpot"><b>Stimulus (jackpot):</b> Ξ{{ jackpot | weiToEth }} (${{ jackpot | weiToEth | convertEthToUsd(ethToUsdRate) }})</p>
+      <p v-if="jackpot"><b>Stimulus (jackpot):</b> Ξ{{ jackpot | weiToEth }}</p>
       <p v-if="auctionPrice"><b>Auction Tile Price:</b> Ξ{{ auctionPrice | weiToEth | setPrecision(8) }}</p>
       <p v-if="timeLeft"><b>Time left:</b> {{ timeLeft | formatSecondsToTime }}</p>
     </div>
     <div v-if="contract" class="withdraw-container">
       <p @click.prevent="getBalance" class="label link">Check Balance</p>
       <footer>
-        <p><span v-if="status">Tell your friends you earned</span> Ξ{{ balance | weiToEth | setPrecision(8) }}</p>
+        <p v-if="status != 'noBalance'"><span v-if="status == 'withdrawSuccess'">Tell your friends you earned</span> Ξ{{ balance | weiToEth | setPrecision(8) }}</p>
         <button v-if="balance > 0 && !status" class="button" @click="withdraw">Withdraw</button>
-        <SocialShare v-if="status" :tweet="`I just earned ${balanceInEth} eth in Microverse ${domain}`" />
+        <p v-if="status == 'noBalance'">No balance.</p>
+        <SocialShare v-if="status == 'withdrawSuccess'" :tweet="`I just earned ${balanceInEth} eth in Microverse ${domain}`" />
       </footer>
     </div>
   </SectionShell>
@@ -32,7 +33,6 @@ export default {
   data() {
     return {
       balance: 0,
-      ethToUsdRate: 200,
       status: '',
     }
   },
@@ -54,13 +54,14 @@ export default {
     async getBalance() {
       this.status = ''
       this.balance = await this.contract.getBalance(this.address)
+      if (!this.balance || this.balance == 0) this.status = 'noBalance'
     },
     async withdraw() {
       const success = await this.contract.withdraw(this.address)
       if (!success) return
       this.status = 'withdrawSuccess'
     },
-  }
+  },
 }
 </script>
 

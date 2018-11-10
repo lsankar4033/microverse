@@ -30,11 +30,6 @@ Vue.filter('formatSecondsToTime', function(sec) {
   return `${days} days ${hours} hrs ${minutes} min ${seconds} s`
 })
 
-Vue.filter('convertEthToUsd', function(eth, rate) {
-  if (!eth) return 0
-  return eth * rate
-})
-
 Vue.filter('setPrecision', function(value, precision) {
   if (!value) return '0'
   if (!precision) return value
