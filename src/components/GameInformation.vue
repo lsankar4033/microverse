@@ -2,7 +2,7 @@
   <SectionShell class="section-accent">
     <div>
       <p class="label">Simulation #001</p>
-      <p v-if="jackpot"><b>Stimulus (jackpot):</b> Ξ{{ jackpot | weiToEth }} (${{ jackpot | weiToEth | convertEthToUsd(ethToUsdRate) }})</p>
+      <p v-if="jackpot"><b>Stimulus (jackpot):</b> Ξ{{ jackpot | weiToEth }}</p>
       <p v-if="auctionPrice"><b>Auction Tile Price:</b> Ξ{{ auctionPrice | weiToEth | setPrecision(8) }}</p>
       <p v-if="timeLeft"><b>Time left:</b> {{ timeLeft | formatSecondsToTime }}</p>
     </div>
@@ -34,7 +34,6 @@ export default {
   data() {
     return {
       balance: 0,
-      ethToUsdRate: 0,
       status: '',
     }
   },
@@ -64,13 +63,6 @@ export default {
       this.status = 'withdrawSuccess'
     },
   },
-  mounted() {
-    axios.get('https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=ETH,USD').then(res => {
-      if (!res || !res.data) return
-      const price = res.data.USD
-      this.ethToUsdRate = price
-    })
-  }
 }
 </script>
 
