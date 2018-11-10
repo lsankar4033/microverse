@@ -1,11 +1,11 @@
 <template>
   <SectionShell class="section-accent">
-    <div>
-      <p class="label">Simulation #001</p>
-      <p v-if="jackpot"><b>Stimulus (jackpot):</b> Ξ{{ jackpot | weiToEth }}</p>
-      <p v-if="auctionPrice"><b>Auction Tile Price:</b> Ξ{{ auctionPrice | weiToEth | setPrecision(8) }}</p>
-      <p v-if="timeLeft"><b>Time left:</b> {{ timeLeft | formatSecondsToTime }}</p>
-    </div>
+    <ul>
+      <li class="label">Simulation #{{ stage }}</li>
+      <li v-if="jackpot"><b>Stimulus (jackpot):</b> Ξ{{ jackpot | weiToEth }}<span @click="updateGame" class="refresh-button"><Refresh /></span></li>
+      <li v-if="auctionPrice"><b>Auction Tile Price:</b> Ξ{{ auctionPrice | weiToEth | setPrecision(8) }}<span @click="updateGame" class="refresh-button"><Refresh /></span></li>
+      <li v-if="timeLeft"><b>Time left:</b> {{ timeLeft | formatSecondsToTime }}</li>
+    </ul>
     <div v-if="contract" class="withdraw-container">
       <p @click.prevent="getBalance" class="label link">Check Balance</p>
       <footer>
@@ -22,6 +22,13 @@
 import { mapGetters } from 'vuex'
 import SectionShell from './SectionShell'
 import SocialShare from './SocialShare'
+import Refresh from './Refresh'
+
+// https://stackoverflow.com/questions/10841773/javascript-format-number-to-day-with-always-3-digits
+function lpad(value, padding) {
+  var zeroes = new Array(padding+1).join("0");
+  return (zeroes + value).slice(-padding);
+}
 
 export default {
   name: 'GameInformation',
@@ -29,6 +36,7 @@ export default {
   components: {
     SectionShell,
     SocialShare,
+    Refresh,
   },
   data() {
     return {
@@ -46,6 +54,11 @@ export default {
       if (!this.contract) return null
       return this.contract.auctionPrice
     },
+    stage() {
+      if (!this.contract) return null
+      const stage = this.contract.gameStage
+      return stage < 1000 ? lpad(stage, 3) : stage
+    },
     balanceInEth() {
       return this.$options.filters.weiToEth(this.balance)
     }
@@ -61,6 +74,11 @@ export default {
       if (!success) return
       this.status = 'withdrawSuccess'
     },
+    updateGame() {
+      if (!this.contract) return null
+      // Get latest jackpot and auction price information.
+      this.contract.update()
+    }
   },
 }
 </script>
@@ -90,6 +108,23 @@ export default {
 }
 .social-icons {
   justify-content: flex-end;
+}
+.refresh-button {
+  cursor: pointer;
+  margin-left: 4px;
+  display: flex;
+}
+ul {
+  list-style-type: none;
+  padding: 0
+}
+ul li {
+  margin: 0.5rem 0;
+  display: flex;
+  align-items: center;
+}
+b {
+  margin-right: 5px;
 }
 @media only screen and (max-width: 768px) {
   .withdraw-container {
