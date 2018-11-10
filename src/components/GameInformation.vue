@@ -22,7 +22,6 @@
 import { mapGetters } from 'vuex'
 import SectionShell from './SectionShell'
 import SocialShare from './SocialShare'
-import axios from 'axios'
 
 export default {
   name: 'GameInformation',
