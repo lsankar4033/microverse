@@ -55,8 +55,7 @@ export default{
 	display: flex;
 	flex-direction: column;
 	width: auto;
-	padding: .5rem;
-    background-color: rgba(243,244,123,1)
+  background-color: rgba(243,244,123,1)
 }
 
 input#referral-url {

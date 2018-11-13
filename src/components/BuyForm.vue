@@ -13,7 +13,7 @@
           <input v-model="newPrice" placeholder="Enter the new price" type="number"/>
         </span>
         <button v-if="selectedTile.owner === address" class="button" @click.prevent="handleChangePrice">Change Price</button>
-        <button v-else class="button" @click.prevent="handleBuyTile">Buy</button>
+        <button v-else class="button" @click.prevent="handleBuyTile">Buy World {{ selectedTile.id }}</button>
       </div>
     </template>
     <template v-else-if="status">

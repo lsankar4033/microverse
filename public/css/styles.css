@@ -88,7 +88,7 @@ body {
 h1, h2, h3, .label {
 	font-family: 'Space Mono', monospace;
 	margin-bottom: .5rem;
-  margin-top: 1rem;
+  margin-top: .5rem;
 }
 
 h1 {
@@ -140,7 +140,7 @@ header .logo {
 	display: flex;
 	flex-direction: column;
 	width: auto;
-	padding: .5rem;
+	padding: .5rem 1rem;
 }
 
 .hero h1 {
@@ -212,14 +212,15 @@ header .logo {
 }
 
 .button {
-  padding: .5rem 1rem;
+  padding: .25rem .5rem;
   background-color: rgba(39,64,42,1);
   color: rgba(255,255,255,.87);
   text-align: center;
   text-transform: uppercase;
   font-family: 'Space Mono', monospace;
   font-weight: 700;
-  /* border-radius: 10rem; */
+  border-radius: 10rem; 
+  font-size: .8rem;
 }
 
 .button:hover {
@@ -295,7 +296,7 @@ header .logo {
 input {
   padding: .5rem .5rem;
   margin-right: .5rem;
-  /*border-radius: 10rem; */
+  border-radius: 10rem; 
 }
 
 @media only screen and (max-width: 768px) {
@@ -325,9 +326,15 @@ input {
 }
 
 ol, ul {
-  padding-left: 2.5rem
+  padding-left: 2.5rem;
+  margin: .5rem 0rem;
 }
 
 a {
   color: blue;
+}
+
+.price-input {
+  margin-right: .5rem;
+  border-radius: 10em;
 }
