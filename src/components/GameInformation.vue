@@ -7,11 +7,13 @@
       <p v-if="timeLeft"><b>Time left:</b> {{ timeLeft | formatSecondsToTime }}</p>
     </div>
     <div v-if="contract" class="withdraw-container">
-      <p @click.prevent="getBalance" class="label link">Check Balance</p>
+      <p v-if="balance > 0">Balance</p>
+
       <footer>
-        <p v-if="status != 'noBalance'"><span v-if="status == 'withdrawSuccess'">Tell your friends you earned</span> Ξ{{ balance | weiToEth | setPrecision(8) }}</p>
+        <p v-if="balance > 0">
+          <span v-if="status == 'withdrawSuccess'">Tell your friends you earned</span> Ξ{{ balance | weiToEth | setPrecision(8) }}
+        </p>
         <button v-if="balance > 0 && !status" class="button" @click="withdraw">Withdraw</button>
-        <p v-if="status == 'noBalance'">No balance.</p>
         <SocialShare v-if="status == 'withdrawSuccess'" :tweet="`I just earned ${balanceInEth} eth in Microverse ${domain}`" />
       </footer>
     </div>
@@ -61,6 +63,20 @@ export default {
       if (!success) return
       this.status = 'withdrawSuccess'
     },
+  },
+  mounted() {
+    this.$store.subscribe(async (mutation, state) => {
+      if (mutation.type == 'UPDATE_STATE' && mutation.payload.key == 'address') {
+        this.balance = await this.contract.getBalance(this.address)
+      }
+    })
+  },
+  watch: {
+    async contract (newContract) {
+      if (newContract != null && this.address != null) {
+        this.balance = await this.contract.getBalance(this.address)
+      }
+    }
   },
 }
 </script>
