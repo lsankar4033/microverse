@@ -65,7 +65,7 @@ export default {
     },
   },
   mounted() {
-    this.$store.subscribe(async (mutation, state) => {
+    this.$store.subscribe(async (mutation) => {
       if (mutation.type == 'UPDATE_STATE' && mutation.payload.key == 'address') {
         this.balance = await this.contract.getBalance(this.address)
       }

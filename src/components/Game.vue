@@ -77,16 +77,16 @@ export default{
       contractInstance.instance.TilePriceChanged((err, res) => {
         this.setTile({ id: res.args.tileId.toNumber(), contract: contractInstance })
       })
-      contractInstance.instance.GameRoundStarted((err, res) => {
-        const initJackpot = res.args.initJackpot.toNumber()
-        const endTime = res.args.endTime.toNumber()
-      })
-      contractInstance.instance.GameRoundExtended((err, res) => {
-        const endTime = res.args.endTime.toNumber()
-      })
-      contractInstance.instance.GameRoundEnded((err, res) => {
-        const jackpot = res.args.jackpot.toNumber()
-      })
+      //contractInstance.instance.GameRoundStarted((err, res) => {
+      //  const initJackpot = res.args.initJackpot.toNumber()
+      //  const endTime = res.args.endTime.toNumber()
+      //})
+      //contractInstance.instance.GameRoundExtended((err, res) => {
+      //  const endTime = res.args.endTime.toNumber()
+      //})
+      //contractInstance.instance.GameRoundEnded((err, res) => {
+      //  const jackpot = res.args.jackpot.toNumber()
+      //})
       this.initializeCountDown()
     })
   },

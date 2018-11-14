@@ -47,13 +47,12 @@ export default {
     // newer dapp browsers with user-privacy enabled by default
     if (window.ethereum) {
       try {
-        ethereum.enable().then((r) => {
-          window.web3 = new Web3(ethereum)
+        window.ethereum.enable().then(() => {
+          window.web3 = new window.Web3(window.ethereum)
           this.loadWeb3(window.web3)
         })
       } catch (e) {
-        // NOTE: Maybe this should be a message about not approving metamask
-        console.log("User didn't approve site!")
+        // NOTE: Maybe we should change some state that displays the error
       }
     }
 
