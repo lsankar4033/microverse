@@ -83,7 +83,6 @@ contract Microverse is
         uint256 endTime
     );
 
-    // NOTE: Beta test values
     uint256 constant public startingAuctionPrice = 1 ether;
     uint256 constant public endingAuctionPrice = 0.05 ether;
     uint256 constant public auctionDuration = 5 days; // period over which land price decreases linearly
@@ -178,7 +177,6 @@ contract Microverse is
     // Game
     ///////
 
-    // NOTE: Beta test values
     uint256 constant public startingRoundExtension = 12 hours;
     uint256 constant public halvingVolume = 50 ether; // tx volume before next duration halving
     uint256 constant public minRoundExtension = 10 seconds; // could set to 1 second
@@ -225,7 +223,7 @@ contract Microverse is
     }
 
     function _extendRound() private {
-        roundEndTime = now + curRoundExtension;
+        roundEndTime = roundEndTime.max(now.add(curRoundExtension));
 
         emit GameRoundExtended(roundEndTime);
     }
