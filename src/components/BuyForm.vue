@@ -8,13 +8,19 @@
         <h2 v-else-if="selectedTile.owner">{{ selectedTile.owner | hashShorten }} owns this world</h2>
         <h2 v-else>Nobody owns this world</h2>
       </div>
-      <div class="buy-tile-container" v-if="contract && contract.gameStage == 1 || !selectedTile.owner">
+      <div v-if="canBuyOrChangePrice" class="buy-tile-container">
         <span class="price-input"><small>Ξ</small>
-          <input v-model="newPrice" placeholder="Enter the new price" type="number"/>
+          <input v-model="newPrice" placeholder="Enter the new price" type="number" @input="updateTotal"/>
         </span>
         <button v-if="selectedTile.owner === address" class="button" @click.prevent="handleChangePrice">Change Price</button>
         <button v-else class="button" @click.prevent="handleBuyTile">Buy World {{ selectedTile.id }}</button>
       </div>
+      <ul v-if="canBuyOrChangePrice" class="tax-container">
+        <li><span>Price</span><strong>Ξ{{ selectedTile.price | weiToEth }}</strong></li>
+        <li><span>Tax</span><strong>Ξ{{ tax | weiToEth }}</strong></li>
+        <hr>
+        <li><span>Total</span><strong class="highlight">Ξ{{ total | weiToEth }}</strong></li>
+      </ul>
     </template>
     <template v-else-if="status">
       <h1>Tell your friends your microverse world is on sale for Ξ{{ newPrice }}</h1>
@@ -40,6 +46,8 @@ export default {
       newPrice: null,
       // tileBought or priceChanged
       status: '',
+      tax: 0,
+      total: 0,
     }
   },
   computed: {
@@ -52,6 +60,9 @@ export default {
       return status == 'tileBought'
         ? `I just bought a tile in Microverse ${this.domain}`
         : `My microverse world is on sale for ${this.newPrice} eth at ${this.domain}`
+    },
+    canBuyOrChangePrice() {
+      return this.contract && this.contract.gameStage != 0 || !this.selectedTile.owner
     },
   },
   methods: {
@@ -76,6 +87,20 @@ export default {
       if (!success) return
       this.deselectTile()
       this.status = 'tileBought'
+    },
+    async updateTotal() {
+      await this.updateTax()
+      this.total = this.tax + this.selectedTile.price
+    },
+    async updateTax() {
+      if (!this.contract) return
+      try {
+        const newPrice = this.$options.filters.ethToWei(this.newPrice)
+        const tax = await this.contract.getTax(newPrice)
+        this.tax = tax
+      } catch (err) {
+        console.log('err', err)
+      }
     },
     async handleChangePrice() {
       let success = false
@@ -123,6 +148,29 @@ export default {
 }
 .price-input input {
   border: 0;
+}
+ul {
+  padding-left: 0;
+  list-style-type: none;
+}
+ul li {
+  display: flex;
+  padding: 2px;
+  align-items: center;
+}
+ul span {
+  width: 90px
+}
+strong {
+  font-weight: 600
+}
+.highlight {
+  background: #bababa;
+  padding: 0 2px;
+}
+.tax-container hr {
+  width: 300px;
+  margin-left: 0;
 }
 </style>
 

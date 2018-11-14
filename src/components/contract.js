@@ -10,8 +10,6 @@ async function callContractMethod(method, args, msg) {
   estimationArgs.push(msg)
   let gasEstimate = await method.estimateGas(...estimationArgs)
 
-  console.log(`Gas estimate: ${gasEstimate}`)
-
   const actualMsg = {
     ...msg,
     gas: getGasLimit(gasEstimate),
@@ -37,8 +35,7 @@ class Contract {
   async update() {
     this.gameStage = await this.stage()
     if (this.gameStage == 0) this.auctionPrice = await this.getTilePriceAuction()
-    // TODO: Can the gameStage potentially be higher than 1?
-    if (this.gameStage == 1) this.jackpot = await this.getJackpot()
+    if (this.gameStage > 0) this.jackpot = await this.getJackpot()
   }
 
   async getTile(id) {
