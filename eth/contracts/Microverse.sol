@@ -49,11 +49,6 @@ contract Microverse is
     mapping(uint8 => uint256) public tileToPrice;
     uint256 public totalTileValue;
 
-    // TODO: Change this once we define 'team'
-    function _sendToTeam(uint256 amount) private {
-        asyncSend(owner, amount);
-    }
-
     function _changeTilePrice(uint8 tileId, uint256 newPrice) private {
         uint256 oldPrice = tileToPrice[tileId];
         tileToPrice[tileId] = newPrice;
@@ -67,6 +62,67 @@ contract Microverse is
         uint256 oldPrice,
         uint256 newPrice
     );
+
+    /////////////
+    // Team stuff
+    /////////////
+
+    // Up to 3 equal-share dev team members
+    address public teamAddress1;
+    address public teamAddress2;
+    address public teamAddress3;
+
+    // 0 -> 3 depending on contract state. I only use uint256 so that I can use SafeMath...
+    uint256 public teamSize= 0;
+
+    function addTeamAddress(address newTeamAddress) external onlyOwner {
+        require(
+            newTeamAddress != address(0),
+            "New team member must not be null team address"
+        );
+
+        require(
+            newTeamAddress != owner,
+            "New team member must not be contract owner"
+        );
+
+        require(
+            teamAddress1 == address(0) || teamAddress2 == address(0) || teamAddress3 == address(0),
+            "Must be an open spot for a new team member! This prevents changing the team once all slots are filled."
+        );
+
+        if (teamAddress1 == address(0)) {
+            teamAddress1 = newTeamAddress;
+            teamSize = teamSize.add(1);
+        } else if (teamAddress2 == address(0)) {
+            teamAddress2 = newTeamAddress;
+            teamSize = teamSize.add(1);
+        } else if (teamAddress3 == address(0)) {
+            teamAddress3 = newTeamAddress;
+            teamSize = teamSize.add(1);
+        }
+    }
+
+    function _sendToTeam(uint256 amount) private {
+        if (teamSize == 0) {
+            // If team hasn't been set, treat contract owner as 'team'
+            asyncSend(owner, amount);
+        } else {
+            uint256 perTeamMemberFee = amount.div(teamSize);
+
+            if (teamAddress1 != address(0)) {
+                asyncSend(teamAddress1, perTeamMemberFee);
+            }
+
+            if (teamAddress2 != address(0)) {
+                asyncSend(teamAddress2, perTeamMemberFee);
+            }
+
+            if (teamAddress3 != address(0)) {
+                asyncSend(teamAddress3, perTeamMemberFee);
+            }
+        }
+    }
 
     //////////
     // Auction
@@ -83,7 +139,6 @@ contract Microverse is
         uint256 endTime
     );
 
-    // NOTE: Beta test values
     uint256 constant public startingAuctionPrice = 1 ether;
     uint256 constant public endingAuctionPrice = 0.05 ether;
     uint256 constant public auctionDuration = 5 days; // period over which land price decreases linearly
@@ -178,7 +233,6 @@ contract Microverse is
     // Game
     ///////
 
-    // NOTE: Beta test values
     uint256 constant public startingRoundExtension = 12 hours;
     uint256 constant public halvingVolume = 50 ether; // tx volume before next duration halving
     uint256 constant public minRoundExtension = 10 seconds; // could set to 1 second
@@ -225,7 +279,7 @@ contract Microverse is
     }
 
     function _extendRound() private {
-        roundEndTime = now + curRoundExtension;
+        roundEndTime = roundEndTime.max(now.add(curRoundExtension));
 
         emit GameRoundExtended(roundEndTime);
     }
