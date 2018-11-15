@@ -10,16 +10,22 @@
       </div>
       <div v-if="canBuyOrChangePrice" class="buy-tile-container">
         <span class="price-input"><small>Ξ</small>
-          <input v-model="newPrice" placeholder="Enter the new price" type="number" @input="updateTotal"/>
+          <input v-model="newPrice" placeholder="Set a price (Ξ0 if left empty)" type="number" @input="updateTotal"/>
         </span>
         <button v-if="selectedTile.owner === address" class="button" @click.prevent="handleChangePrice">Change Price</button>
         <button v-else class="button" @click.prevent="handleBuyTile">Buy World {{ selectedTile.id }}</button>
       </div>
       <ul v-if="canBuyOrChangePrice" class="tax-container">
-        <li><span>Price</span><strong>Ξ{{ selectedTile.price | weiToEth }}</strong></li>
+        <li><span>Price</span>
+          <strong v-if="selectedTile.owner == address">&mdash;</strong>
+          <strong v-else-if="selectedTile.owner">Ξ{{ selectedTile.price | weiToEth }}</strong>
+        </li>
         <li><span>Tax</span><strong>Ξ{{ tax | weiToEth }}</strong></li>
         <hr>
-        <li><span>Total</span><strong>Ξ{{ total | weiToEth }}</strong></li>
+        <li><span>Total</span>
+          <strong v-if="selectedTile.owner == address">Ξ{{ tax | weiToEth }}</strong>
+          <strong v-else-if="selectedTile.owner">Ξ{{ tptal | weiToEth }}</strong>
+        </li>
       </ul>
     </template>
     <template v-else-if="status">
@@ -128,10 +134,10 @@ export default {
 <style>
 .buy-tile-container {
   display: flex;
-  margin-bottom: 26px;
 }
 .buy-tile-container input {
   border: 1px solid #222;
+  width: 15em;
 }
 .buy-tile-container button {
   background: green;
@@ -169,7 +175,7 @@ strong {
   padding: 0 2px;
 }
 .tax-container hr {
-  width: 300px;
+  width: 7rem;
   margin-left: 0;
 }
 </style>
