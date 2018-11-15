@@ -19,7 +19,7 @@
         <li><span>Price</span><strong>Ξ{{ selectedTile.price | weiToEth }}</strong></li>
         <li><span>Tax</span><strong>Ξ{{ tax | weiToEth }}</strong></li>
         <hr>
-        <li><span>Total</span><strong class="highlight">Ξ{{ total | weiToEth }}</strong></li>
+        <li><span>Total</span><strong>Ξ{{ total | weiToEth }}</strong></li>
       </ul>
     </template>
     <template v-else-if="status">
