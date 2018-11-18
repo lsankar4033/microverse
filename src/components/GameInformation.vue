@@ -1,7 +1,7 @@
 <template>
   <SectionShell class="section-accent">
     <ul>
-      <li class="label">Simulation #{{ stage }}</li>
+      <li class="label">Simulation #001</li>
       <li v-if="jackpot"><b>Stimulus (jackpot):</b> Ξ{{ jackpot | weiToEth }}<span @click="updateGame" class="refresh-button"><Refresh /></span></li>
       <li v-if="auctionPrice"><b>Auction Tile Price:</b> Ξ{{ auctionPrice | weiToEth | setPrecision(8) }}<span @click="updateGame" class="refresh-button"><Refresh /></span></li>
       <li v-if="timeLeft"><b>Time left:</b> {{ timeLeft | formatSecondsToTime }}</li>
@@ -53,11 +53,6 @@ export default {
     auctionPrice() {
       if (!this.contract) return null
       return this.contract.auctionPrice
-    },
-    stage() {
-      if (!this.contract) return null
-      const stage = this.contract.gameStage
-      return stage < 1000 ? lpad(stage, 3) : stage
     },
     balanceInEth() {
       return this.$options.filters.weiToEth(this.balance)
