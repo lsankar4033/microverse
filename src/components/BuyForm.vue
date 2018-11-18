@@ -24,7 +24,7 @@
         <hr>
         <li><span>Total</span>
           <strong v-if="selectedTile.owner == address">Ξ{{ tax | weiToEth }}</strong>
-          <strong v-else-if="selectedTile.owner">Ξ{{ tptal | weiToEth }}</strong>
+          <strong v-else-if="selectedTile.owner">Ξ{{ total | weiToEth }}</strong>
         </li>
       </ul>
     </template>
