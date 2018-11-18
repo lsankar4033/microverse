@@ -1,11 +1,11 @@
 <template>
   <SectionShell class="section-accent">
-    <div>
-      <p class="label">Simulation #001</p>
-      <p v-if="jackpot"><b>Stimulus (jackpot):</b> Ξ{{ jackpot | weiToEth }}</p>
-      <p v-if="auctionPrice"><b>Auction Tile Price:</b> Ξ{{ auctionPrice | weiToEth | setPrecision(8) }}</p>
-      <p v-if="timeLeft"><b>Time left:</b> {{ timeLeft | formatSecondsToTime }}</p>
-    </div>
+    <ul>
+      <li class="label">Simulation #001</li>
+      <li v-if="jackpot"><b>Stimulus (jackpot):</b> Ξ{{ jackpot | weiToEth }}<span @click="updateGame" class="refresh-button"><Refresh /></span></li>
+      <li v-if="auctionPrice"><b>Auction Tile Price:</b> Ξ{{ auctionPrice | weiToEth | setPrecision(8) }}<span @click="updateGame" class="refresh-button"><Refresh /></span></li>
+      <li v-if="timeLeft"><b>Time left:</b> {{ timeLeft | formatSecondsToTime }}</li>
+    </ul>
     <div v-if="contract" class="withdraw-container">
       <p v-if="balance > 0">Balance</p>
 
@@ -24,6 +24,7 @@
 import { mapGetters } from 'vuex'
 import SectionShell from './SectionShell'
 import SocialShare from './SocialShare'
+import Refresh from './Refresh'
 
 export default {
   name: 'GameInformation',
@@ -31,6 +32,7 @@ export default {
   components: {
     SectionShell,
     SocialShare,
+    Refresh,
   },
   data() {
     return {
@@ -63,6 +65,11 @@ export default {
       if (!success) return
       this.status = 'withdrawSuccess'
     },
+    updateGame() {
+      if (!this.contract) return null
+      // Get latest jackpot and auction price information.
+      this.contract.update()
+    }
   },
   mounted() {
     this.$store.subscribe(async (mutation) => {
@@ -106,6 +113,23 @@ export default {
 }
 .social-icons {
   justify-content: flex-end;
+}
+.refresh-button {
+  cursor: pointer;
+  margin-left: 4px;
+  display: flex;
+}
+ul {
+  list-style-type: none;
+  padding: 0
+}
+ul li {
+  margin: 0.5rem 0;
+  display: flex;
+  align-items: center;
+}
+b {
+  margin-right: 5px;
 }
 @media only screen and (max-width: 768px) {
   .withdraw-container {
