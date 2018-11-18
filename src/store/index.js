@@ -18,6 +18,7 @@ const state = {
   domain: 'http://microverse.com',
   selectedTile: deselectedTile,
   tiles: {},
+  roundNumber: 0
 }
 
 const actions = {
@@ -29,6 +30,9 @@ const actions = {
     const tile = await contract.getTile(id)
     commit('UPDATE_TILE', { id, tile })
     return tile
+  },
+  async setRoundNumber({ commit }, roundNumber) {
+    commit('UPDATE_ROUND_NUMBER', roundNumber)
   }
 }
 
@@ -40,6 +44,9 @@ const mutations = {
     const tiles = Object.assign({}, state.tiles)
     tiles[id] = tile
     state.tiles = tiles
+  },
+  UPDATE_ROUND_NUMBER(state, roundNumber) {
+    state.roundNumber = roundNumber
   },
   SHOW_MESSAGE(state, { text }) {
     const message = Object.assign({}, state.message)
@@ -61,6 +68,7 @@ const getters = {
   domain: state => state.domain,
   tile: state => id => state.tiles[id],
   message: state => state.message,
+  roundNumber: state => state.roundNumber
 }
 
 export default new Vuex.Store({

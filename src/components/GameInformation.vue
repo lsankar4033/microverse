@@ -1,11 +1,11 @@
 <template>
   <SectionShell class="section-accent">
-    <ul>
-      <li class="label">Simulation #001</li>
-      <li v-if="jackpot"><b>Stimulus (jackpot):</b> Ξ{{ jackpot | weiToEth }}<span @click="updateGame" class="refresh-button"><Refresh /></span></li>
+    <div>
+      <li class="label">Simulation #{{formattedRoundNumber}}</li>
+<li v-if="jackpot"><b>Stimulus (jackpot):</b> Ξ{{ jackpot | weiToEth }}<span @click="updateGame" class="refresh-button"><Refresh /></span></li>
       <li v-if="auctionPrice"><b>Auction Tile Price:</b> Ξ{{ auctionPrice | weiToEth | setPrecision(8) }}<span @click="updateGame" class="refresh-button"><Refresh /></span></li>
       <li v-if="timeLeft"><b>Time left:</b> {{ timeLeft | formatSecondsToTime }}</li>
-    </ul>
+    </div>
     <div v-if="contract" class="withdraw-container">
       <p v-if="balance > 0">Balance</p>
 
@@ -25,6 +25,7 @@ import { mapGetters } from 'vuex'
 import SectionShell from './SectionShell'
 import SocialShare from './SocialShare'
 import Refresh from './Refresh'
+import { formatRoundNumber } from './utils'
 
 export default {
   name: 'GameInformation',
@@ -52,9 +53,14 @@ export default {
     },
     balanceInEth() {
       return this.$options.filters.weiToEth(this.balance)
+    },
+    formattedRoundNumber() {
+      return formatRoundNumber(this.roundNumber())
     }
   },
   methods: {
+    ...mapGetters(['roundNumber']),
+
     async getBalance() {
       this.status = ''
       this.balance = await this.contract.getBalance(this.address)

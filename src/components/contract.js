@@ -76,6 +76,11 @@ class Contract {
     return s.toNumber()
   }
 
+  async roundNumber() {
+    const r = await this.instance.roundNumber()
+    return r.toNumber()
+  }
+
   async getTimeRemaining() {
     const stage = await this.stage()
     if (stage === 0) {
