@@ -24,12 +24,6 @@ import SectionShell from './SectionShell'
 import SocialShare from './SocialShare'
 import Refresh from './Refresh'
 
-// https://stackoverflow.com/questions/10841773/javascript-format-number-to-day-with-always-3-digits
-function lpad(value, padding) {
-  var zeroes = new Array(padding+1).join("0");
-  return (zeroes + value).slice(-padding);
-}
-
 export default {
   name: 'GameInformation',
   props: ['contract', 'timeLeft'],
