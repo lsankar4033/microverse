@@ -3,8 +3,14 @@ import App from './App.vue'
 import store from './store'
 import router from './router'
 import moment from 'vue-moment'
+import VueAnalytics from 'vue-analytics'
 
 Vue.use(moment)
+
+Vue.use(VueAnalytics, {
+  id: 'UA-26259984-6'
+})
+
 Vue.config.productionTip = false
 
 Vue.filter('weiToEth', function(wei) {
