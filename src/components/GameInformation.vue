@@ -1,7 +1,7 @@
 <template>
   <SectionShell class="section-accent">
     <div>
-      <li class="label">Simulation #{{formattedRoundNumber}}</li>
+      <li class="label">Simulation #{{formatRoundNumber(this.roundNumber())}}</li>
 <li v-if="jackpot"><b>Stimulus (jackpot):</b> Ξ{{ jackpot | weiToEth }}<span @click="updateGame" class="refresh-button"><Refresh /></span></li>
       <li v-if="auctionPrice"><b>Auction Tile Price:</b> Ξ{{ auctionPrice | weiToEth | setPrecision(8) }}<span @click="updateGame" class="refresh-button"><Refresh /></span></li>
       <li v-if="timeLeft"><b>Time left:</b> {{ timeLeft | formatSecondsToTime }}</li>
@@ -54,9 +54,6 @@ export default {
     balanceInEth() {
       return this.$options.filters.weiToEth(this.balance)
     },
-    formattedRoundNumber() {
-      return formatRoundNumber(this.roundNumber())
-    }
   },
   methods: {
     ...mapGetters(['roundNumber']),
@@ -75,7 +72,10 @@ export default {
       if (!this.contract) return null
       // Get latest jackpot and auction price information.
       this.contract.update()
-    }
+    },
+    formatRoundNumber(roundNumber) {
+      return formatRoundNumber(roundNumber)
+    },
   },
   mounted() {
     this.$store.subscribe(async (mutation) => {
