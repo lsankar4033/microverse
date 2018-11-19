@@ -89,15 +89,13 @@ export default {
   data() {
     return {
       tileIdRows,
-      NETWORK_ID: '1',
     }
   },
   computed: {
     ...mapGetters(['address', 'selectedTile', 'network', 'message']),
     wrongNetwork() {
-      // TODO: Turn this check back on for prod
-      // return this.network != this.NETWORK_ID
-      return false
+      if (this.network == '1' || this.network == '3' || this.network == '5777') return false
+      return true
     },
   },
   methods: {

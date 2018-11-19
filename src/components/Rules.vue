@@ -52,3 +52,9 @@
     name: 'Rules'
   }
 </script>
+
+<style scoped>
+ul li {
+  display: block;
+}
+</style>

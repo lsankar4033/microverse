@@ -1,10 +1,12 @@
 <template>
   <SectionShell class="section-accent">
     <div>
-      <li class="label">Simulation #{{formatRoundNumber(this.roundNumber())}}</li>
-<li v-if="jackpot"><b>Stimulus (jackpot):</b> Ξ{{ jackpot | weiToEth }}<span @click="updateGame" class="refresh-button"><Refresh /></span></li>
-      <li v-if="auctionPrice"><b>Auction Tile Price:</b> Ξ{{ auctionPrice | weiToEth | setPrecision(8) }}<span @click="updateGame" class="refresh-button"><Refresh /></span></li>
-      <li v-if="timeLeft"><b>Time left:</b> {{ timeLeft | formatSecondsToTime }}</li>
+      <ul>
+        <li class="label">Simulation #{{formatRoundNumber(this.roundNumber())}}</li>
+        <li v-if="jackpot"><b>Stimulus (jackpot):</b> Ξ{{ jackpot | weiToEth }}<span @click="updateGame" class="refresh-button"><Refresh /></span></li>
+        <li v-if="auctionPrice"><b>Auction Tile Price:</b> Ξ{{ auctionPrice | weiToEth | setPrecision(8) }}<span @click="updateGame" class="refresh-button"><Refresh /></span></li>
+        <li v-if="timeLeft"><b>Time left:</b> {{ timeLeft | formatSecondsToTime }}</li>
+      </ul>
     </div>
     <div v-if="contract" class="withdraw-container">
       <p v-if="balance > 0">Balance</p>
