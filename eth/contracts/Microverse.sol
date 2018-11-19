@@ -80,6 +80,16 @@ contract Microverse is
         asyncSend(teamAddress3, perTeamMemberFee);
     }
 
+    function withdrawContractBalance() external onlyOwner {
+        uint256 contractBalance = address(this).balance;
+        uint256 withdrawableBalance = contractBalance.sub(totalPayments);
+
+        // No withdrawal necessary if <= 0 balance
+        require(withdrawableBalance > 0);
+
+        asyncSend(msg.sender, withdrawableBalance);
+    }
+
     //////////
     // Auction
     //////////
