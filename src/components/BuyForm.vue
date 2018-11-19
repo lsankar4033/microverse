@@ -24,7 +24,7 @@
         <hr>
         <li><span>Total</span>
           <strong v-if="selectedTile.owner == address">Ξ{{ tax | weiToEth }}</strong>
-          <strong v-else-if="selectedTile.owner">Ξ{{ total | weiToEth }}</strong>
+          <strong v-else-if="selectedTile.owner || roundNumber == 0">Ξ{{ total | weiToEth }}</strong>
         </li>
       </ul>
     </template>
@@ -57,7 +57,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['address', 'selectedTile', 'domain']),
+    ...mapGetters(['address', 'selectedTile', 'domain', 'roundNumber']),
 
     newPriceInWei() {
       return this.$options.filters.ethToWei(this.newPrice)
