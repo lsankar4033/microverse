@@ -67,61 +67,17 @@ contract Microverse is
     // Team stuff
     /////////////
 
-    // Up to 3 equal-share dev team members
-    address public teamAddress1;
-    address public teamAddress2;
-    address public teamAddress3;
-
-    // 0 -> 3 depending on contract state. I only use uint256 so that I can use SafeMath...
-    uint256 public teamSize= 0;
-
-    function addTeamAddress(address newTeamAddress) external onlyOwner {
-        require(
-            newTeamAddress != address(0),
-            "New team member must not be null team address"
-        );
-
-        require(
-            newTeamAddress != owner,
-            "New team member must not be contract owner"
-        );
-
-        require(
-            teamAddress1 == address(0) || teamAddress2 == address(0) || teamAddress3 == address(0),
-            "Must be an open spot for a new team member! This prevents changing the team once all slots are filled."
-        );
-
-        if (teamAddress1 == address(0)) {
-            teamAddress1 = newTeamAddress;
-            teamSize = teamSize.add(1);
-        } else if (teamAddress2 == address(0)) {
-            teamAddress2 = newTeamAddress;
-            teamSize = teamSize.add(1);
-        } else if (teamAddress3 == address(0)) {
-            teamAddress3 = newTeamAddress;
-            teamSize = teamSize.add(1);
-        }
-    }
+    // The muscle behind microverse
+    address public teamAddress1 = 0xcB46219bA114245c3A18761E4f7891f9C4BeF8c0;
+    address public teamAddress2 = 0xF2AFb5c2D205B36F22BE528A1300393B1C399E79;
+    address public teamAddress3 = 0x22FC59B3878F0Aa2e43F7f3388c1e20D83Cf8ba2;
 
     function _sendToTeam(uint256 amount) private {
-        if (teamSize == 0) {
-            // If team hasn't been set, treat contract owner as 'team'
-            asyncSend(owner, amount);
-        } else {
-            uint256 perTeamMemberFee = amount.div(teamSize);
+        uint256 perTeamMemberFee = amount.div(3);
 
-            if (teamAddress1 != address(0)) {
-                asyncSend(teamAddress1, perTeamMemberFee);
-            }
-
-            if (teamAddress2 != address(0)) {
-                asyncSend(teamAddress2, perTeamMemberFee);
-            }
-
-            if (teamAddress3 != address(0)) {
-                asyncSend(teamAddress3, perTeamMemberFee);
-            }
-        }
+        asyncSend(teamAddress1, perTeamMemberFee);
+        asyncSend(teamAddress2, perTeamMemberFee);
+        asyncSend(teamAddress3, perTeamMemberFee);
     }
 
     //////////
