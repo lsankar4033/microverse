@@ -32522,6 +32522,9 @@
   "networks": {
     "1": {
       "address": "0x7f4ca7139f9847dde009b4c6af1e173c1bf03d2d"
+    },
+    "3": {
+      "address": "0x8cff2dc6d07d76276ef7fcb9eb7f4a5cd12d62bc"
     }
   },
   "schemaVersion": "2.0.1",
