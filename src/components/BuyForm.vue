@@ -18,7 +18,7 @@
       <ul v-if="canBuyOrChangePrice" class="tax-container">
         <li><span>Price</span>
           <strong v-if="selectedTile.owner == address">&mdash;</strong>
-          <strong v-else-if="selectedTile.owner">Ξ{{ selectedTile.price | weiToEth }}</strong>
+          <strong v-else-if="selectedTile.owner || roundNumber == 0">Ξ{{ selectedTile.price | weiToEth }}</strong>
         </li>
         <li><span>Tax</span><strong>Ξ{{ tax | weiToEth }}</strong></li>
         <hr>
