@@ -11,6 +11,7 @@
     <Board :timeLeft="timeLeft" :contract="contractInstance"/>
     <BuyForm :contract="contractInstance" :referrer="referrer"/>
     <ReferralPrompt :contract="contractInstance"/>
+    <a href="https://t.me/microversegame">For latest announcements, feedback, and questions join our telegram</a>
   </div>
 </template>
 
