@@ -101,6 +101,10 @@ class Contract {
 
   async getTilePriceAuction() {
     const price = await this.instance.getTilePriceAuction()
+
+    // NOTE: Keeping these in while we figure out why auction price is occasionally 0
+    console.log(`Contract instance: ${this.instance}`)
+    console.log(`Price: ${price}`)
     return price.toNumber()
   }
 
@@ -112,14 +116,17 @@ class Contract {
   async getTilePrice(id) {
     const stage = await this.stage()
     const owner = await this.tileToOwner(id)
-    if (stage === 0 && !owner) return this.getTilePriceAuction()
+    if (stage === 0 && !owner) {
+      return this.getTilePriceAuction()
+    }
     return this.tileToPrice(id)
   }
 
   async tileToOwner(id) {
     const owner = await this.instance.tileToOwner(id)
-    const nullAddress = '0x0000000000000000000000000000000000000000'
-    if (owner == nullAddress) return null
+    const nullAddresses = ['0x0000000000000000000000000000000000000000', '0x']
+
+    if (nullAddresses.includes(owner)) return null
     return owner
   }
 
