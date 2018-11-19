@@ -15,7 +15,7 @@ const state = {
     active: false,
     text: '',
   },
-  domain: 'http://microverse.com',
+  domain: 'https://microversegame.com',
   selectedTile: deselectedTile,
   tiles: {},
   roundNumber: 0
