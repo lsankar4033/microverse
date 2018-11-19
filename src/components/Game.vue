@@ -1,8 +1,8 @@
 <template>
   <div id="game-board">
     <div class="section hero">
-      <h1>Welcome to the Microverse.</h1>
-      <p>Acquire worlds and earn a slice of Microverse trade. When trade slows, the simulation stops and riches are distributed to the least expensive worlds first. Worlds you own automatically roll over to the next simulation.</p>
+      <h1>Welcome to simulation #{{formatRoundNumber(this.roundNumber())}} </h1>
+      <p>Microverse is a simulation. Acquire worlds and power them up to earn a slice of Microverse trade. When trade slows, the simulation stops and riches are airdropped to the least powerful worlds. And the simulation starts over.</p>
     </div>
     <GameInformation :timeLeft="timeLeft" :contract="contractInstance"/>
 
@@ -16,13 +16,14 @@
 
 <script>
 import { instantiateContract } from './contract'
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import MicroverseConfig from '@/Microverse.json'
 import contract from 'truffle-contract'
 import BuyForm from './BuyForm'
 import Board from './Board'
 import GameInformation from './GameInformation'
 import ReferralPrompt from './ReferralPrompt'
+import { formatRoundNumber } from './utils'
 
 export default{
   name: 'Game',
@@ -40,9 +41,18 @@ export default{
     }
   },
   methods: {
-    ...mapActions(['setTile']),
+    ...mapActions(['setTile', 'setRoundNumber']),
+    ...mapGetters(['roundNumber']),
 
-    async initializeCountDown() {
+    formatRoundNumber(roundNumber) {
+      return formatRoundNumber(roundNumber)
+    },
+
+    // timer state, round number
+    async initializeState() {
+      const roundNumber = await this.contractInstance.roundNumber()
+      this.setRoundNumber(roundNumber)
+
       const timeLeft = await this.contractInstance.getTimeRemaining()
       this.timeLeft = timeLeft
       this.startTimer()
@@ -77,17 +87,17 @@ export default{
       contractInstance.instance.TilePriceChanged((err, res) => {
         this.setTile({ id: res.args.tileId.toNumber(), contract: contractInstance })
       })
-      //contractInstance.instance.GameRoundStarted((err, res) => {
-      //  const initJackpot = res.args.initJackpot.toNumber()
-      //  const endTime = res.args.endTime.toNumber()
-      //})
+      contractInstance.instance.GameRoundStarted((err, res) => {
+        this.setRoundNumber(res.args.roundNumber.toNumber())
+      })
       //contractInstance.instance.GameRoundExtended((err, res) => {
       //  const endTime = res.args.endTime.toNumber()
       //})
       //contractInstance.instance.GameRoundEnded((err, res) => {
       //  const jackpot = res.args.jackpot.toNumber()
       //})
-      this.initializeCountDown()
+
+      this.initializeState()
     })
   },
 }

@@ -237,6 +237,8 @@ contract Microverse is
     uint256 constant public halvingVolume = 50 ether; // tx volume before next duration halving
     uint256 constant public minRoundExtension = 10 seconds; // could set to 1 second
 
+    uint256 public roundNumber = 0;
+
     uint256 public curExtensionVolume;
     uint256 public curRoundExtension;
 
@@ -255,7 +257,8 @@ contract Microverse is
 
     event GameRoundStarted(
         uint256 initJackpot,
-        uint256 endTime
+        uint256 endTime,
+        uint256 roundNumber
     );
 
     event GameRoundExtended(
@@ -291,9 +294,11 @@ contract Microverse is
         jackpot = nextJackpot;
         nextJackpot = 0;
 
+        roundNumber = roundNumber.add(1);
+
         _extendRound();
 
-        emit GameRoundStarted(jackpot, roundEndTime);
+        emit GameRoundStarted(jackpot, roundEndTime, roundNumber);
     }
 
     function _roundOver() private view returns (bool) {
