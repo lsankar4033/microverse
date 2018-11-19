@@ -18,13 +18,13 @@
       <ul v-if="canBuyOrChangePrice" class="tax-container">
         <li><span>Price</span>
           <strong v-if="selectedTile.owner == address">&mdash;</strong>
-          <strong v-else-if="selectedTile.owner">Ξ{{ selectedTile.price | weiToEth }}</strong>
+          <strong v-else-if="selectedTile.owner || roundNumber == 0">Ξ{{ selectedTile.price | weiToEth }}</strong>
         </li>
         <li><span>Tax</span><strong>Ξ{{ tax | weiToEth }}</strong></li>
         <hr>
         <li><span>Total</span>
           <strong v-if="selectedTile.owner == address">Ξ{{ tax | weiToEth }}</strong>
-          <strong v-else-if="selectedTile.owner">Ξ{{ total | weiToEth }}</strong>
+          <strong v-else-if="selectedTile.owner || roundNumber == 0">Ξ{{ total | weiToEth }}</strong>
         </li>
       </ul>
     </template>
@@ -57,7 +57,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['address', 'selectedTile', 'domain']),
+    ...mapGetters(['address', 'selectedTile', 'domain', 'roundNumber']),
 
     newPriceInWei() {
       return this.$options.filters.ethToWei(this.newPrice)
