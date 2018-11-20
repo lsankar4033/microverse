@@ -54,7 +54,11 @@
 </script>
 
 <style scoped>
+ul {
+  list-style-type: disc;
+  padding-left: 2.5rem;
+}
 ul li {
-  display: block;
+  display: list-item;
 }
 </style>
