@@ -1,13 +1,14 @@
 <template>
   <SectionShell>
     <template v-if="selectedTile.id >= 0">
-      <h1>World {{ selectedTile.id }}</h1>
-      <div class="tile-information">
-        <div>Ξ{{ selectedTile.price | weiToEth }}</div>
-        <h2 v-if="selectedTile.owner == address">You own this world</h2>
-        <h2 v-else-if="selectedTile.owner">{{ selectedTile.owner | hashShorten }} owns this world</h2>
-        <h2 v-else>Nobody owns this world</h2>
+      <div class="row">
+        <h1>World {{ selectedTile.id }}</h1>
+        <p class="owner" v-if="selectedTile.owner == address">You own this world</p>
+        <p class="owner" v-else-if="selectedTile.owner">{{ selectedTile.owner | hashShorten }} owns this world</p>
+        <p class="owner" v-else>Nobody owns this world</p>
       </div>
+      <div class="price">Ξ{{ selectedTile.price | weiToEth }}</p></div>
+      <h2 class="label" v-if="canBuyOrChangePrice">Set your listing price (don't leave this empty!)</h2>
       <div v-if="canBuyOrChangePrice" class="buy-tile-container">
         <span class="price-input"><small>Ξ</small>
           <input v-model="newPrice" placeholder="Set a price (Ξ0 if left empty)" type="number" @input="updateTotal"/>
@@ -17,10 +18,10 @@
       </div>
       <ul v-if="canBuyOrChangePrice" class="tax-container">
         <li><span>Price</span>
-          <strong v-if="selectedTile.owner == address">&mdash;</strong>
-          <strong v-else-if="selectedTile.owner || roundNumber == 0">Ξ{{ selectedTile.price | weiToEth }}</strong>
+          <span v-if="selectedTile.owner == address">&mdash;</span>
+          <span v-else-if="selectedTile.owner || roundNumber == 0">Ξ{{ selectedTile.price | weiToEth }}</span>
         </li>
-        <li><span>Tax</span><strong>Ξ{{ tax | weiToEth }}</strong></li>
+        <li><span>Tax</span><span>Ξ{{ tax | weiToEth }}</span></li>
         <hr>
         <li><span>Total</span>
           <strong v-if="selectedTile.owner == address">Ξ{{ tax | weiToEth }}</strong>
@@ -142,10 +143,6 @@ export default {
 .buy-tile-container button {
   background: green;
 }
-.tile-information {
-  margin: 8px 0 10px;
-  font-size: 16pt;
-}
 .price-input {
   border: 1px inset #ccc;
 }
@@ -175,8 +172,27 @@ strong {
   padding: 0 2px;
 }
 .tax-container hr {
-  width: 7rem;
+  width: 16rem;
   margin-left: 0;
+}
+
+.tax-container {
+  padding-top: 1rem;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+}
+
+.owner {
+  margin-top: .6rem;
+  margin-left: auto;
+  color: grey;
+}
+
+.price {
+  font-size: 1.2rem;
 }
 </style>
 
