@@ -4,6 +4,7 @@ import store from './store'
 import router from './router'
 import moment from 'vue-moment'
 import VueAnalytics from 'vue-analytics'
+import Big from 'big.js'
 
 Vue.use(moment)
 
@@ -15,12 +16,16 @@ Vue.config.productionTip = false
 
 Vue.filter('weiToEth', function(wei) {
   if (!wei) return 0
-  return wei / 1e18
+  const t = new Big(wei)
+  const result = t.div('1e+18')
+  return result.toString()
 })
 
 Vue.filter('ethToWei', function(eth) {
   if (!eth) return 0
-  return eth * 1e18
+  const t = new Big(eth)
+  const result = t.times('1e+18')
+  return result.toString()
 })
 
 Vue.filter('formatSecondsToTime', function(sec) {
@@ -39,7 +44,9 @@ Vue.filter('formatSecondsToTime', function(sec) {
 Vue.filter('setPrecision', function(value, precision) {
   if (!value) return '0'
   if (!precision) return value
-  return value.toPrecision(precision)
+  const t = new Big(value)
+  const result = t.toFixed(precision)
+  return result.toString()
 })
 
 Vue.filter('hashShorten', function(hash) {

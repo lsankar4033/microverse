@@ -101,10 +101,6 @@ class Contract {
 
   async getTilePriceAuction() {
     const price = await this.instance.getTilePriceAuction()
-
-    // NOTE: Keeping these in while we figure out why auction price is occasionally 0
-    console.log(`Contract instance: ${this.instance}`)
-    console.log(`Price: ${price}`)
     return price.toNumber()
   }
 
