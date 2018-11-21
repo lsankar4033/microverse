@@ -11,7 +11,7 @@
       <h2 class="label" v-if="canBuyOrChangePrice">Set your listing price (don't leave this empty!)</h2>
       <div v-if="canBuyOrChangePrice" class="buy-tile-container">
         <span class="price-input"><small>Ξ</small>
-          <input v-model="newPrice" placeholder="Set a price (Ξ0 if left empty)" type="number" @input="updateTotal"/>
+          <input v-model="newPrice" placeholder="Set a price" type="number" @input="updateTotal"/>
         </span>
         <button v-if="selectedTile.owner === address" class="button" @click.prevent="handleChangePrice">Change Price</button>
         <button v-else class="button" @click.prevent="handleBuyTile">Buy World {{ selectedTile.id }}</button>
@@ -77,6 +77,12 @@ export default {
     ...mapMutations(['SHOW_MESSAGE']),
 
     async handleBuyTile() {
+      // Don't allow 0-priced tile!
+      if (this.newPrice === null || this.newPrice == 0) {
+        alert('Please set a nonzero starting price!')
+        return
+      }
+
       let success = false
       const id = this.selectedTile.id
       this.SHOW_MESSAGE({ text: 'Check your wallet provider to complete buying this world.' })
@@ -86,7 +92,7 @@ export default {
             address: this.address,
             id,
             newPrice: this.newPriceInWei,
-            referrer: this.referrer 
+            referrer: this.referrer
           })
       } catch (err) {
         console.log('err', err)
