@@ -15,7 +15,7 @@
 import { mapGetters } from 'vuex'
 
 // NOTE: Probably should move these to utils file
-const microverseUrl = 'microverse.com'
+const microverseUrl = 'https://microversegame.com'
 function copyStringToClipboard (str) {
    // Create new element
    var el = document.createElement('textarea');
