@@ -25,16 +25,6 @@ async function callContractMethod(method, args, msg) {
 class Contract {
   constructor(contractInstance) {
     this.instance = contractInstance
-    this.gameStage = null
-    this.jackpot = null
-    this.auctionPrice = null
-    this.update()
-  }
-
-  async update() {
-    this.gameStage = await this.stage()
-    if (this.gameStage == 0) this.auctionPrice = await this.getTilePriceAuction()
-    if (this.gameStage > 0) this.jackpot = await this.getJackpot()
   }
 
   async getTile(id, { auctionPrice, roundNumber }) {

@@ -69,7 +69,7 @@ export default {
         : `My microverse world is on sale for ${this.newPrice} eth at ${this.domain}`
     },
     canBuyOrChangePrice() {
-      return this.contract && this.contract.gameStage != 0 || !this.selectedTile.owner
+      return this.contract && this.roundNumber != 0 || !this.selectedTile.owner
     },
   },
   methods: {

@@ -49,7 +49,6 @@ export default{
       return formatRoundNumber(roundNumber)
     },
 
-    // TODO: Include retry logic
     // Sets all initial vuex state related to board state
     async initializeState() {
       const roundNumber = await this.contractInstance.roundNumber()

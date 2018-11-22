@@ -3,8 +3,8 @@
     <div>
       <ul>
         <li class="label">Simulation #{{formatRoundNumber(this.roundNumber())}}</li>
-        <li v-if="jackpot"><b>Stimulus (jackpot):</b> Ξ{{ jackpot | weiToEth }}<span @click="updateGame" class="refresh-button"><Refresh /></span></li>
-        <li v-if="auctionPrice"><b>Auction Tile Price:</b> Ξ{{ auctionPrice | weiToEth | setPrecision(8) }}<span @click="updateGame" class="refresh-button"><Refresh /></span></li>
+        <li v-if="jackpot"><b>Stimulus (jackpot):</b> Ξ{{ this.jackpot | weiToEth }}<span @click="updateGame" class="refresh-button"><Refresh /></span></li>
+        <li v-if="auctionPrice"><b>Auction Tile Price:</b> Ξ{{ this.auctionPrice | weiToEth | setPrecision(8) }}<span @click="updateGame" class="refresh-button"><Refresh /></span></li>
         <li v-if="timeLeft && roundNumber() > 0"><b>Time left:</b> {{ timeLeft | formatSecondsToTime }}</li>
       </ul>
     </div>
@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import SectionShell from './SectionShell'
 import SocialShare from './SocialShare'
 import Refresh from './Refresh'
@@ -44,21 +44,14 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['address', 'domain']),
-    jackpot() {
-      if (!this.contract) return null
-      return this.contract.jackpot
-    },
-    auctionPrice() {
-      if (!this.contract) return null
-      return this.contract.auctionPrice
-    },
+    ...mapGetters(['address', 'domain', 'auctionPrice', 'jackpot']),
     balanceInEth() {
       return this.$options.filters.weiToEth(this.balance)
     },
   },
   methods: {
     ...mapGetters(['roundNumber']),
+    ...mapActions(['setAuctionPrice', 'setJackpot', 'setNextJackpot', 'setRoundNumber']),
 
     async getBalance() {
       this.status = ''
@@ -71,11 +64,21 @@ export default {
       this.status = 'withdrawSuccess'
     },
 
-    // TODO: Have this interact with vuex state!
-    updateGame() {
-      if (!this.contract) return null
-      // Get latest jackpot and auction price information.
-      this.contract.update()
+    // NOTE: Duplicate logic with Game.vue...
+    async updateGame() {
+      const roundNumber = await this.contract.roundNumber()
+      this.setRoundNumber(roundNumber)
+
+      if (roundNumber === 0) {
+        const auctionPrice = await this.contract.getTilePriceAuction()
+        this.setAuctionPrice(auctionPrice)
+      } else {
+        const jackpot = await this.contract.getJackpot()
+        this.setJackpot(jackpot)
+      }
+
+      const nextJackpot = await this.contract.getNextJackpot()
+      this.setNextJackpot(nextJackpot)
     },
     formatRoundNumber(roundNumber) {
       return formatRoundNumber(roundNumber)

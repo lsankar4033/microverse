@@ -96,7 +96,10 @@ const getters = {
   domain: state => state.domain,
   tile: state => id => state.tiles[id],
   message: state => state.message,
-  roundNumber: state => state.roundNumber
+  roundNumber: state => state.roundNumber,
+  auctionPrice: state => state.auctionPrice,
+  jackpot: state => state.jackpot,
+  nextJackpot: state => state.nextJackpot
 }
 
 export default new Vuex.Store({
