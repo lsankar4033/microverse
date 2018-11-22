@@ -18,7 +18,7 @@ const state = {
   domain: 'https://microversegame.com',
   selectedTile: deselectedTile,
   tiles: {},
-  roundNumber: 0
+  roundNumber: null
 }
 
 const actions = {
