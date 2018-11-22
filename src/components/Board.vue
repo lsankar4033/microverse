@@ -27,7 +27,7 @@
              class="row">
           <div @click.stop.prevent="selectTile(tileId)" v-for="tileId in tileIdRow"
                :key="tileId">
-            <GamePiece :id="tileId" :contract="contract">{{ setTile({id: tileId, contract}) }}</GamePiece>
+            <GamePiece :id="tileId" :contract="contract"></GamePiece>
           </div>
         </div>
       </div>

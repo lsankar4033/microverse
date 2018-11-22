@@ -42,22 +42,41 @@ export default{
     }
   },
   methods: {
-    ...mapActions(['setTile', 'setRoundNumber']),
+    ...mapActions(['setTile', 'setRoundNumber', 'setAuctionPrice', 'setJackpot', 'setNextJackpot']),
     ...mapGetters(['roundNumber']),
 
     formatRoundNumber(roundNumber) {
       return formatRoundNumber(roundNumber)
     },
 
-    // timer state, round number
+    // TODO: Include retry logic
+    // Sets all initial vuex state related to board state
     async initializeState() {
       const roundNumber = await this.contractInstance.roundNumber()
       this.setRoundNumber(roundNumber)
 
+      if (roundNumber === 0) {
+        const auctionPrice = await this.contractInstance.getTilePriceAuction()
+        this.setAuctionPrice(auctionPrice)
+      } else {
+        const jackpot = await this.contractInstance.getJackpot()
+        this.setJackpot(jackpot)
+      }
+
+      const nextJackpot = await this.contractInstance.getNextJackpot()
+      this.setNextJackpot(nextJackpot)
+
+      for (let i = 1; i <= 19; i++) {
+        this.setTile({ id: i, contract: this.contractInstance })
+      }
+    },
+
+    async initializeTimer() {
       const timeLeft = await this.contractInstance.getTimeRemaining()
       this.timeLeft = timeLeft
       this.startTimer()
     },
+
     startTimer() {
       // https://stackoverflow.com/questions/29971898/how-to-create-an-accurate-timer-in-javascript
       const interval = 1000; // ms
@@ -91,6 +110,7 @@ export default{
       contractInstance.instance.GameRoundStarted((err, res) => {
         this.setRoundNumber(res.args.roundNumber.toNumber())
       })
+
       //contractInstance.instance.GameRoundExtended((err, res) => {
       //  const endTime = res.args.endTime.toNumber()
       //})
@@ -99,6 +119,7 @@ export default{
       //})
 
       this.initializeState()
+      this.initializeTimer()
     })
   },
 }

@@ -37,13 +37,19 @@ class Contract {
     if (this.gameStage > 0) this.jackpot = await this.getJackpot()
   }
 
-  async getTile(id) {
-    this.gameStage = await this.stage()
-    this.auctionPrice = await this.getTilePriceAuction()
-
+  async getTile(id, { auctionPrice, roundNumber }) {
     const owner = await this.tileToOwner(id)
-    const price = await this.getTilePrice(id, owner)
-    const buyable = await this.tileIsBuyable(id, owner)
+
+    let price = 0
+    if (roundNumber === 0 && !owner) {
+      price = auctionPrice
+    } else {
+      price = await this.tileToPrice(id)
+    }
+
+    // Tiles only not buyable if already bought in auction phase
+    const buyable = !(roundNumber === 0 && owner)
+
     const loaded = true
     const tile = { owner, price, buyable, loaded, id }
 
@@ -53,6 +59,11 @@ class Contract {
   async getJackpot() {
     const jackpot = await this.instance.jackpot()
     return jackpot.toNumber()
+  }
+
+  async getNextJackpot() {
+    const nextJackpot = await this.instance.nextJackpot()
+    return nextJackpot.toNumber()
   }
 
   async endGameRound(address) {
@@ -112,13 +123,6 @@ class Contract {
     return price.toNumber()
   }
 
-  async getTilePrice(id, owner) {
-    if (this.gameStage === 0 && !owner) {
-      return this.auctionPrice
-    }
-    return this.tileToPrice(id)
-  }
-
   async tileToOwner(id) {
     const owner = await this.instance.tileToOwner(id)
     const nullAddresses = ['0x0000000000000000000000000000000000000000', '0x']
@@ -136,11 +140,6 @@ class Contract {
   async maxTileId() {
     const max = await this.instance.maxTileId()
     return max.toNumber()
-  }
-
-  async tileIsBuyable(id, owner) {
-    if (this.gameStage === 0 && owner) return false
-    return true
   }
 
   async buyTile({ address, id, newPrice, referrer }) {

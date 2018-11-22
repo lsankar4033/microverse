@@ -70,6 +70,8 @@ export default {
       if (!success) return
       this.status = 'withdrawSuccess'
     },
+
+    // TODO: Have this interact with vuex state!
     updateGame() {
       if (!this.contract) return null
       // Get latest jackpot and auction price information.
