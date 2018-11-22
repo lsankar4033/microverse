@@ -25,7 +25,6 @@ async function callContractMethod(method, args, msg) {
 class Contract {
   constructor(contractInstance) {
     this.instance = contractInstance
-    this.tiles = {}
     this.gameStage = null
     this.jackpot = null
     this.auctionPrice = null
@@ -39,11 +38,15 @@ class Contract {
   }
 
   async getTile(id) {
+    this.gameStage = await this.stage()
+    this.auctionPrice = await this.getTilePriceAuction()
+
     const owner = await this.tileToOwner(id)
-    const price = await this.getTilePrice(id)
-    const buyable = await this.tileIsBuyable(id)
+    const price = await this.getTilePrice(id, owner)
+    const buyable = await this.tileIsBuyable(id, owner)
     const loaded = true
     const tile = { owner, price, buyable, loaded, id }
+
     return tile
   }
 
@@ -101,10 +104,6 @@ class Contract {
 
   async getTilePriceAuction() {
     const price = await this.instance.getTilePriceAuction()
-
-    // NOTE: Keeping these in while we figure out why auction price is occasionally 0
-    console.log(`Contract instance: ${this.instance}`)
-    console.log(`Price: ${price}`)
     return price.toNumber()
   }
 
@@ -113,11 +112,9 @@ class Contract {
     return price.toNumber()
   }
 
-  async getTilePrice(id) {
-    const stage = await this.stage()
-    const owner = await this.tileToOwner(id)
-    if (stage === 0 && !owner) {
-      return this.getTilePriceAuction()
+  async getTilePrice(id, owner) {
+    if (this.gameStage === 0 && !owner) {
+      return this.auctionPrice
     }
     return this.tileToPrice(id)
   }
@@ -127,6 +124,7 @@ class Contract {
     const nullAddresses = ['0x0000000000000000000000000000000000000000', '0x']
 
     if (nullAddresses.includes(owner)) return null
+
     return owner
   }
 
@@ -140,10 +138,8 @@ class Contract {
     return max.toNumber()
   }
 
-  async tileIsBuyable(id) {
-    const stage = await this.stage()
-    const owner = await this.tileToOwner(id)
-    if (stage === 0 && owner) return false
+  async tileIsBuyable(id, owner) {
+    if (this.gameStage === 0 && owner) return false
     return true
   }
 
