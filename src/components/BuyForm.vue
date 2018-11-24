@@ -7,7 +7,7 @@
         <p class="owner" v-else-if="selectedTile.owner">{{ selectedTile.owner | hashShorten }} owns this world</p>
         <p class="owner" v-else>Nobody owns this world</p>
       </div>
-      <div class="price">Ξ{{ selectedTile.price | weiToEth }}</p></div>
+      <div class="price"><p>Ξ{{ selectedTile.price | weiToEth }}</p></div>
       <h2 class="label" v-if="canBuyOrChangePrice">Set your listing price (don't leave this empty!)</h2>
       <div v-if="canBuyOrChangePrice" class="buy-tile-container">
         <span class="price-input"><small>Ξ</small>
