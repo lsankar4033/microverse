@@ -14,8 +14,8 @@
       <li>At the start of the simulation, worlds are unowned, and are sold via dutch auction where the price slowly declines towards zero until the world is sold</li>
       <li>Owners can change the price of their worlds, but have to pay a 10% tax on the new price</li>
       <li>All transactions in Microverse go directly through the Microverse economy (see figure below for the exact splits), with roughly half going towards the stimulus (jackpot) and the other half going instantly to the owners of worlds</li>
-      <li>As soon all worlds are sold, a the round begins and the round timer starts counting down from 4 hours</li>
-      <li>Each time a world is purchased or the price is changed the timer is reset, starting with 4 hours and halving every 10 ETH that flow through the Microverse</li>
+      <li>As soon all worlds are sold, a the round begins and the round timer starts counting down from 12 hours</li>
+      <li>Each time a world is purchased or the price is changed the timer is reset, starting with 12 hours and halving every 10 ETH that flow through the Microverse</li>
       <li>At the end of the simulation, the player who owns the lowest price world wins half of the stimulus. The rest is distributed proportionally rest of the worlds</li>
       <li>A new round begins with ownership of worlds unchanged</li>
     </ul>
