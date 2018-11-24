@@ -25,31 +25,35 @@ async function callContractMethod(method, args, msg) {
 class Contract {
   constructor(contractInstance) {
     this.instance = contractInstance
-    this.tiles = {}
-    this.gameStage = null
-    this.jackpot = null
-    this.auctionPrice = null
-    this.update()
   }
 
-  async update() {
-    this.gameStage = await this.stage()
-    if (this.gameStage == 0) this.auctionPrice = await this.getTilePriceAuction()
-    if (this.gameStage > 0) this.jackpot = await this.getJackpot()
-  }
-
-  async getTile(id) {
+  async getTile(id, { auctionPrice, roundNumber }) {
     const owner = await this.tileToOwner(id)
-    const price = await this.getTilePrice(id)
-    const buyable = await this.tileIsBuyable(id)
+
+    let price = 0
+    if (roundNumber === 0 && !owner) {
+      price = auctionPrice
+    } else {
+      price = await this.tileToPrice(id)
+    }
+
+    // Tiles only not buyable if already bought in auction phase
+    const buyable = !(roundNumber === 0 && owner)
+
     const loaded = true
     const tile = { owner, price, buyable, loaded, id }
+
     return tile
   }
 
   async getJackpot() {
     const jackpot = await this.instance.jackpot()
     return jackpot.toNumber()
+  }
+
+  async getNextJackpot() {
+    const nextJackpot = await this.instance.nextJackpot()
+    return nextJackpot.toNumber()
   }
 
   async endGameRound(address) {
@@ -109,20 +113,12 @@ class Contract {
     return price.toNumber()
   }
 
-  async getTilePrice(id) {
-    const stage = await this.stage()
-    const owner = await this.tileToOwner(id)
-    if (stage === 0 && !owner) {
-      return this.getTilePriceAuction()
-    }
-    return this.tileToPrice(id)
-  }
-
   async tileToOwner(id) {
     const owner = await this.instance.tileToOwner(id)
     const nullAddresses = ['0x0000000000000000000000000000000000000000', '0x']
 
     if (nullAddresses.includes(owner)) return null
+
     return owner
   }
 
@@ -134,13 +130,6 @@ class Contract {
   async maxTileId() {
     const max = await this.instance.maxTileId()
     return max.toNumber()
-  }
-
-  async tileIsBuyable(id) {
-    const stage = await this.stage()
-    const owner = await this.tileToOwner(id)
-    if (stage === 0 && owner) return false
-    return true
   }
 
   async buyTile({ address, id, newPrice, referrer }) {
