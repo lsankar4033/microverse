@@ -110,9 +110,12 @@ export default{
         this.setRoundNumber(res.args.roundNumber.toNumber())
       })
 
+      // TODO: Change timer in UI!
       //contractInstance.instance.GameRoundExtended((err, res) => {
       //  const endTime = res.args.endTime.toNumber()
       //})
+
+      // TODO: Set up 'End round' button, etc.
       //contractInstance.instance.GameRoundEnded((err, res) => {
       //  const jackpot = res.args.jackpot.toNumber()
       //})
