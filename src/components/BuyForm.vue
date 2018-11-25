@@ -71,6 +71,9 @@ export default {
     canBuyOrChangePrice() {
       return this.contract && this.roundNumber != 0 || !this.selectedTile.owner
     },
+    price() {
+      return this.selectedTile.price
+    },
   },
   methods: {
     ...mapActions(['deselectTile']),
@@ -134,6 +137,9 @@ export default {
       this.deselectTile()
       this.status = 'priceChanged'
     },
+  },
+  watch: {
+    price: ['updateTotal']
   }
 }
 </script>
