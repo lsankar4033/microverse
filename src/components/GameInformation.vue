@@ -44,13 +44,12 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['address', 'domain', 'auctionPrice', 'jackpot']),
+    ...mapGetters(['address', 'domain', 'auctionPrice', 'jackpot', 'roundNumber']),
     balanceInEth() {
       return this.$options.filters.weiToEth(this.balance)
     },
   },
   methods: {
-    ...mapGetters(['roundNumber']),
     ...mapActions(['setAuctionPrice', 'setJackpot', 'setNextJackpot', 'setRoundNumber']),
 
     async getBalance() {
