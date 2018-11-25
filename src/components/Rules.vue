@@ -49,7 +49,15 @@
 
 <script>
   export default {
-    name: 'Rules'
+    name: 'Rules',
+    methods: {
+      track () {
+        this.$ga.page('/rules')
+      }
+    },
+    mounted() {
+      this.track()
+    }
   }
 </script>
 
