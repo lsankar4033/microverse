@@ -38,7 +38,12 @@ class Contract {
     }
 
     // Tiles only not buyable if already bought in auction phase
-    const buyable = !(roundNumber === 0 && owner)
+    let buyable
+    if (roundNumber === 0) {
+      buyable = owner ? false : true
+    } else {
+      buyable = true
+    }
 
     const loaded = true
     const tile = { owner, price, buyable, loaded, id }
@@ -116,7 +121,8 @@ class Contract {
   async tileToOwner(id) {
     const owner = await this.instance.tileToOwner(id)
     const nullAddresses = ['0x0000000000000000000000000000000000000000', '0x']
-
+    
+    console.log('owner', owner)
     if (nullAddresses.includes(owner)) return null
 
     return owner
