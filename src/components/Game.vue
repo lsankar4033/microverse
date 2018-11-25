@@ -1,7 +1,7 @@
 <template>
   <div id="game-board">
     <div class="section hero">
-      <h1>Welcome to simulation #{{formatRoundNumber(this.roundNumber())}} </h1>
+      <h1>Welcome to simulation #{{ formatRoundNumber(roundNumber) }} </h1>
       <p>Microverse is a simulation. Acquire worlds and power them up to earn a slice of Microverse trade. When trade slows, the simulation stops and riches are airdropped to the least powerful worlds. And the simulation starts over.</p>
     </div>
     <GameInformation :timeLeft="timeLeft" :contract="contractInstance"/>
