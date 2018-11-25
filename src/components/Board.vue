@@ -19,7 +19,7 @@
       <div class="ui-text">
         <h2 v-if="selectedTile.id < 0" class="label">Click to acquire a world</h2>
         <h2 v-if="selectedTile.id >= 0" class="label">Viewing world {{ selectedTile.id }}</h2>
-        <button v-if="contract && this.roundNumber != 0 && timeLeft <= 0" @click="endRound">End Round</button>
+        <button v-if="contract && this.roundNumber > 0 && timeLeft <= 0" @click="endRound">End Round</button>
       </div>
       <div @click="deselectTile" class="grid">
         <div v-for="(tileIdRow, rowIdx) in tileIdRows"
