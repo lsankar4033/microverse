@@ -8,10 +8,7 @@ import VueAnalytics from 'vue-analytics'
 Vue.use(moment)
 
 Vue.use(VueAnalytics, {
-  id: 'UA-26259984-6',
-  debug: {
-    enabled: true
-  }
+  id: 'UA-26259984-6'
 })
 
 Vue.config.productionTip = false
