@@ -41,11 +41,9 @@ export default{
       timeLeft: null,
     }
   },
-  computed: {
-    ...mapGetters(['roundNumber']),
-  },
   methods: {
     ...mapActions(['setTile', 'setRoundNumber', 'setAuctionPrice', 'setJackpot', 'setNextJackpot']),
+    ...mapGetters(['roundNumber']),
 
     formatRoundNumber(roundNumber) {
       return formatRoundNumber(roundNumber)
