@@ -107,7 +107,9 @@ export default {
     },
     async selectTile(id) {
       const tile = this.tile(id)
-      this.setSelectedTile(tile)
+      if (tile) {
+        this.setSelectedTile(tile)
+      }
     },
     async endRound() {
       await this.contract.endGameRound(this.address)

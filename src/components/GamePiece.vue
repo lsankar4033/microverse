@@ -1,29 +1,38 @@
 <template>
-  <svg class="game-piece" xmlns="http://www.w3.org/2000/svg" version="1.1" :width="width" :height="height" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <polygon
-      :class="{
+  <div>
+    <svg v-if="tile(id)" class="game-piece" xmlns="http://www.w3.org/2000/svg" version="1.1" :width="width" :height="height" xmlns:xlink="http://www.w3.org/1999/xlink">
+      <polygon
+        :class="{
         hex: true,
         buyable,
         'owned-by-user': ownedByUser,
         selected: selectedTile.id == id
-      }"
-      :points="points" />
-    <text 
-      v-if="tile(id)" 
-      x="50%" y="50%" 
-      alignment-baseline="middle" 
-      text-anchor="middle">
-      Ξ{{ tile(id).price | weiToEth | setPrecision(4) }}
-    </text>
-  </svg>
+        }"
+        :points="points" />
+
+      <text
+        x="50%" y="50%"
+                alignment-baseline="middle"
+                text-anchor="middle">
+        Ξ{{ tile(id).price | weiToEth | setPrecision(4) }}
+      </text>
+    </svg>
+
+    <Spinner v-else />
+
+  </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
+import Spinner from './Spinner'
 
 export default {
   name: 'GamePiece',
   props: ['id', 'contract'],
+  components: {
+    Spinner
+  },
   data() {
     return {
       width: 100,
