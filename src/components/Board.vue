@@ -92,7 +92,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['address', 'selectedTile', 'network', 'message', 'roundNumber']),
+    ...mapGetters(['address', 'selectedTile', 'network', 'message', 'roundNumber', 'tile']),
     wrongNetwork() {
       if (this.network == '1' || this.network == '3' || this.network == '5777') return false
       return true
@@ -106,8 +106,10 @@ export default {
       this.$store.commit('UPDATE_STATE', { key: 'selectedTile', value: tile })
     },
     async selectTile(id) {
-      const tile = await this.setTile({ id, contract: this.contract })
-      this.setSelectedTile(tile)
+      const tile = this.tile(id)
+      if (tile) {
+        this.setSelectedTile(tile)
+      }
     },
     async endRound() {
       await this.contract.endGameRound(this.address)
