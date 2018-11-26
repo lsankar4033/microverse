@@ -144,7 +144,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .buy-tile-container {
   display: flex;
 }
@@ -205,6 +205,17 @@ strong {
 
 .price {
   font-size: 1.2rem;
+}
+@media only screen and (max-width: 768px) {
+  .row {
+    flex-direction: column;
+  }
+  .owner {
+    margin-left: 0;
+  }
+  .buy-tile-container {
+    flex-direction: column;
+  }
 }
 </style>
 
