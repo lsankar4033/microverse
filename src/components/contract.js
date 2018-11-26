@@ -25,16 +25,16 @@ async function callContractMethod(method, args, msg) {
   return txHash
 }
 
-async function withRetries(query, { nullValue, maxRetries = 10, retryDelayMs = 1000 }) {
+async function withRetries(query, { nullValue, maxRetries = null, retryDelayMs = 1000 }) {
   let result = await query()
 
-  if (result == nullValue && maxRetries > 0) {
-    console.log(`Retrying query. ${maxRetries} retries left`)
-
+  if (result == nullValue && (maxRetries === null || maxRetries > 0)) {
     await delay(retryDelayMs)
+
+    let newMaxRetries = maxRetries === null ? null : maxRetries - 1
     let result = await withRetries(
       query,
-      { nullValue: nullValue, maxRetries: maxRetries - 1, retryDelayMs: retryDelayMs }
+      { nullValue: nullValue, maxRetries: newMaxRetries, retryDelayMs: retryDelayMs }
     )
 
     return result
