@@ -82,7 +82,7 @@ export default {
     async handleBuyTile() {
       // Don't allow 0-priced tile!
       if (this.newPrice === null || this.newPrice == 0) {
-        alert('Please set a nonzero starting price!')
+        alert('Please set a nonzero listing price!')
         return
       }
 
