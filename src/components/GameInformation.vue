@@ -96,6 +96,15 @@ export default {
       if (newContract != null && this.address != null) {
         this.balance = await this.contract.getBalance(this.address)
       }
+    },
+    timeLeft: function(tl) {
+      if (!tl || tl < 1) {
+        this.$ga.event({
+          eventCategory: 'error',
+          eventAction: 'timeleft failure',
+          eventLabel: 'timeleft is either undefined or less than 1',
+        })
+      }
     }
   },
 }
