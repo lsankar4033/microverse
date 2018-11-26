@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <svg v-if="tile(id)" class="game-piece" xmlns="http://www.w3.org/2000/svg" version="1.1" :width="width" :height="height" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <div class="game-piece-container">
+    <svg class="game-piece" xmlns="http://www.w3.org/2000/svg" version="1.1" :width="width" :height="height" xmlns:xlink="http://www.w3.org/1999/xlink">
       <polygon
         :class="{
         hex: true,
@@ -11,15 +11,14 @@
         :points="points" />
 
       <text
+        v-if="loaded"
         x="50%" y="50%"
-                alignment-baseline="middle"
-                text-anchor="middle">
+        alignment-baseline="middle"
+        text-anchor="middle">
         Ξ{{ tile(id).price | weiToEth | setPrecision(4) }}
       </text>
     </svg>
-
-    <Spinner v-else />
-
+    <Spinner v-if="!loaded" />
   </div>
 </template>
 
@@ -42,6 +41,10 @@ export default {
   },
   computed: {
     ...mapGetters(['address', 'selectedTile', 'tile']),
+
+    loaded() {
+      return this.tile(this.id)
+    },
     buyable() {
       const tile = this.tile(this.id)
       if (!tile) return false
@@ -90,6 +93,12 @@ export default {
 </script>
 
 <style scoped>
+.game-piece-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .hex {
   fill-opacity: 0.4;
   stroke: #000;

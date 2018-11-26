@@ -175,7 +175,7 @@ header .logo {
 .grid .row {
 	display: flex;
 	flex-direction: row;
-	margin-bottom: -1.5rem;
+	margin-bottom: -1.3rem;
 	line-height: normal;
 }
 
@@ -314,7 +314,7 @@ input {
     margin: 0 auto;
   }
   .grid .row {
-    margin-bottom: -0.88rem;
+    margin-bottom: -1.28rem;
   }
   .hero {
     /* Puts description at the bottom */
