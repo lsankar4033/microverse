@@ -1,6 +1,7 @@
 <template>
   <div id="game-board">
     <div class="section hero">
+      <Spinner />
       <h1>Welcome to simulation #{{formatRoundNumber(this.roundNumber())}} </h1>
       <p>Microverse is a simulation. Acquire worlds and power them up to earn a slice of Microverse trade. When trade slows, the simulation stops and riches are airdropped to the least powerful worlds. And the simulation starts over.</p>
     </div>
@@ -22,6 +23,7 @@ import MicroverseConfig from '@/Microverse.json'
 import contract from 'truffle-contract'
 import BuyForm from './BuyForm'
 import Board from './Board'
+import Spinner from './Spinner'
 import GameInformation from './GameInformation'
 import ReferralPrompt from './ReferralPrompt'
 import { formatRoundNumber } from './utils'
@@ -36,6 +38,7 @@ export default{
     GameInformation,
     Board,
     ReferralPrompt,
+    Spinner,
   },
   data() {
     return {
