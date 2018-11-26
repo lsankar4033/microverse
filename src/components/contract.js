@@ -72,7 +72,12 @@ class Contract {
     }
 
     // Tiles only not buyable if already bought in auction phase
-    const buyable = !(roundNumber === 0 && owner)
+    let buyable
+    if (roundNumber === 0) {
+      buyable = owner ? false : true
+    } else {
+      buyable = true
+    }
 
     const loaded = true
     const tile = { owner, price, buyable, loaded, id }
