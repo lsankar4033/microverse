@@ -159,5 +159,8 @@ b {
   .social-icons {
     justify-content: flex-start;
   }
+  ul li {
+    flex-direction: column;
+  }
 }
 </style>
