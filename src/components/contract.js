@@ -26,16 +26,18 @@ async function callContractMethod(method, args, msg) {
 }
 
 async function withRetries(query, { nullValue, maxRetries = 10, retryDelayMs = 1000 }) {
-  const result = await query()
+  let result = await query()
 
   if (result == nullValue && maxRetries > 0) {
     console.log(`Retrying query. ${maxRetries} retries left`)
 
     await delay(retryDelayMs)
-    return withRetries(
+    let result = await withRetries(
       query,
       { nullValue: nullValue, maxRetries: maxRetries - 1, retryDelayMs: retryDelayMs }
     )
+
+    return result
   } else {
     // NOTE: We may want to do something different if failed getting a good value after retries
     return result
