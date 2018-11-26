@@ -96,6 +96,24 @@ export default {
       if (newContract != null && this.address != null) {
         this.balance = await this.contract.getBalance(this.address)
       }
+    },
+    auctionPrice: function(price) {
+      if (price > 0) {
+        this.$ga.event({
+          eventCategory: 'error',
+          eventAction: 'jarring failure',
+          eventLabel: 'auction tile price is set despite gameround > 0',
+        })
+      }
+    },
+    timeLeft: function(tl) {
+      if (!tl || tl < 1) {
+        this.$ga.event({
+          eventCategory: 'error',
+          eventAction: 'timeleft failure',
+          eventLabel: 'timeleft is either undefined or less than 1',
+        })
+      }
     }
   },
 }
