@@ -97,15 +97,6 @@ export default {
         this.balance = await this.contract.getBalance(this.address)
       }
     },
-    auctionPrice: function(price) {
-      if (price > 0) {
-        this.$ga.event({
-          eventCategory: 'error',
-          eventAction: 'jarring failure',
-          eventLabel: 'auction tile price is set despite gameround > 0',
-        })
-      }
-    },
     timeLeft: function(tl) {
       if (!tl || tl < 1) {
         this.$ga.event({
