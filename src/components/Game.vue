@@ -26,6 +26,8 @@ import GameInformation from './GameInformation'
 import ReferralPrompt from './ReferralPrompt'
 import { formatRoundNumber } from './utils'
 
+const delay = t => new Promise(resolve => setTimeout(resolve, t));
+
 export default{
   name: 'Game',
   props: ['referrer'],

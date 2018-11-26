@@ -5,6 +5,9 @@ function getGasLimit(gasEstimate) {
   return gasEstimate * 5
 }
 
+// Utility for creating a promise around a delay
+const delay = t => new Promise(resolve => setTimeout(resolve, t));
+
 async function callContractMethod(method, args, msg) {
   let estimationArgs = args.slice(0)
   estimationArgs.push(msg)
@@ -22,19 +25,48 @@ async function callContractMethod(method, args, msg) {
   return txHash
 }
 
+async function withRetries(query, { nullValue, maxRetries = 10, retryDelayMs = 1000 }) {
+  const result = await query()
+
+  if (result == nullValue && maxRetries > 0) {
+    console.log(`Retrying query. ${maxRetries} retries left`)
+
+    await delay(retryDelayMs)
+    return withRetries(
+      query,
+      { nullValue: nullValue, maxRetries: maxRetries - 1, retryDelayMs: retryDelayMs }
+    )
+  } else {
+    // NOTE: We may want to do something different if failed getting a good value after retries
+    return result
+  }
+}
+
 class Contract {
   constructor(contractInstance) {
     this.instance = contractInstance
   }
 
   async getTile(id, { auctionPrice, roundNumber }) {
-    const owner = await this.tileToOwner(id)
+    const owner = await withRetries(async () =>
+      {
+        const owner = await this.tileToOwner(id)
+        return owner
+      },
+      { nullValue: '0x' }
+    )
 
     let price = 0
     if (roundNumber === 0 && !owner) {
       price = auctionPrice
     } else {
-      price = await this.tileToPrice(id)
+      price = await withRetries(async () =>
+        {
+          const price = this.tileToPrice(id)
+          return price
+        },
+        { nullValue: 0 }
+      )
     }
 
     // Tiles only not buyable if already bought in auction phase
@@ -108,7 +140,7 @@ class Contract {
     return price.toNumber()
   }
 
-  async tileToPrice(id) {
+  async tileToPrice(id, maxRetries = 10, retryDelayMs = 1000) {
     const price = await this.instance.tileToPrice(id)
     return price.toNumber()
   }
