@@ -147,9 +147,9 @@ class Contract {
 
   async tileToOwner(id) {
     const owner = await this.instance.tileToOwner(id)
-    const nullAddresses = ['0x0000000000000000000000000000000000000000', '0x']
+    const nullAddress = '0x0000000000000000000000000000000000000000'
 
-    if (nullAddresses.includes(owner)) return null
+    if (owner == nullAddress) return null
 
     return owner
   }
