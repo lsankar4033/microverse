@@ -2,7 +2,7 @@
   <div id="game-board">
     <div class="section hero">
       <h1>Welcome to simulation #{{formatRoundNumber(this.roundNumber())}} </h1>
-      <p>Microverse is a simulation. Acquire worlds and power them up to earn a slice of Microverse trade. When trade slows, the simulation stops and riches are airdropped to the least powerful worlds. And the simulation starts over.</p>
+      <p style="font-style:italic">In a galaxy far far away, a powerful alien race builds a tiny, simulated universe. They call it, the Microverse. Players are inhabitants of the Microverse and do capitalist things, taking and losing control of worlds until the aliens get impatient and reset the simulation, awarding stimuluses to the least developed worlds starting a new round.</p>
     </div>
     <GameInformation :timeLeft="timeLeft" :contract="contractInstance"/>
 

@@ -1,6 +1,13 @@
 <template>
   <div class="section rules">
     <h1 id="how-to-play">How to play</h1>
+    <p style="font-style:italic">In a galaxy far far away, a powerful alien race builds a tiny, simulated universe. They call it, the Microverse. Players are inhabitants of the Microverse and do capitalist things, taking and losing control of worlds until the aliens get impatient and reset the simulation, awarding stimuluses to the least developed worlds starting a new round.</p>
+    <h1 id="how-to-play">How to play</h1>
+    <h2 id="the-concept">Overview</h2>
+    <p>At the beginning of the game, 19 worlds are auctioned off via Dutch auction. Once all of the 19 worlds are sold, the round begins</p>
+    <p>During the round, worlds are always for sale. Their owners must always set a list price. Owners are taxed 10% of the list price. These taxes fund the Microverse economy. Roughly half goes towards the stimulus. The other half trickles down to the owners of the 19 worlds</p>
+    <p>The round ends when the timer reaches zero. The timer starts at a max length of 12 hours and resets (back to the max length) each time a user pays a tax. The max length halves each time 10 ETH are paid in taxes.</p>
+    <p>When the round ends, the half of the stimulus is awarded to the lowest price world and the other half trickles through the worlds with lower priced worlds getting more of the stimulus. Then the round restarts.</p>
     <h2 id="the-concept">The concept</h2>
     <p>There are two games to play and win in Microverse.</p>
     <ol>
@@ -13,10 +20,10 @@
       <li>Every world is always for sale</li>
       <li>At the start of the simulation, worlds are unowned, and are sold via dutch auction where the price slowly declines towards zero until the world is sold</li>
       <li>Owners can change the price of their worlds, but have to pay a 10% tax on the new price</li>
-      <li>All transactions in Microverse go directly through the Microverse economy (see figure below for the exact splits), with roughly half going towards the stimulus (jackpot) and the other half going instantly to the owners of worlds</li>
+      <li>All transactions in Microverse go directly through the Microverse economy (see figure below for the exact splits), with roughly half going towards the stimulus and the other half going instantly to the owners of worlds (pro rata based on relative share of the total price of all worlds)</li>
       <li>As soon all worlds are sold, a the round begins and the round timer starts counting down from 12 hours</li>
       <li>Each time a world is purchased or the price is changed the timer is reset, starting with 12 hours and halving every 10 ETH that flow through the Microverse</li>
-      <li>At the end of the simulation, the player who owns the lowest price world wins half of the stimulus. The rest is distributed proportionally rest of the worlds</li>
+      <li>At the end of the simulation, the player who owns the lowest price world wins half of the stimulus (in the event of a tie, the winnings are split evenly). The rest is distributed proportionally rest of the worlds (pro rata based on the inverse of the relative share of the total price of all worlds)</li>
       <li>A new round begins with ownership of worlds unchanged</li>
     </ul>
     <h3 id="microverse-economy-splits">Microverse economy splits</h3>
