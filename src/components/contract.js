@@ -142,6 +142,12 @@ class Contract {
     return end - now
   }
 
+  async getCurrentRoundExtension() {
+    const extension = await this.instance.curRoundExtension()
+    // returns number in seconds
+    return extension.toNumber()
+  }
+
   async getTilePriceAuction() {
     const price = await this.instance.getTilePriceAuction()
     return price.toNumber()
