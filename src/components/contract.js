@@ -100,8 +100,14 @@ class Contract {
   }
 
   async getBalance(address) {
-    const payment = await this.instance.payments(address)
-    return payment.toNumber()
+    const payment = await withRetries(async () =>
+      {
+        const p = await this.instance.payments(address)
+        return p.toNumber()
+      },
+      { nullValue: 0 }
+    )
+    return payment
   }
 
   async withdraw(address) {
