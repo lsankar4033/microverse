@@ -100,8 +100,14 @@ class Contract {
   }
 
   async getBalance(address) {
-    const payment = await this.instance.payments(address)
-    return payment.toNumber()
+    const payment = await withRetries(async () =>
+      {
+        const p = await this.instance.payments(address)
+        return p.toNumber()
+      },
+      { nullValue: 0 }
+    )
+    return payment
   }
 
   async withdraw(address) {
@@ -124,6 +130,17 @@ class Contract {
     return r.toNumber()
   }
 
+  async getRoundEndTime() {
+    const endTime = await withRetries(async () =>
+      {
+        const e = await this.instance.roundEndTime()
+        return e.toNumber()
+      },
+      { nullValue: 0 }
+    )
+    return endTime
+  }
+
   async getTimeRemaining() {
     const stage = await this.stage()
     if (stage === 0) {
@@ -135,9 +152,8 @@ class Contract {
       const now = + new Date() / 1000
       return end - now
     }
-    // instance.roundTimeRemaining() was always returning 24hr
-    const rawEndTime = await this.instance.roundEndTime()
-    const end = rawEndTime.toNumber()
+
+    const end = await this.getRoundEndTime()
     const now = + new Date() / 1000
     return end - now
   }

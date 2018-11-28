@@ -90,7 +90,12 @@ export default {
       return formatRoundNumber(roundNumber)
     },
   },
-  mounted() {
+  async mounted() {
+    if (this.address !== '' && this.contract != null) {
+      this.balance = await this.contract.getBalance(this.address)
+      this.setExtensionDuration()
+    }
+
     this.$store.subscribe(async (mutation) => {
       if (mutation.type == 'UPDATE_STATE' && mutation.payload.key == 'address') {
         this.balance = await this.contract.getBalance(this.address)
