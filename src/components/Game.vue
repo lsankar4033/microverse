@@ -115,7 +115,6 @@ export default{
         this.setRoundNumber(res.args.roundNumber.toNumber())
       })
 
-      // TODO: Change timer in UI!
       contractInstance.instance.GameRoundExtended((err, res) => {
         if (this.timeoutPointer1) clearTimeout(this.timeoutPointer1)
         if (this.timeoutPointer2) clearTimeout(this.timeoutPointer2)
