@@ -18,7 +18,7 @@
         Ξ{{ tile(id).price | weiToEth | setPrecision(4) }}
       </text>
     </svg>
-    <Spinner v-if="!loaded" />
+    <Spinner v-if="!loaded && address" />
   </div>
 </template>
 

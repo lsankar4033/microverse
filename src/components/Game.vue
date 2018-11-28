@@ -42,6 +42,8 @@ export default{
     return {
       contractInstance: null,
       timeLeft: null,
+      timeoutPointer1: null,
+      timeoutPointer2: null,
     }
   },
   methods: {
@@ -81,19 +83,19 @@ export default{
 
     startTimer() {
       // https://stackoverflow.com/questions/29971898/how-to-create-an-accurate-timer-in-javascript
-      const interval = 1000; // ms
-      let expected = Date.now() + interval;
+      const interval = 1000 // ms
+      let expected = Date.now() + interval
       const that = this
-      setTimeout(step, interval);
+      this.timeoutPointer1 = setTimeout(step, interval)
       function step() {
-          const dt = Date.now() - expected; // the drift (positive for overshooting)
+          const dt = Date.now() - expected // the drift (positive for overshooting)
           if (dt > interval) {
               // something really bad happened. Maybe the browser (tab) was inactive?
               // possibly special handling to avoid futile "catch up" run
           }
-          expected += interval;
+          expected += interval
           that.timeLeft -= interval / 1000
-          setTimeout(step, Math.max(0, interval - dt)); // take into account drift
+          that.timeoutPointer2 = setTimeout(step, Math.max(0, interval - dt)) // take into account drift
       }
     }
   },
@@ -113,10 +115,14 @@ export default{
         this.setRoundNumber(res.args.roundNumber.toNumber())
       })
 
-      // TODO: Change timer in UI!
-      //contractInstance.instance.GameRoundExtended((err, res) => {
-      //  const endTime = res.args.endTime.toNumber()
-      //})
+      contractInstance.instance.GameRoundExtended((err, res) => {
+        if (this.timeoutPointer1) clearTimeout(this.timeoutPointer1)
+        if (this.timeoutPointer2) clearTimeout(this.timeoutPointer2)
+        const end = res.args.endTime.toNumber()
+        const now = + new Date() / 1000
+        this.timeLeft = end - now
+        this.startTimer()
+      })
 
       // TODO: Set up 'End round' button, etc.
       //contractInstance.instance.GameRoundEnded((err, res) => {
