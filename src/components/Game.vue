@@ -77,7 +77,6 @@ export default{
 
     async initializeTimer() {
       const timeLeft = await this.contractInstance.getTimeRemaining()
-      console.log('timeLeft', timeLeft)
       this.timeLeft = timeLeft
       this.startTimer()
     },
