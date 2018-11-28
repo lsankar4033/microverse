@@ -13,8 +13,10 @@
       <p v-if="balance > 0">Balance</p>
 
       <footer>
-        <p v-if="balance > 0">
-          <span v-if="status == 'withdrawSuccess'">Tell your friends you earned</span> Ξ{{ balance | weiToEth | setPrecision(8) }}
+        <p>
+          <span v-if="status == 'withdrawSuccess'">Tell your friends you earned</span>
+          <span v-else><b>Your balance</b></span>
+          Ξ{{ balance | weiToEth | setPrecision(8) }}
         </p>
         <button v-if="balance > 0 && !status" class="button" @click="withdraw">Withdraw</button>
         <SocialShare v-if="status == 'withdrawSuccess'" :tweet="`I just earned ${balanceInEth} eth in Microverse ${domain}`" />
