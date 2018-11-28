@@ -6,6 +6,7 @@
         <li v-if="jackpot"><b>Stimulus (jackpot):</b> Ξ{{ this.jackpot | weiToEth }}<span @click="updateGame" class="refresh-button"><Refresh /></span></li>
         <li v-if="auctionPrice"><b>Auction Tile Price:</b> Ξ{{ this.auctionPrice | weiToEth | setPrecision(8) }}<span @click="updateGame" class="refresh-button"><Refresh /></span></li>
         <li v-if="timeLeft && roundNumber() > 0"><b>Time left:</b> {{ timeLeft | formatSecondsToTime }}</li>
+        <li v-if="extensionDuration > 0"><b>Extension duration:</b> {{ extensionDuration | formatSecondsToShortTime }}</li>
       </ul>
     </div>
     <div v-if="contract" class="withdraw-container">
@@ -41,6 +42,7 @@ export default {
     return {
       balance: 0,
       status: '',
+      extensionDuration: 0,
     }
   },
   computed: {
@@ -57,6 +59,10 @@ export default {
       this.status = ''
       this.balance = await this.contract.getBalance(this.address)
       if (!this.balance || this.balance == 0) this.status = 'noBalance'
+    },
+    async setExtensionDuration() {
+      const seconds = await this.contract.getCurrentRoundExtension()
+      this.extensionDuration = seconds
     },
     async withdraw() {
       const success = await this.contract.withdraw(this.address)
@@ -88,6 +94,7 @@ export default {
     this.$store.subscribe(async (mutation) => {
       if (mutation.type == 'UPDATE_STATE' && mutation.payload.key == 'address') {
         this.balance = await this.contract.getBalance(this.address)
+        this.setExtensionDuration()
       }
     })
   },
@@ -95,6 +102,7 @@ export default {
     async contract (newContract) {
       if (newContract != null && this.address != null) {
         this.balance = await this.contract.getBalance(this.address)
+        this.setExtensionDuration()
       }
     },
     timeLeft: function(tl) {

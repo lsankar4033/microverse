@@ -36,6 +36,24 @@ Vue.filter('formatSecondsToTime', function(sec) {
   return `${days} days ${hours} hrs ${minutes} min ${seconds} s`
 })
 
+Vue.filter('formatSecondsToShortTime', function(sec) {
+  // https://stackoverflow.com/questions/1322732/convert-seconds-to-hh-mm-ss-with-javascript
+  if (!sec || sec < 0) return null
+  let totalSeconds = sec
+  let hours = Math.floor(totalSeconds / 3600)
+  const days = Math.floor(hours / 24)
+  hours %= 24
+  totalSeconds %= 3600
+  const minutes = Math.floor(totalSeconds / 60)
+  const seconds = Math.floor(totalSeconds % 60)
+  let str = ''
+  if (days > 0) str += `${days} days `
+  if (hours > 0) str += `${hours} hrs `
+  if (minutes > 0) str += `${minutes} min `
+  if (seconds > 0) str += `${seconds} seconds `
+  return str.slice(0, str.length - 1)
+})
+
 Vue.filter('setPrecision', function(value, precision) {
   if (!value) return '0'
   if (!precision) return value

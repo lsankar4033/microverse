@@ -125,12 +125,11 @@ export default{
 
       this.initializeState()
       this.initializeTimer()
-
-      // https://stackoverflow.com/questions/45047126/how-to-add-external-js-scripts-to-vuejs-components
-      const twitterScript = document.createElement('script')
-      twitterScript.setAttribute('src', 'https://platform.twitter.com/widgets.js')
-      document.head.appendChild(twitterScript)
     })
+    // https://stackoverflow.com/questions/45047126/how-to-add-external-js-scripts-to-vuejs-components
+    const twitterScript = document.createElement('script')
+    twitterScript.setAttribute('src', 'https://platform.twitter.com/widgets.js')
+    document.head.appendChild(twitterScript)
   },
 }
 </script>
