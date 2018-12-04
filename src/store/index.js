@@ -4,7 +4,8 @@ import axios from 'axios'
 
 Vue.use(Vuex)
 
-const API_URL = 'https://fierce-savannah-43271.herokuapp.com'
+// const API_URL = 'https://fierce-savannah-43271.herokuapp.com'
+const API_URL = 'http://localhost:3000'
 
 const deselectedTile = {
   id: -1,
@@ -44,9 +45,9 @@ const actions = {
     return tile
   },
 
-  async setJackpotFromApi({ commit }) {
+  async setJackpotFromApi({ commit, state }) {
     try {
-      const res = await axios.get(`${API_URL}/method/jackpot`)
+      const res = await axios.get(`${API_URL}/method/jackpot`, { headers: { 'X-Microverse-Network': state.network } })
       const jackpot = res.data
       commit('UPDATE_JACKPOT', jackpot)
     } catch (err) {

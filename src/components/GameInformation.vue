@@ -54,7 +54,7 @@ export default {
   },
   methods: {
     ...mapGetters(['roundNumber']),
-    ...mapActions(['setAuctionPrice', 'setJackpotFromApi', 'setNextJackpot', 'setRoundNumber']),
+    ...mapActions(['setAuctionPrice', 'setNextJackpot', 'setRoundNumber']),
 
     async getBalance() {
       this.status = ''
@@ -81,6 +81,7 @@ export default {
         this.setAuctionPrice(auctionPrice)
       } else {
         const jackpot = await this.contract.getJackpot()
+        // Handled by API instead
         // this.setJackpot(jackpot)
       }
 
@@ -103,7 +104,6 @@ export default {
         this.setExtensionDuration()
       }
     })
-    this.setJackpotFromApi()
   },
   watch: {
     async contract (newContract) {

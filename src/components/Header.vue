@@ -19,14 +19,22 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex'
+
 export default {
   name: 'Header',
+  computed: {
+    ...mapGetters(['network', 'jackpot']),
+  },
   methods: {
+    ...mapActions(['setJackpotFromApi']),
+
     setAddress(address) {
       this.$store.commit('UPDATE_STATE', { key: 'address', value: address || '' })
     },
     setNetwork(id) {
       this.$store.commit('UPDATE_STATE', { key: 'network', value: id || '' })
+      if (id !== this.network || !this.jackpot) this.setJackpotFromApi()
     },
     loadWeb3(web3) {
       const provider = web3.currentProvider
@@ -39,6 +47,7 @@ export default {
       provider.publicConfigStore.on('update', user => {
         // NOTE: user.selectedAddress may be undefined.
         this.setAddress(user.selectedAddress)
+        // TODO: Check if network is different before actually changing. This method is called a lot.
         this.setNetwork(user.networkVersion)
       })
     }
