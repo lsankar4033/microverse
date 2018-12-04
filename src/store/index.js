@@ -1,6 +1,10 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import axios from 'axios'
+
 Vue.use(Vuex)
+
+const API_URL = 'https://fierce-savannah-43271.herokuapp.com/'
 
 const deselectedTile = {
   id: -1,
@@ -38,6 +42,18 @@ const actions = {
     const tile = await contract.getTile(id, state)
     commit('UPDATE_TILE', { id, tile })
     return tile
+  },
+
+  async setJackpotFromApi({ commit }) {
+    // console.log('res', res)
+    try {
+      const res = await axios.get(`${API_URL}/methods/jackpot`)
+      const jackpot = res.data.jackpot
+      commit('UPDATE_JACKPOT', jackpot)
+    } catch (err) {
+      console.error(err)
+    }
+    // console.log('jackpot', jackpot)
   },
 
   setRoundNumber({ commit }, roundNumber) {

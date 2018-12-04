@@ -64,7 +64,7 @@ export default{
         this.setAuctionPrice(auctionPrice)
       } else {
         const jackpot = await this.contractInstance.getJackpot()
-        this.setJackpot(jackpot)
+        // this.setJackpot(jackpot)
       }
 
       const nextJackpot = await this.contractInstance.getNextJackpot()

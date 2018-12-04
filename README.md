@@ -1,4 +1,23 @@
-Smart contract for a fun new game
+
+# Micoverse Version 2
+
+_TODO_
+
+- Route all possible blockchain calls through API
+  - jackpot
+  - time remaining
+  - round number
+  - tile price
+  - tile owner
+  ...
+- Change color
+- Update rules
+- Earn 1 million dollars :moneybag:
+
+https://trello.com/b/yoEljv6Z/microverse
+
+
+# Development 
 
 ## Contract Development
 `cd eth`
@@ -10,6 +29,3 @@ Smart contract for a fun new game
 
 `./scripts/migrate_artifacts.sh`
 
-_TODO_
-
-https://trello.com/b/yoEljv6Z/microverse
