@@ -3,7 +3,7 @@
 
 _TODO_
 
-- Route all possible blockchain calls through API
+- Route all possible blockchain calls through API https://github.com/reidjs/microverse-api
   - jackpot
   - time remaining
   - round number
