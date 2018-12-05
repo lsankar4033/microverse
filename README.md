@@ -30,6 +30,7 @@ https://trello.com/b/yoEljv6Z/microverse
 
 ## Websockets
 _Idea 1_
+
 0. server keeps entire game state in memory
 1. server watches either blockNumber or specific events 
 2. server detects change in something (e.g., TilePriceChanged)
@@ -37,6 +38,7 @@ _Idea 1_
 4. clients receive message and update gamestate
 
 _Idea 2_
+
 1. server watches either blockNumber or specific events
 2. server detects any event (e.g., TilePriceChanged)
 3. server broadcasts message with specific event (type: 'TilePriceChanged' id: 4, value: 99923 })
