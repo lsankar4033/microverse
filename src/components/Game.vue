@@ -1,18 +1,21 @@
 <template>
   <div id="game-board">
+    <div class="game-container">
+      <GameInformation :timeLeft="timeLeft" :contract="contractInstance"/>
+
+      <!-- <hr/> -->
+
+      <Board :timeLeft="timeLeft" :contract="contractInstance"/>
+      <BuyForm :contract="contractInstance" :referrer="referrer"/>
+      <GameFooter />
+    </div>
+    <ReferralPrompt :contract="contractInstance"/>
+    <a href="https://t.me/joinchat/F50acRJqamZqxUANfFhckg">For latest announcements, feedback, and questions join our telegram</a>
+    <a href="https://twitter.com/microversegame" class="twitter-follow-button" data-show-count="false">Follow @MicroverseGame</a>
     <div class="section hero">
       <h1>Welcome to simulation #{{formatRoundNumber(this.roundNumber())}} </h1>
       <p style="font-style:italic">In a galaxy far far away, a powerful alien race builds a tiny, simulated universe. They call it, the Microverse. Players are inhabitants of the Microverse and do capitalist things, taking and losing control of worlds until the aliens get impatient and reset the simulation, awarding stimuluses to the least developed worlds starting a new round.</p>
     </div>
-    <GameInformation :timeLeft="timeLeft" :contract="contractInstance"/>
-
-    <hr/>
-
-    <Board :timeLeft="timeLeft" :contract="contractInstance"/>
-    <BuyForm :contract="contractInstance" :referrer="referrer"/>
-    <ReferralPrompt :contract="contractInstance"/>
-    <a href="https://t.me/joinchat/F50acRJqamZqxUANfFhckg">For latest announcements, feedback, and questions join our telegram</a>
-    <a href="https://twitter.com/microversegame" class="twitter-follow-button" data-show-count="false">Follow @MicroverseGame</a>
   </div>
 </template>
 
@@ -24,6 +27,7 @@ import contract from 'truffle-contract'
 import BuyForm from './BuyForm'
 import Board from './Board'
 import GameInformation from './GameInformation'
+import GameFooter from './GameFooter'
 import ReferralPrompt from './ReferralPrompt'
 import { formatRoundNumber } from './utils'
 
@@ -37,6 +41,7 @@ export default{
     GameInformation,
     Board,
     ReferralPrompt,
+    GameFooter,
   },
   data() {
     return {
@@ -141,6 +146,13 @@ export default{
 </script>
 
 <style scoped>
+#game-board {
+  display: grid;
+}
+.game-container {
+  border: 5px solid #333;
+  border-radius: 6px;
+}
 .section-body {
   position: relative;
   padding: 0;

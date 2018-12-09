@@ -1,37 +1,37 @@
 <template>
-  <SectionShell class="board-container">
+  <main>
     <template v-if="!address || wrongNetwork">
-        <div class="overlay" />
-        <div class="overlay-text">
-          <h1 v-if="!address">Log into <a target="_blank" href="https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn?hl=en">metamask</a> or another browser wallet extension to play</h1>
-          <h1 v-if="address && wrongNetwork">Make sure mainnet network is selected</h1>
-        </div>
-      </template>
-      <template v-if="message.active">
-        <div class="overlay" />
-        <div class="overlay-text">
-          <div class="message-box">
-            <h1> {{ message.text }}</h1>
-            <button class="button" @click="HIDE_MESSAGE">Ok</button>
-          </div>
-        </div>
-      </template>
-      <div class="ui-text">
-        <h2 v-if="selectedTile.id < 0" class="label">Click to acquire a world</h2>
-        <h2 v-if="selectedTile.id >= 0" class="label">Viewing world {{ selectedTile.id }}</h2>
-        <button v-if="contract && this.roundNumber > 0 && timeLeft <= 0" @click="endRound">End Round</button>
+      <div class="overlay" />
+      <div class="overlay-text">
+        <h1 v-if="!address">Log into <a target="_blank" href="https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn?hl=en">metamask</a> or another browser wallet extension to play</h1>
+        <h1 v-if="address && wrongNetwork">Make sure mainnet network is selected</h1>
       </div>
-      <div @click="deselectTile" class="grid">
-        <div v-for="(tileIdRow, rowIdx) in tileIdRows"
-             :key="rowIdx"
-             class="row">
-          <div @click.stop.prevent="selectTile(tileId)" v-for="tileId in tileIdRow"
-               :key="tileId">
-            <GamePiece :id="tileId" :contract="contract"></GamePiece>
-          </div>
+    </template>
+    <template v-if="message.active">
+      <div class="overlay" />
+      <div class="overlay-text">
+        <div class="message-box">
+          <h1> {{ message.text }}</h1>
+          <button class="button" @click="HIDE_MESSAGE">Ok</button>
         </div>
       </div>
-  </SectionShell>
+    </template>
+    <!-- <div class="ui-text">
+      <h2 v-if="selectedTile.id < 0" class="label">Click to acquire a world</h2>
+      <h2 v-if="selectedTile.id >= 0" class="label">Viewing world {{ selectedTile.id }}</h2>
+      <button v-if="contract && this.roundNumber > 0 && timeLeft <= 0" @click="endRound">End Round</button>
+    </div> -->
+    <section @click="deselectTile">
+      <div v-for="(tileIdRow, rowIdx) in tileIdRows"
+            :key="rowIdx"
+            class="row">
+        <div @click.stop.prevent="selectTile(tileId)" v-for="tileId in tileIdRow"
+              :key="tileId">
+          <GamePiece :id="tileId" :contract="contract"></GamePiece>
+        </div>
+      </div>
+    </section>
+  </main>
 </template>
 
 <script>
@@ -118,8 +118,18 @@ export default {
 }
 </script>
 
-<style>
-.overlay {
+<style scoped>
+section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 50px;
+}
+.row {
+  display: flex;
+  margin-bottom: -1.5rem;
+}
+/* .overlay {
   position: absolute;
   height: 100%;
   width: 100%;
@@ -156,6 +166,6 @@ export default {
 .ui-text button {
   border: 1px solid black;
   padding: 4px;
-}
+} */
 </style>
 

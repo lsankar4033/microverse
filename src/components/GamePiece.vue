@@ -1,9 +1,8 @@
 <template>
-  <div class="game-piece-container">
+  <main>
     <svg class="game-piece" xmlns="http://www.w3.org/2000/svg" version="1.1" :width="width" :height="height" xmlns:xlink="http://www.w3.org/1999/xlink">
       <polygon
         :class="{
-        hex: true,
         buyable,
         'owned-by-user': ownedByUser,
         selected: selectedTile.id == id
@@ -19,7 +18,7 @@
       </text>
     </svg>
     <Spinner v-if="!loaded && address" />
-  </div>
+  </main>
 </template>
 
 <script>
@@ -35,7 +34,7 @@ export default {
   data() {
     return {
       width: 100,
-      height: 80,
+      height: 100,
       ownedByUser: false,
     }
   },
@@ -93,7 +92,45 @@ export default {
 </script>
 
 <style scoped>
-.game-piece-container {
+main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+polygon {
+  fill-opacity: 0.4;
+  stroke: #000;
+  stroke-width: 1;
+  fill: #888;
+  cursor: pointer;
+}
+
+.buyable {
+  fill: #ffff00;
+}
+
+.owned-by-user {
+  fill: #fffff0;
+}
+
+polygon:hover {
+  fill: #ffff99;
+}
+
+.selected {
+  stroke: #005507;
+  stroke-width: 5;
+}
+
+text {
+  font-family: 'Work Sans', sans-serif;
+  cursor: pointer;
+}
+details {
+  font-family: 'Space Mono', monospace;
+}
+/* .game-piece-container {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -126,5 +163,5 @@ export default {
 
 .game-piece text {
   cursor: pointer;
-}
+} */
 </style>

@@ -4,6 +4,7 @@ import store from './store'
 import router from './router'
 import moment from 'vue-moment'
 import VueAnalytics from 'vue-analytics'
+import EthSymbol from '@/components/EthSymbol'
 
 Vue.use(moment)
 
@@ -65,6 +66,7 @@ Vue.filter('hashShorten', function(hash) {
   return `${hash.substr(0,6)}...${hash.substr(hash.length - 6)}`
 })
 
+Vue.component('EthSymbol', EthSymbol)
 
 new Vue({
   router,

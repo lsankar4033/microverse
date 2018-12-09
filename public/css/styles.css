@@ -28,6 +28,7 @@ span, article, footer, time, small {
   vertical-align: inherit;
   box-sizing: inherit;
   background: transparent;
+  list-style-type: none;
 }
 
 img {
@@ -64,7 +65,7 @@ input[type="submit"] {
   clear: both;
 }
 
-html {
+/* html {
 	font-size: 16px;
   display: flex;
   flex-direction: column;
@@ -298,6 +299,9 @@ input {
   margin-right: .5rem;
   border-radius: 10rem; 
 }
+.hero {
+  order: 1;
+}
 
 @media only screen and (max-width: 768px) {
   header {
@@ -316,10 +320,6 @@ input {
   .grid .row {
     margin-bottom: -0.6rem;
   }
-  .hero {
-    /* Puts description at the bottom */
-    order: 1;
-  }
   .section-accent {
     flex-direction: column;
   }
@@ -337,4 +337,4 @@ a {
 .price-input {
   margin-right: .5rem;
   border-radius: 10em;
-}
+} */

@@ -1,19 +1,12 @@
 <template>
   <div id="header-container">
-    <header>
+    <header v-if="$route.path !== '/'">
       <router-link to="/">
         <div class="logo">Microverse</div>
       </router-link>
-
-      <div class="menu-items">
-        <router-link to="rules" v-if="$route.path == '/'">
-          <span>How to play</span>
-        </router-link>
-        <router-link to="/" v-else>
-          <span>Back to game</span>
-        </router-link>
-
-      </div>
+      <router-link to="/">
+        <span>Back to game</span>
+      </router-link>
     </header>
   </div>
 </template>
@@ -72,3 +65,32 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+header {
+	display: flex;
+	flex-direction: row;
+  padding: .5rem;
+  justify-content: space-between;
+}
+
+header .menu-items {
+	margin-left: auto;
+}
+
+header .menu-items span:first-child {
+	margin-right: 1rem;
+}
+
+header a {
+  color: black;
+  text-decoration: none;
+}
+
+header .logo {
+  font-weight: 700;
+  text-transform: uppercase;
+  font-family: 'Space Mono', monospace;
+  color: rgba(0,0,0,.5);
+}
+</style>

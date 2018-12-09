@@ -1,6 +1,29 @@
 <template>
-  <SectionShell class="section-accent">
-    <div>
+  <main>
+    <!-- Logo w/ round number <-> My balance w/ amount -->
+    <!-- Time remaining (auction or round) <-> Withdraw button -->
+    <!-- auction price or extension duration <-> end round button -->
+    <!-- Stimulus shows up on bottom of screen now -->
+    <section>
+      <ul>
+        <li>
+          <h1>Microverse</h1>
+          <aside>
+            <small>Simulation</small>
+            <small>#001</small>
+          </aside>
+        </li>
+        <li>
+          1 day 14:20:19 left
+        </li>
+      </ul>
+      <ul>
+        <li>My Balance</li>
+        <li><EthSymbol /> 0.0005</li>
+      </ul>
+    </section>
+    <!-- <div>
+      <div class="logo">Microverse</div>
       <ul>
         <li class="label">Simulation #{{formatRoundNumber(this.roundNumber())}}</li>
         <li v-if="jackpot"><b>Stimulus (jackpot):</b> Ξ{{ this.jackpot | weiToEth }}<span @click="updateGame" class="refresh-button"><Refresh /></span></li>
@@ -20,8 +43,8 @@
         <button v-if="balance > 0 && !status" class="button" @click="withdraw">Withdraw</button>
         <SocialShare v-if="status == 'withdrawSuccess'" :tweet="`I just earned ${balanceInEth} eth in Microverse ${domain}`" />
       </footer>
-    </div>
-  </SectionShell>
+    </div> -->
+  </main>
 </template>
 
 <script>
@@ -126,7 +149,31 @@ export default {
 </script>
 
 <style scoped>
-.link {
+section {
+  display: flex;
+  justify-content: space-between;
+}
+h1 {
+  font-family: 'Space Mono', monospace;
+  text-transform: uppercase;
+  font-size: 22px;
+}
+small {
+  font-size: 8px;
+}
+li {
+  font-family: 'Space Mono', monospace;
+}
+li:first-child {
+  display: flex;
+}
+aside {
+  font-family: 'Work Sans', sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+/* .link {
   cursor: pointer;
   text-decoration: underline;
 }
@@ -186,5 +233,5 @@ b {
   ul li {
     flex-direction: column;
   }
-}
+} */
 </style>
