@@ -110,8 +110,8 @@ svg {
 
 polygon {
   /* fill-opacity: 0.4; */
-  stroke: #000;
-  stroke-width: 1;
+  stroke: white;
+  stroke-width: 0.5;
   /* fill: var(--light-grey); */
   fill: var(--light-grey);
   cursor: pointer;
@@ -137,6 +137,9 @@ polygon:hover {
 text {
   font-family: 'Work Sans', sans-serif;
   cursor: pointer;
+  fill: white;
+  font-weight: 700;
+  letter-spacing: 1px;
 }
 details {
   font-family: 'Space Mono', monospace;

@@ -151,6 +151,7 @@ export default {
 <style scoped>
 main {
   color: white;
+  padding: 6px var(--gutter);
 }
 section {
   display: flex;

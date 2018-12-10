@@ -34,6 +34,7 @@ main {
   display: flex;
   justify-content: space-between;
   color: white;
+  padding: 6px var(--gutter);
 }
 h1 {
   font-family: 'Work Sans', sans-serif;

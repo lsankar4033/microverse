@@ -147,15 +147,26 @@ export default{
 
 <style scoped>
 #game-board {
-  display: grid;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: var(--sea-green);
 }
 .game-container {
   border: 5px solid var(--dark-blue);
   border-radius: 6px;
   background: var(--navy-blue);
+  width: 768px;
+  margin-top: 20px;
 }
 .section-body {
   position: relative;
   padding: 0;
+}
+@media only screen and (max-width: 768px) {
+  .game-container {
+    width: 100%;
+    margin-top: 0;
+  }
 }
 </style>

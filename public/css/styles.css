@@ -71,6 +71,7 @@ html {
   --dark-blue: rgb(2,42,77);
   --light-grey: rgb(150,195,220);
   --light-blue: rgb(39,171,207);
+  --gutter: 22px;
 }
 
 /* html {
