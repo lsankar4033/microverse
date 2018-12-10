@@ -5,22 +5,35 @@
       <h2><EthSymbol/>39.432</h2>
     </div>
     <button>
-      How to Play
+      <svg version="1.1" role="presentation" width="25" height="25" viewBox="0 0 512 512">
+        <path :d="infoIcon"></path>
+      </svg>
+      <span>
+        How to Play
+      </span>
     </button>
   </main>
 </template>
 
 <script>
+const infoIcon = 'M256 48C141.2 48 48 141.2 48 256s93.2 208 208 208 208-93.2 208-208S370.8 48 256 48zm21 312h-42V235h42v125zm0-166h-42v-42h42v42z'
+
 export default {
-  name: 'GameFooter'
+  name: 'GameFooter',
+  data() {
+    return {
+      infoIcon,
+    }
+  },
 }
 </script>
 
 <style scoped>
 main {
-  background: #888;
+  background: var(--dark-blue);
   display: flex;
   justify-content: space-between;
+  color: white;
 }
 h1 {
   font-family: 'Work Sans', sans-serif;
@@ -29,10 +42,15 @@ h2 {
   font-family: 'Space Mono', monospace;
 }
 button {
+  display: flex;
+  align-items: center;
   font-family: 'Space Mono', monospace;
-  background: red;
+  background: var(--sea-green);
   color: white;
   border-radius: 45px;
   padding: 4px 20px;
+}
+svg {
+  fill: white;
 }
 </style>

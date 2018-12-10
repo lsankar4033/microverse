@@ -149,6 +149,9 @@ export default {
 </script>
 
 <style scoped>
+main {
+  color: white;
+}
 section {
   display: flex;
   justify-content: space-between;
@@ -157,6 +160,8 @@ h1 {
   font-family: 'Space Mono', monospace;
   text-transform: uppercase;
   font-size: 22px;
+  letter-spacing: 1.5px;
+  color: var(--light-grey);
 }
 small {
   font-size: 8px;

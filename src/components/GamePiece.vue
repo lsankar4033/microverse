@@ -96,18 +96,29 @@ main {
   display: flex;
   justify-content: center;
   align-items: center;
+  /* background: white; */
+  /* position: relative; */
+  /* might cause issues with mobile! */
+  /* width: 100px; */
+  /* height: 100px; */
+}
+
+svg {
+  /* position: absolute; */
+  /* z-index: 1; */
 }
 
 polygon {
-  fill-opacity: 0.4;
+  /* fill-opacity: 0.4; */
   stroke: #000;
   stroke-width: 1;
-  fill: #888;
+  /* fill: var(--light-grey); */
+  fill: var(--light-grey);
   cursor: pointer;
 }
 
 .buyable {
-  fill: #ffff00;
+  fill: var(--sea-green);
 }
 
 .owned-by-user {
@@ -115,7 +126,7 @@ polygon {
 }
 
 polygon:hover {
-  fill: #ffff99;
+  /* fill: #ffff99; */
 }
 
 .selected {

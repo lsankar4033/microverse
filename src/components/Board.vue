@@ -124,6 +124,7 @@ section {
   flex-direction: column;
   align-items: center;
   margin-bottom: 50px;
+  /* background: white; */
 }
 .row {
   display: flex;

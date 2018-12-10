@@ -150,8 +150,9 @@ export default{
   display: grid;
 }
 .game-container {
-  border: 5px solid #333;
+  border: 5px solid var(--dark-blue);
   border-radius: 6px;
+  background: var(--navy-blue);
 }
 .section-body {
   position: relative;
