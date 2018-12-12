@@ -71,7 +71,20 @@ html {
   --dark-blue: rgb(2,42,77);
   --light-grey: rgb(150,195,220);
   --light-blue: rgb(39,171,207);
+  --grey: rgb(126,150,172);
   --gutter: 22px;
+  --button-radius: 45px;
+}
+
+button {
+  display: flex;
+  align-items: center;
+  font-family: 'Space Mono', monospace;
+  background: var(--sea-green);
+  color: white;
+  border-radius: var(--button-radius);
+  padding: 4px 20px;
+  text-transform: uppercase;
 }
 
 /* html {

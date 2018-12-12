@@ -20,6 +20,7 @@
       <ul>
         <li>My Balance</li>
         <li><EthSymbol /> 0.0005</li>
+        <li><button>Withdraw</button></li>
       </ul>
     </section>
     <!-- <div>

@@ -1,5 +1,29 @@
 <template>
-  <SectionShell>
+  <main v-if="true">
+    <h1>World 17</h1>
+    <h2><EthSymbol/>4.34</h2>
+    <form>
+      <div>Set your listing price</div>
+      <div>
+        <span class="price-input">
+          <!-- <small>Ξ</small> -->
+          <EthSymbol class="input-unit" />
+          <input type="number" placeholder="Enter a number less than 3.234">
+          <button>Buy</button>
+        </span>
+        <small>
+          Number must be less than 3.32 <a>Why?</a>
+        </small>
+      </div>
+      <ul>
+        <li><label>Price</label><p>1.0</p></li>
+        <li><label>Tax</label><p>0.2</p></li>
+        <hr/>
+        <li><label>Total</label><p><strong>1.2</strong></p></li>
+      </ul>
+    </form>
+  </main>
+  <!-- <SectionShell>
     <template v-if="selectedTile.id >= 0">
       <div class="row">
         <h1>World {{ selectedTile.id }}</h1>
@@ -33,7 +57,7 @@
       <h1>Tell your friends your microverse world is on sale for Ξ{{ newPrice }}</h1>
       <SocialShare :tweet="tweet" />
     </template>
-  </SectionShell>
+  </SectionShell> -->
 </template>
 
 <script>
@@ -145,7 +169,71 @@ export default {
 </script>
 
 <style scoped>
-.buy-tile-container {
+main {
+  font-family: 'Work Sans', sans-serif;
+  background: var(--grey);
+  color: white;
+  padding-bottom: 40px;
+  border-radius: 12px 12px 0 0;
+}
+h1, h2 {
+  font-family: 'Space Mono', monospace;
+
+}
+h1 {
+  font-size: 1.5rem;
+  text-align: center;
+}
+h2 {
+  font-size: 1.3rem;
+  text-align: center;
+}
+.price-input {
+  display: flex;
+  align-items: center;
+  border-style: inset;
+  border: 1px solid black;
+  border-radius: var(--button-radius);
+  justify-content: space-between;
+  width: 400px;
+  margin-bottom: 5px;
+}
+input {
+  width: 100%;
+}
+input::placeholder {
+  color: var(--light-grey);
+  font-size: 0.8rem;
+}
+button {
+  display: inline-block;
+}
+a {
+  text-decoration: underline;
+  cursor: pointer;
+}
+li {
+  display: flex;
+}
+li label {
+  width: 100px;
+}
+strong {
+  font-weight: bold;
+}
+form {
+  margin: 0 var(--gutter);
+}
+form div {
+  margin-bottom: 12px;
+}
+small {
+  color: red;
+}
+.input-unit {
+  padding: 5px;
+}
+/* .buy-tile-container {
   display: flex;
 }
 .buy-tile-container input {
@@ -216,7 +304,7 @@ strong {
   .buy-tile-container {
     flex-direction: column;
   }
-}
+} */
 </style>
 
 

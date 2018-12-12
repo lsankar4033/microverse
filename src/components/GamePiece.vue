@@ -72,7 +72,7 @@ export default {
     // TODO: Use a window listener -- breaks if user resizes screen w/o refresh
     if (screen.width < 768 || window.innerWidth < 768) {
       this.width = 60
-      this.height = 40
+      this.height = 60
     }
     // Hacky fix to issue where owner on mount isn't set
     const tile = this.tile(this.id)
@@ -140,9 +140,6 @@ text {
   fill: white;
   font-weight: 700;
   letter-spacing: 1px;
-}
-details {
-  font-family: 'Space Mono', monospace;
 }
 /* .game-piece-container {
   display: flex;

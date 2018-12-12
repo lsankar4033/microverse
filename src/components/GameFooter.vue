@@ -42,15 +42,6 @@ h1 {
 h2 {
   font-family: 'Space Mono', monospace;
 }
-button {
-  display: flex;
-  align-items: center;
-  font-family: 'Space Mono', monospace;
-  background: var(--sea-green);
-  color: white;
-  border-radius: 45px;
-  padding: 4px 20px;
-}
 svg {
   fill: white;
 }
