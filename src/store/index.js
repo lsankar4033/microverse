@@ -17,7 +17,7 @@ const state = {
     text: '',
   },
 
-  domain: 'https://microversegame.com',
+  domain: 'https://www.microversegame.com',
 
   selectedTile: deselectedTile,
 
