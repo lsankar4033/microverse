@@ -10,12 +10,6 @@
       <GameFooter />
     </div>
     <ReferralPrompt :contract="contractInstance"/>
-    <a href="https://t.me/joinchat/F50acRJqamZqxUANfFhckg">For latest announcements, feedback, and questions join our telegram</a>
-    <a href="https://twitter.com/microversegame" class="twitter-follow-button" data-show-count="false">Follow @MicroverseGame</a>
-    <div class="section hero">
-      <h1>Welcome to simulation #{{formatRoundNumber(this.roundNumber())}} </h1>
-      <p style="font-style:italic">In a galaxy far far away, a powerful alien race builds a tiny, simulated universe. They call it, the Microverse. Players are inhabitants of the Microverse and do capitalist things, taking and losing control of worlds until the aliens get impatient and reset the simulation, awarding stimuluses to the least developed worlds starting a new round.</p>
-    </div>
   </div>
 </template>
 
@@ -159,10 +153,10 @@ export default{
   width: var(--game-board-width);
   margin-top: 20px;
 }
-.section-body {
+/* .section-body {
   position: relative;
   padding: 0;
-}
+} */
 @media only screen and (max-width: 768px) {
   .game-container {
     width: 100%;

@@ -13,6 +13,10 @@
       </span>
       <button>Copy Link</button>
     </div>
+    <footer>
+      <a href="https://t.me/joinchat/F50acRJqamZqxUANfFhckg">For latest announcements, feedback, and questions join our telegram</a>
+      <a href="https://twitter.com/microversegame" class="twitter-follow-button" data-show-count="false">Follow @MicroverseGame</a>
+    </footer>
   </main>
   <!-- <div id="referral-prompt" class="section section-accent">
     <p>Refer friends and earn 5% of all taxes they pay. No fee to them.</p>
@@ -102,9 +106,15 @@ span {
 }
 input {
   width: 100%;
+  height: 100%;
 }
 button {
   background: var(--dark-blue);
+}
+footer {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px 0
 }
 @media only screen and (max-width: 768px) {
   main {
