@@ -175,7 +175,6 @@ li:first-child {
   display: flex;
 }
 aside {
-  font-family: 'Work Sans', sans-serif;
   display: flex;
   flex-direction: column;
   justify-content: center;

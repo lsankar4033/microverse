@@ -170,7 +170,6 @@ export default {
 
 <style scoped>
 main {
-  font-family: 'Work Sans', sans-serif;
   background: var(--grey);
   color: white;
   padding-bottom: 40px;

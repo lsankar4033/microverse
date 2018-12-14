@@ -36,9 +36,6 @@ main {
   color: white;
   padding: 6px var(--gutter);
 }
-h1 {
-  font-family: 'Work Sans', sans-serif;
-}
 h2 {
   font-family: 'Space Mono', monospace;
 }

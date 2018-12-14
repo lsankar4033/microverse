@@ -156,7 +156,7 @@ export default{
   border: 5px solid var(--dark-blue);
   border-radius: 6px;
   background: var(--navy-blue);
-  width: 768px;
+  width: var(--game-board-width);
   margin-top: 20px;
 }
 .section-body {

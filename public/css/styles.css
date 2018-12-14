@@ -74,6 +74,8 @@ html {
   --grey: rgb(126,150,172);
   --gutter: 22px;
   --button-radius: 45px;
+  --game-board-width: 768px;
+  font-family: 'Work Sans', sans-serif;
 }
 
 button {

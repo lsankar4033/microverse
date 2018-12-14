@@ -135,7 +135,6 @@ polygon:hover {
 }
 
 text {
-  font-family: 'Work Sans', sans-serif;
   cursor: pointer;
   fill: white;
   font-weight: 700;
