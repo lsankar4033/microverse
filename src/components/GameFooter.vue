@@ -38,6 +38,7 @@ main {
 }
 h2 {
   font-family: 'Space Mono', monospace;
+  font-size: 1.5rem;
 }
 svg {
   fill: white;

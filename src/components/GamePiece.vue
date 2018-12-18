@@ -1,6 +1,11 @@
 <template>
   <main>
     <svg class="game-piece" xmlns="http://www.w3.org/2000/svg" version="1.1" :width="width" :height="height" xmlns:xlink="http://www.w3.org/1999/xlink">
+      <defs>
+        <filter id="f1" x="0" y="0">
+          <feGaussianBlur in="SourceGraphic" stdDeviation="6" />
+        </filter>
+      </defs>
       <polygon
         :class="{
         buyable,
@@ -130,8 +135,10 @@ polygon:hover {
 }
 
 .selected {
-  stroke: #005507;
-  stroke-width: 5;
+  filter: url('#f1');
+  /* https://bennettfeely.com/clippy/ */
+  -webkit-clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
 }
 
 text {

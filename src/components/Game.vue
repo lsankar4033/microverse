@@ -144,12 +144,14 @@ export default{
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: var(--sea-green);
+  /* background: var(--sea-green); */
+  background-image: linear-gradient(to right, var(--sea-green), white);
 }
 .game-container {
   border: 5px solid var(--dark-blue);
   border-radius: 6px;
-  background: var(--navy-blue);
+  /* background: var(--navy-blue); */
+  background-image: radial-gradient(var(--light-sea-blue), var(--navy-blue));
   width: var(--game-board-width);
   margin-top: 20px;
 }

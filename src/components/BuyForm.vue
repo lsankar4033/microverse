@@ -1,6 +1,9 @@
 <template>
   <main v-if="true">
-    <h1>World 17</h1>
+    <header>
+      <h1>World 17</h1>
+      <p>Owned by {{ '0xB5cef47fDcd96ae7f718DeD9a94030736F809C51' | hashShorten }}</p>
+    </header>
     <h2><EthSymbol/>4.34</h2>
     <form>
       <div>Set your listing price</div>
@@ -175,6 +178,10 @@ main {
   padding-bottom: 40px;
   border-radius: 12px 12px 0 0;
 }
+header {
+  display: grid;
+  grid-template-columns: 33% 33% 33%;
+}
 h1, h2 {
   font-family: 'Space Mono', monospace;
 
@@ -182,6 +189,11 @@ h1, h2 {
 h1 {
   font-size: 1.5rem;
   text-align: center;
+  grid-column-start: 2;
+}
+p {
+  margin-left: auto;
+  font-size: 0.8rem;
 }
 h2 {
   font-size: 1.3rem;
@@ -211,11 +223,17 @@ a {
   text-decoration: underline;
   cursor: pointer;
 }
+ul {
+  width: 200px;
+}
 li {
   display: flex;
 }
 li label {
   width: 100px;
+}
+li:last-child {
+  font-size: 1.2rem;
 }
 strong {
   font-weight: bold;
