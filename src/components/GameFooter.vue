@@ -43,4 +43,12 @@ h2 {
 svg {
   fill: white;
 }
+@media only screen and (max-width: 768px) { 
+  main {
+    flex-direction: column;
+  }
+  div {
+    text-align: center;
+  }
+}
 </style>

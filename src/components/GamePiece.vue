@@ -76,8 +76,8 @@ export default {
   mounted() {
     // TODO: Use a window listener -- breaks if user resizes screen w/o refresh
     if (screen.width < 768 || window.innerWidth < 768) {
-      this.width = 60
-      this.height = 60
+      this.width = 64
+      this.height = 64
     }
     // Hacky fix to issue where owner on mount isn't set
     const tile = this.tile(this.id)
@@ -147,38 +147,10 @@ text {
   font-weight: 700;
   letter-spacing: 1px;
 }
-/* .game-piece-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
 
-.hex {
-  fill-opacity: 0.4;
-  stroke: #000;
-  stroke-width: 1;
-  fill: #888;
-  cursor: pointer;
+@media only screen and (max-width: 768px) {
+  svg {
+    margin-bottom: 0.6rem;
+  }
 }
-
-.buyable {
-  fill: #ffff00;
-}
-
-.owned-by-user {
-  fill: #fffff0;
-}
-
-.hex:hover {
-  fill: #ffff99;
-}
-
-.selected {
-  stroke: #005507;
-  stroke-width: 5;
-}
-
-.game-piece text {
-  cursor: pointer;
-} */
 </style>

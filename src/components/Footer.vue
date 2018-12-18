@@ -39,4 +39,22 @@ strong {
 .spacer {
   margin: 0 12px;
 }
+@media only screen and (max-width: 768px) { 
+  ul {
+    display: grid;
+    grid-template-columns: repeat(5, 20%);
+  }
+  li {
+    word-break: break-word;
+    padding: 3px;
+    margin: auto auto;
+    text-align: center;
+  }
+  .spacer {
+    display: none;
+  }
+  main {
+    padding: 0;
+  }
+}
 </style>

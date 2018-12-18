@@ -120,26 +120,13 @@ footer {
   main {
     width: 100%;
   }
+  div {
+    flex-direction: column;
+    justify-content: center;
+  }
+  footer {
+    flex-direction: column;
+    align-items: center;
+  }
 }
-/* #referral-prompt {
-	display: flex;
-	flex-direction: column;
-	width: auto;
-  background-color: rgba(243,244,123,1)
-}
-
-input#referral-url {
-    background-color: white;
-}
-
-.button.inline {
-  font-size: .8rem;
-  padding: .25rem .5rem;
-  background-color: rgba(0,0,0,.66);
-  cursor: pointer;
-}
-
-.button.inline:hover {
-  background-color: rgba(0,0,0,.33);
-} */
 </style>

@@ -14,7 +14,7 @@ green
 /* Reset */
 html, body, header, nav, h1, a,
 ul, li, strong, main, button, i,
-section, img, div, h2, p, form,
+section, img, div, h2, h3, p, form,
 fieldset, label, input, textarea,
 span, article, footer, time, small {
   margin: 0;
@@ -88,6 +88,15 @@ button {
   border-radius: var(--button-radius);
   padding: 4px 20px;
   text-transform: uppercase;
+  text-align: center;
+}
+
+@media only screen and (max-width: 768px) { 
+  button {
+    width: 150px;
+    margin: 0 auto;
+    justify-content: center;
+  }
 }
 
 /* html {

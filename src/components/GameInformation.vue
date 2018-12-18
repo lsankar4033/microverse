@@ -179,65 +179,27 @@ aside {
   flex-direction: column;
   justify-content: center;
 }
-/* .link {
-  cursor: pointer;
-  text-decoration: underline;
-}
-.withdraw-container p {
-  text-align: right;
-}
-.withdraw-container a {
-  text-align: right;
-  text-decoration: underline;
-  cursor: pointer;
-}
-.withdraw-container footer {
-  display: flex;
-  flex-direction: column;
-}
-.withdraw-container footer p {
-  margin: 0 0 10px 0;
-}
-.withdraw-container footer button {
-  margin-left: auto;
-}
-.social-icons {
-  justify-content: flex-end;
-}
-.refresh-button {
-  cursor: pointer;
-  margin-left: 4px;
-  display: flex;
-}
-ul {
-  list-style-type: none;
-  padding: 0
-}
-ul li {
-  margin: 0.5rem 0;
-  display: flex;
-  align-items: center;
-}
-b {
-  margin-right: 5px;
-}
 @media only screen and (max-width: 768px) {
-  .withdraw-container {
-    display: flex;
+  section {
     flex-direction: column;
   }
-  .withdraw-container p {
-    text-align: left;
+  ul:first-child {
+    margin: 0 auto 10px;
   }
-  .withdraw-container footer button {
-    margin-left: 0;
-    margin-right: auto;
+  ul:last-child {
+    display: grid;
+    grid-template-rows: 50% 50%;
+    grid-template-columns: 50% 50%;
   }
-  .social-icons {
-    justify-content: flex-start;
+  ul:last-child li {
+    text-align: center;
+    margin: 0 auto;
   }
-  ul li {
-    flex-direction: column;
+  ul:last-child li:last-child {
+    grid-column: 1 / span 2;
   }
-} */
+  ul {
+    margin-bottom: 15px;
+  }
+}
 </style>

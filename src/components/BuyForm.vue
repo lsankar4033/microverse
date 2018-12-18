@@ -2,7 +2,7 @@
   <main v-if="true">
     <header>
       <h1>World 17</h1>
-      <p>Owned by {{ '0xB5cef47fDcd96ae7f718DeD9a94030736F809C51' | hashShorten }}</p>
+      <h3>Owned by {{ '0xB5cef47fDcd96ae7f718DeD9a94030736F809C51' | hashShorten }}</h3>
     </header>
     <h2><EthSymbol/>4.34</h2>
     <form>
@@ -191,7 +191,7 @@ h1 {
   text-align: center;
   grid-column-start: 2;
 }
-p {
+h3 {
   margin-left: auto;
   font-size: 0.8rem;
 }
@@ -206,7 +206,6 @@ h2 {
   border: 1px solid black;
   border-radius: var(--button-radius);
   justify-content: space-between;
-  width: 400px;
   margin-bottom: 5px;
 }
 input {
@@ -223,9 +222,6 @@ a {
   text-decoration: underline;
   cursor: pointer;
 }
-ul {
-  width: 200px;
-}
 li {
   display: flex;
 }
@@ -240,6 +236,7 @@ strong {
 }
 form {
   margin: 0 var(--gutter);
+  width: 300px;
 }
 form div {
   margin-bottom: 12px;
@@ -250,78 +247,26 @@ small {
 .input-unit {
   padding: 5px;
 }
-/* .buy-tile-container {
-  display: flex;
-}
-.buy-tile-container input {
-  border: 1px solid #222;
-  width: 15em;
-}
-.buy-tile-container button {
-  background: green;
-}
-.price-input {
-  border: 1px inset #ccc;
-}
-.price-input small {
-  padding: 0 4px;
-}
-.price-input input {
-  border: 0;
-}
-ul {
-  padding-left: 0;
-  list-style-type: none;
-}
-ul li {
-  display: flex;
-  padding: 2px;
-  align-items: center;
-}
-ul span {
-  width: 90px
-}
-strong {
-  font-weight: 600
-}
-.highlight {
-  background: #bababa;
-  padding: 0 2px;
-}
-.tax-container hr {
-  width: 16rem;
-  margin-left: 0;
-}
-
-.tax-container {
-  padding-top: 1rem;
-}
-
-.row {
-  display: flex;
-  flex-direction: row;
-}
-
-.owner {
-  margin-top: .6rem;
-  margin-left: auto;
-  color: grey;
-}
-
-.price {
-  font-size: 1.2rem;
-}
-@media only screen and (max-width: 768px) {
-  .row {
-    flex-direction: column;
+@media only screen and (max-width: 768px) { 
+  p {
+    text-align: center;
   }
-  .owner {
-    margin-left: 0;
+  header {
+    grid-template-columns: 50% 50%;
   }
-  .buy-tile-container {
-    flex-direction: column;
+  h1 {
+    grid-column-start: 1;
   }
-} */
+  button {
+    width: 100px;
+  }
+  form {
+    margin: 0 auto;
+  }
+  h3 {
+    text-align: center;
+  }
+}
 </style>
 
 
