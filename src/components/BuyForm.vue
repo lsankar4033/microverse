@@ -14,11 +14,20 @@
           <input type="number" placeholder="Enter a number less than 3.234">
           <button>Buy</button>
         </span>
-        <small>
+        <ul class="error-list">
+          <!-- Consider using v-html or custom component for errors so links work -->
+          <li v-for="error in validationErrors">
+            {{ error }}
+          </li>
+        </ul>
+        <!-- <small>
           Number must be less than 3.32 <a>Why?</a>
         </small>
+        <small v-if="!address">
+          You must be logged into metamask mainnet <a>How?</a>
+        </small> -->
       </div>
-      <ul>
+      <ul class="price-summary">
         <li><label>Price</label><p>1.0</p></li>
         <li><label>Tax</label><p>0.2</p></li>
         <hr/>
@@ -77,6 +86,7 @@ export default {
   },
   data() {
     return {
+      validationErrors: ['You must be logged into metamask', 'Price is too high'],
       newPrice: null,
       // tileBought or priceChanged
       status: '',
@@ -85,7 +95,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['address', 'selectedTile', 'domain', 'roundNumber']),
+    ...mapGetters(['address', 'selectedTile', 'domain', 'roundNumber', 'message']),
 
     newPriceInWei() {
       return this.$options.filters.ethToWei(this.newPrice)
@@ -218,18 +228,21 @@ input::placeholder {
 button {
   display: inline-block;
 }
-a {
+/* a {
   text-decoration: underline;
   cursor: pointer;
-}
-li {
+} */
+.price-summary li {
   display: flex;
 }
-li label {
+.price-summary li label {
   width: 100px;
 }
-li:last-child {
+.price-summary li:last-child {
   font-size: 1.2rem;
+}
+.error-list {
+  color: red;
 }
 strong {
   font-weight: bold;
@@ -240,9 +253,6 @@ form {
 }
 form div {
   margin-bottom: 12px;
-}
-small {
-  color: red;
 }
 .input-unit {
   padding: 5px;
