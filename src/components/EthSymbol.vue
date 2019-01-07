@@ -11,5 +11,3 @@ span {
   font-family: 'Work Sans', sans-serif;
 }
 </style>
-
-

@@ -3,16 +3,21 @@
 
 _TODO_
 
-- Route all possible blockchain calls through API https://github.com/reidjs/microverse-api
+- Max tile price
+- Min tile price (1 wei)
+- Reward round ender
+- Slow down halving (apply halving to jackpot size)
+- Update rules
+- Route all possible blockchain reads through API https://github.com/reidjs/microverse-api
   - jackpot
   - time remaining
   - round number
   - tile price
   - tile owner
   ...
-- Change color
-- Update rules
-- Earn 1 million dollars :moneybag:
+- Update to web3 1.0
+- Frontend subscribes using web3 1.0 to events and updates state accordingly  
+- Whenever user buys land they can post short message to frontend 
 
 https://trello.com/b/yoEljv6Z/microverse
 
