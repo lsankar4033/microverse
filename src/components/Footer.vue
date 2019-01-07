@@ -1,7 +1,7 @@
 <template>
   <main>
     <ul>
-      <li><strong>Microverse 2018</strong></li>
+      <li><a href="/"><strong>Microverse 2018-2019</strong></a></li>
       <li class="spacer">-</li>
       <li><a href="/rules">How To Play</a></li>
       <li class="spacer">-</li>
@@ -9,14 +9,19 @@
       <li class="spacer">-</li>
       <li>Source Code</li>
       <li class="spacer">-</li>
-      <li>Contact</li>
+      <li><a :href="TELEGRAM_URL">Contact</a></li>
     </ul>
   </main>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   name: 'Footer',
+  computed: {
+    ...mapGetters(['TELEGRAM_URL']),
+  }
 }
 </script>
 

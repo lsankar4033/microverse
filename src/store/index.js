@@ -6,6 +6,7 @@ Vue.use(Vuex)
 
 // const API_URL = 'https://fierce-savannah-43271.herokuapp.com'
 const API_URL = 'http://localhost:3000'
+const TELEGRAM_URL = 'https://t.me/joinchat/F50acRJqamZqxUANfFhckg'
 
 const deselectedTile = {
   id: -1,
@@ -14,6 +15,8 @@ const deselectedTile = {
 }
 
 const state = {
+  TELEGRAM_URL,
+
   address: '',
   network: '',
 
@@ -105,6 +108,7 @@ const mutations = {
 }
 
 const getters = {
+  TELEGRAM_URL: state => state.TELEGRAM_URL,
   address: state => state.address,
   network: state => state.network,
   selectedTile: state => state.selectedTile,
@@ -114,7 +118,7 @@ const getters = {
   roundNumber: state => state.roundNumber,
   auctionPrice: state => state.auctionPrice,
   jackpot: state => state.jackpot,
-  nextJackpot: state => state.nextJackpot
+  nextJackpot: state => state.nextJackpot,
 }
 
 export default new Vuex.Store({

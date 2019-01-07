@@ -14,7 +14,7 @@
       <button>Copy Link</button>
     </div>
     <footer>
-      <a href="https://t.me/joinchat/F50acRJqamZqxUANfFhckg">For latest announcements, feedback, and questions join our telegram</a>
+      <a :href="TELEGRAM_URL">For latest announcements, feedback, and questions join our telegram</a>
       <a href="https://twitter.com/microversegame" class="twitter-follow-button" data-show-count="false">Follow @MicroverseGame</a>
     </footer>
   </main>
@@ -41,7 +41,7 @@ export default{
   name: 'ReferralPrompt',
   props: ['contract'],
   computed: {
-    ...mapGetters(['address']),
+    ...mapGetters(['address', 'TELEGRAM_URL']),
     refUrl() {
       return `${microverseUrl}?ref=${this.address}`
     }
