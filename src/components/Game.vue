@@ -2,9 +2,6 @@
   <div id="game-board">
     <div class="game-container">
       <GameInformation :timeLeft="timeLeft" :contract="contractInstance"/>
-
-      <!-- <hr/> -->
-
       <Board :timeLeft="timeLeft" :contract="contractInstance"/>
       <BuyForm :contract="contractInstance" :referrer="referrer"/>
       <GameFooter />
@@ -25,7 +22,7 @@ import GameFooter from './GameFooter'
 import ReferralPrompt from './ReferralPrompt'
 import { formatRoundNumber } from './utils'
 
-const delay = t => new Promise(resolve => setTimeout(resolve, t));
+// const delay = t => new Promise(resolve => setTimeout(resolve, t));
 
 export default{
   name: 'Game',
@@ -144,21 +141,15 @@ export default{
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* background: var(--sea-green); */
   background-image: linear-gradient(to right, var(--sea-green), white);
 }
 .game-container {
   border: 5px solid var(--dark-blue);
   border-radius: 6px;
-  /* background: var(--navy-blue); */
   background-image: radial-gradient(var(--light-sea-blue), var(--navy-blue));
   width: var(--game-board-width);
   margin-top: 20px;
 }
-/* .section-body {
-  position: relative;
-  padding: 0;
-} */
 @media only screen and (max-width: 768px) {
   .game-container {
     width: 100%;

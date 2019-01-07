@@ -1,7 +1,7 @@
 <template>
   <main>
     <div>
-      <h1>Jackpot</h1>
+      <h1>Stimulus</h1>
       <h2><EthSymbol/>39.432</h2>
     </div>
     <button>
@@ -9,7 +9,7 @@
         <path :d="infoIcon"></path>
       </svg>
       <span>
-        How to Play
+        <a href="/rules">How to Play</a>
       </span>
     </button>
   </main>
@@ -42,6 +42,9 @@ h2 {
 }
 svg {
   fill: white;
+}
+a {
+  text-decoration: none;
 }
 @media only screen and (max-width: 768px) { 
   main {

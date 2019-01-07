@@ -9,7 +9,6 @@
       <div>Set your listing price</div>
       <div>
         <span class="price-input">
-          <!-- <small>Ξ</small> -->
           <EthSymbol class="input-unit" />
           <input type="number" placeholder="Enter a number less than 3.234">
           <button>Buy</button>
@@ -20,12 +19,6 @@
             {{ error }}
           </li>
         </ul>
-        <!-- <small>
-          Number must be less than 3.32 <a>Why?</a>
-        </small>
-        <small v-if="!address">
-          You must be logged into metamask mainnet <a>How?</a>
-        </small> -->
       </div>
       <ul class="price-summary">
         <li><label>Price</label><p>1.0</p></li>
@@ -35,41 +28,6 @@
       </ul>
     </form>
   </main>
-  <!-- <SectionShell>
-    <template v-if="selectedTile.id >= 0">
-      <div class="row">
-        <h1>World {{ selectedTile.id }}</h1>
-        <p class="owner" v-if="selectedTile.owner == address">You own this world</p>
-        <p class="owner" v-else-if="selectedTile.owner">{{ selectedTile.owner | hashShorten }} owns this world</p>
-        <p class="owner" v-else>Nobody owns this world</p>
-      </div>
-      <div class="price"><p>Ξ{{ selectedTile.price | weiToEth }}</p></div>
-      <h2 class="label" v-if="canBuyOrChangePrice">Set your listing price (don't leave this empty!)</h2>
-      <div v-if="canBuyOrChangePrice" class="buy-tile-container">
-        <span class="price-input"><small>Ξ</small>
-          <input v-model="newPrice" placeholder="Set a price" type="number" @input="updateTotal"/>
-        </span>
-        <button v-if="selectedTile.owner === address" class="button" @click.prevent="handleChangePrice">Change Price</button>
-        <button v-else class="button" @click.prevent="handleBuyTile">Buy World {{ selectedTile.id }}</button>
-      </div>
-      <ul v-if="canBuyOrChangePrice" class="tax-container">
-        <li><span>Price</span>
-          <span v-if="selectedTile.owner == address">&mdash;</span>
-          <span v-else-if="selectedTile.owner || roundNumber == 0">Ξ{{ selectedTile.price | weiToEth }}</span>
-        </li>
-        <li><span>Tax</span><span>Ξ{{ tax | weiToEth }}</span></li>
-        <hr>
-        <li><span>Total</span>
-          <strong v-if="selectedTile.owner == address">Ξ{{ tax | weiToEth }}</strong>
-          <strong v-else-if="selectedTile.owner || roundNumber == 0">Ξ{{ total | weiToEth }}</strong>
-        </li>
-      </ul>
-    </template>
-    <template v-else-if="status">
-      <h1>Tell your friends your microverse world is on sale for Ξ{{ newPrice }}</h1>
-      <SocialShare :tweet="tweet" />
-    </template>
-  </SectionShell> -->
 </template>
 
 <script>
@@ -117,6 +75,7 @@ export default {
     ...mapMutations(['SHOW_MESSAGE']),
 
     async handleBuyTile() {
+      // TODO: Instead of using alert, use validation errors
       // Don't allow 0-priced tile!
       if (this.newPrice === null || this.newPrice == 0) {
         alert('Please set a nonzero listing price!')
@@ -228,10 +187,6 @@ input::placeholder {
 button {
   display: inline-block;
 }
-/* a {
-  text-decoration: underline;
-  cursor: pointer;
-} */
 .price-summary li {
   display: flex;
 }
@@ -272,6 +227,10 @@ form div {
   }
   form {
     margin: 0 auto;
+  }
+  h2 {
+    margin: 12px 0;
+    font-size: 1.6rem;
   }
   h3 {
     text-align: center;

@@ -18,37 +18,22 @@
       <a href="https://twitter.com/microversegame" class="twitter-follow-button" data-show-count="false">Follow @MicroverseGame</a>
     </footer>
   </main>
-  <!-- <div id="referral-prompt" class="section section-accent">
-    <p>Refer friends and earn 5% of all taxes they pay. No fee to them.</p>
-      <p>
-        <input id="referral-url" readonly="readonly" v-bind:value="referralUrl()"/>
-
-        <span @click="copyReferralToClipboard" class="button inline">
-            <i class="fas fa-link"></i>Copy link
-        </span>
-    </p>
-  </div> -->
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 
-// NOTE: Probably should move these to utils file
 const microverseUrl = 'https://microversegame.com'
 function copyStringToClipboard (str) {
-   // Create new element
    var el = document.createElement('textarea');
-   // Set value (string to be copied)
    el.value = str;
    // Set non-editable to avoid focus and move outside of view
    el.setAttribute('readonly', '');
    el.style = {position: 'absolute', left: '-9999px'};
    document.body.appendChild(el);
-   // Select text inside element
    el.select();
    // Copy text to clipboard
    document.execCommand('copy');
-   // Remove temporary element
    document.body.removeChild(el);
 }
 
@@ -127,6 +112,11 @@ footer {
   footer {
     flex-direction: column;
     align-items: center;
+    text-align: center;
+  }
+  span {
+    width: 90%;
+    margin: 0 auto;
   }
 }
 </style>

@@ -74,7 +74,7 @@ export default {
     }
   },
   mounted() {
-    // TODO: Use a window listener -- breaks if user resizes screen w/o refresh
+    // NOTE: breaks if user resizes screen w/o refresh
     if (screen.width < 768 || window.innerWidth < 768) {
       this.width = 64
       this.height = 64
@@ -101,23 +101,11 @@ main {
   display: flex;
   justify-content: center;
   align-items: center;
-  /* background: white; */
-  /* position: relative; */
-  /* might cause issues with mobile! */
-  /* width: 100px; */
-  /* height: 100px; */
-}
-
-svg {
-  /* position: absolute; */
-  /* z-index: 1; */
 }
 
 polygon {
-  /* fill-opacity: 0.4; */
   stroke: white;
   stroke-width: 0.5;
-  /* fill: var(--light-grey); */
   fill: var(--light-grey);
   cursor: pointer;
 }
@@ -128,10 +116,6 @@ polygon {
 
 .owned-by-user {
   fill: #fffff0;
-}
-
-polygon:hover {
-  /* fill: #ffff99; */
 }
 
 .selected {

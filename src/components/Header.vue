@@ -1,6 +1,6 @@
 <template>
   <div id="header-container">
-    <header v-if="$route.path !== '/'">
+    <header v-if="notOnRootPage">
       <router-link to="/">
         <div class="logo">Microverse</div>
       </router-link>
@@ -18,6 +18,9 @@ export default {
   name: 'Header',
   computed: {
     ...mapGetters(['network', 'jackpot']),
+    notOnRootPage() {
+      return this.$route.path !== '/'
+    }
   },
   methods: {
     ...mapActions(['setJackpotFromApi']),

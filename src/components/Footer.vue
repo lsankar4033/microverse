@@ -3,7 +3,7 @@
     <ul>
       <li><strong>Microverse 2018</strong></li>
       <li class="spacer">-</li>
-      <li>How To Play</li>
+      <li><a href="/rules">How To Play</a></li>
       <li class="spacer">-</li>
       <li>T&C</li>
       <li class="spacer">-</li>
@@ -38,6 +38,9 @@ strong {
 }
 .spacer {
   margin: 0 12px;
+}
+a {
+  text-decoration: none;
 }
 @media only screen and (max-width: 768px) { 
   ul {
