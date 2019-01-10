@@ -1,10 +1,10 @@
 <template>
-  <main v-if="true">
+  <main>
     <header>
-      <h1>World 17</h1>
-      <h3>Owned by {{ '0xB5cef47fDcd96ae7f718DeD9a94030736F809C51' | hashShorten }}</h3>
+      <h1>World {{ selectedTile.id }}</h1>
+      <h3>Owned by {{ selectedTile.owner | hashShorten }}</h3>
     </header>
-    <h2><EthSymbol/>4.34</h2>
+    <h2><EthSymbol/>{{ selectedTile.price | weiToEth }}</h2>
     <form>
       <div>Set your listing price</div>
       <div>

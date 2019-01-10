@@ -4,8 +4,8 @@ import axios from 'axios'
 
 Vue.use(Vuex)
 
-// const API_URL = 'https://fierce-savannah-43271.herokuapp.com'
-const API_URL = 'http://localhost:3000'
+const API_URL = 'https://fierce-savannah-43271.herokuapp.com'
+// const API_URL = 'http://localhost:3000'
 const TELEGRAM_URL = 'https://t.me/joinchat/F50acRJqamZqxUANfFhckg'
 
 const deselectedTile = {

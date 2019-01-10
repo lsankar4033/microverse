@@ -3,7 +3,7 @@
     <div class="game-container">
       <GameInformation :timeLeft="timeLeft" :contract="contractInstance"/>
       <Board :timeLeft="timeLeft" :contract="contractInstance"/>
-      <BuyForm :contract="contractInstance" :referrer="referrer"/>
+      <BuyForm v-if="selectedTile.id >= 0" :contract="contractInstance" :referrer="referrer"/>
       <GameFooter />
     </div>
     <ReferralPrompt :contract="contractInstance"/>
@@ -20,7 +20,7 @@ import Board from './Board'
 import GameInformation from './GameInformation'
 import GameFooter from './GameFooter'
 import ReferralPrompt from './ReferralPrompt'
-import { formatRoundNumber } from './utils'
+// import { formatRoundNumber } from './utils'
 
 // const delay = t => new Promise(resolve => setTimeout(resolve, t));
 
@@ -42,9 +42,11 @@ export default{
       timeoutPointer2: null,
     }
   },
+  computed: {
+    ...mapGetters(['selectedTile']),
+  },
   methods: {
     ...mapActions(['setTile', 'setRoundNumber', 'setAuctionPrice', 'setJackpot', 'setNextJackpot']),
-    ...mapGetters(['roundNumber']),
 
     formatRoundNumber(roundNumber) {
       return formatRoundNumber(roundNumber)

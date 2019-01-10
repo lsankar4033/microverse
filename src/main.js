@@ -26,7 +26,7 @@ Vue.filter('ethToWei', function(eth) {
 
 Vue.filter('formatSecondsToTime', function(sec) {
   // https://stackoverflow.com/questions/1322732/convert-seconds-to-hh-mm-ss-with-javascript
-  if (!sec || sec < 0) return null
+  if (!sec || sec < 0) return 0
   let totalSeconds = sec
   let hours = Math.floor(totalSeconds / 3600)
   const days = Math.floor(hours / 24)
@@ -64,6 +64,13 @@ Vue.filter('setPrecision', function(value, precision) {
 Vue.filter('hashShorten', function(hash) {
   if (!hash) return ''
   return `${hash.substr(0,6)}...${hash.substr(hash.length - 6)}`
+})
+
+Vue.filter('lpad', function(value) {
+  if (!value) return ''
+  const padding = 3
+  var zeroes = new Array(padding + 1).join('0')
+  return value < 1000 ? (zeroes + value).slice(-padding) : value
 })
 
 Vue.component('EthSymbol', EthSymbol)

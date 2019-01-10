@@ -10,17 +10,17 @@
           <h1>Microverse</h1>
           <aside>
             <small>Simulation</small>
-            <small>#001</small>
+            <small>#{{ roundNumber | lpad }}</small>
           </aside>
         </li>
-        <li>
-          1 day 14:20:19 left
-        </li>
+        <li v-if="timeLeft > 0">{{ timeLeft | formatSecondsToTime }} left</li>
+        <!-- TODO: Hook up this button to contract -->
+        <li v-else class="round-over">Round is over. Click <button>End Round</button> to earn a reward!</li>
       </ul>
-      <ul>
+      <ul v-if="balance > 0">
         <li>My Balance</li>
-        <li><EthSymbol /> 0.0005</li>
-        <li><button>Withdraw</button></li>
+        <li><EthSymbol />{{ balance | weiToEth | setPrecision(8) }}</li>
+        <li><button v-if="balance > 0 && !status">Withdraw</button></li>
       </ul>
     </section>
     <!-- <div>
@@ -71,13 +71,13 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['address', 'domain', 'auctionPrice', 'jackpot']),
+    ...mapGetters(['address', 'domain', 'auctionPrice', 'jackpot', 'roundNumber']),
     balanceInEth() {
       return this.$options.filters.weiToEth(this.balance)
     },
   },
   methods: {
-    ...mapGetters(['roundNumber']),
+    // ...mapGetters(['roundNumber']),
     ...mapActions(['setAuctionPrice', 'setNextJackpot', 'setRoundNumber']),
 
     async getBalance() {
@@ -117,11 +117,11 @@ export default {
     },
   },
   async mounted() {
+    console.log('this.timeLeft', this.timeLeft)
     if (this.address !== '' && this.contract != null) {
       this.balance = await this.contract.getBalance(this.address)
       this.setExtensionDuration()
     }
-
     this.$store.subscribe(async (mutation) => {
       if (mutation.type == 'UPDATE_STATE' && mutation.payload.key == 'address') {
         this.balance = await this.contract.getBalance(this.address)
@@ -136,15 +136,15 @@ export default {
         this.setExtensionDuration()
       }
     },
-    timeLeft: function(tl) {
-      if (!tl || tl < 1) {
-        this.$ga.event({
-          eventCategory: 'error',
-          eventAction: 'timeleft failure',
-          eventLabel: 'timeleft is either undefined or less than 1',
-        })
-      }
-    }
+    // timeLeft: function(tl) {
+    //   if (!tl || tl < 1) {
+    //     this.$ga.event({
+    //       eventCategory: 'error',
+    //       eventAction: 'timeleft failure',
+    //       eventLabel: 'timeleft is either undefined or less than 1',
+    //     })
+    //   }
+    // }
   },
 }
 </script>
@@ -179,6 +179,10 @@ aside {
   flex-direction: column;
   justify-content: center;
 }
+.round-over button {
+  display: inline-block;
+
+}
 @media only screen and (max-width: 768px) {
   section {
     flex-direction: column;
@@ -200,6 +204,12 @@ aside {
   }
   ul {
     margin-bottom: 15px;
+  }
+  .round-over {
+    font-size: 0.5rem;
+  }
+  .round-over button {
+    width: 60px;
   }
 }
 </style>
