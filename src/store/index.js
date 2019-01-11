@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
+// import { stat } from 'fs';
 
 Vue.use(Vuex)
 
@@ -119,6 +120,9 @@ const getters = {
   auctionPrice: state => state.auctionPrice,
   jackpot: state => state.jackpot,
   nextJackpot: state => state.nextJackpot,
+  userIsLoggedIntoWalletProvider: state => {
+    return typeof state.address === 'string'
+  }
 }
 
 export default new Vuex.Store({

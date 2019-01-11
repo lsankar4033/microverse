@@ -4,27 +4,26 @@
       <h1>World {{ selectedTile.id }}</h1>
       <h3>Owned by {{ selectedTile.owner | hashShorten }}</h3>
     </header>
-    <h2><EthSymbol/>{{ selectedTile.price | weiToEth }}</h2>
+    <h2><EthSymbol/>{{ price | weiToEth }}</h2>
     <form>
       <div>Set your listing price</div>
       <div>
         <span class="price-input">
           <EthSymbol class="input-unit" />
-          <input type="number" placeholder="Enter a number less than 3.234">
-          <button>Buy</button>
+          <input v-model="newPrice" type="number" placeholder="Enter a number less than 3.234" v-on:input="handleInput">
+          <button @click.prevent="handleChangePrice" :disabled="validationErrors.length > 0 || newPrice.length < 1">Buy</button>
         </span>
         <ul class="error-list">
-          <!-- Consider using v-html or custom component for errors so links work -->
           <li v-for="error in validationErrors">
-            {{ error }}
+            <aside v-html="error"/>
           </li>
         </ul>
       </div>
       <ul class="price-summary">
-        <li><label>Price</label><p>1.0</p></li>
-        <li><label>Tax</label><p>0.2</p></li>
+        <li><label>Price</label><p>{{ newPrice || '0'}}</p></li>
+        <li><label>Tax</label><p>{{ tax | weiToEth }}</p></li>
         <hr/>
-        <li><label>Total</label><p><strong>1.2</strong></p></li>
+        <li><label>Total</label><p><strong>{{ total | weiToEth }}</strong></p></li>
       </ul>
     </form>
   </main>
@@ -35,6 +34,8 @@ import { mapGetters, mapActions, mapMutations } from 'vuex'
 import SectionShell from './SectionShell'
 import SocialShare from './SocialShare'
 
+const METAMASK_URL = 'https://metamask.io/'
+
 export default {
   name: 'BuyForm',
   props: ['contract', 'referrer'],
@@ -44,8 +45,9 @@ export default {
   },
   data() {
     return {
-      validationErrors: ['You must be logged into metamask', 'Price is too high'],
-      newPrice: null,
+      // validationErrors: [`You must be logged into <a href="${METAMASK_URL}">metamask</a> or similar wallet provider`, `Price is too high (max: GET_MAX_FROM_API)`],
+      validationErrors: [],
+      newPrice: '',
       // tileBought or priceChanged
       status: '',
       tax: 0,
@@ -53,7 +55,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['address', 'selectedTile', 'domain', 'roundNumber', 'message']),
+    ...mapGetters(['address', 'selectedTile', 'domain', 'roundNumber', 'message', 'userIsLoggedIntoWalletProvider']),
 
     newPriceInWei() {
       return this.$options.filters.ethToWei(this.newPrice)
@@ -74,14 +76,24 @@ export default {
     ...mapActions(['deselectTile']),
     ...mapMutations(['SHOW_MESSAGE']),
 
-    async handleBuyTile() {
-      // TODO: Instead of using alert, use validation errors
-      // Don't allow 0-priced tile!
-      if (this.newPrice === null || this.newPrice == 0) {
-        alert('Please set a nonzero listing price!')
-        return
+    handleInput() {
+      this.updateTotal()
+      this.setValidationErrorsFromNewPrice()
+    },
+    setValidationErrorsFromNewPrice() {
+      const price = this.newPrice
+      const validationErrors = []
+      const messages = {
+        noLogin: `You must be logged into <a href="${METAMASK_URL}">metamask</a> or similar wallet provider`,
+        priceLow: `New price must be greater than 0 wei`,
+        priceHigh: `New price must be less than current stimulus (INSERT PRICE HERE)`,
       }
-
+      if (!this.userIsLoggedIntoWalletProvider) validationErrors.push(messages['noLogin'])
+      if (price <= 1e-18 && price.length > 0) validationErrors.push(messages['priceLow'])
+      // TODO: Price too high validation message check
+      this.validationErrors = validationErrors
+    },
+    async handleBuyTile() {
       let success = false
       const id = this.selectedTile.id
       this.SHOW_MESSAGE({ text: 'Check your wallet provider to complete buying this world.' })
@@ -187,6 +199,10 @@ input::placeholder {
 button {
   display: inline-block;
 }
+button[disabled] {
+  background: var(--light-grey);
+  cursor: default;
+}
 .price-summary li {
   display: flex;
 }
@@ -211,6 +227,9 @@ form div {
 }
 .input-unit {
   padding: 5px;
+}
+ul {
+  width: 500px;
 }
 @media only screen and (max-width: 768px) { 
   p {
