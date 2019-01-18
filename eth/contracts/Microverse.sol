@@ -63,6 +63,14 @@ contract Microverse is
         uint256 newPrice
     );
 
+    address public lastBuyer;
+    string public lastMessage;
+
+    function _setLastMessage(address buyer, string message) private {
+        lastBuyer = buyer;
+        lastMessage = message;
+    }
+
     /////////////
     // Team stuff
     /////////////
@@ -112,7 +120,12 @@ contract Microverse is
     uint256 public numBoughtTiles;
     uint256 public auctionStartTime;
 
-    function buyTileAuction(uint8 tileId, uint256 newPrice, address referrer) public payable atStage(Stage.DutchAuction) {
+    function buyTileAuction(
+        uint8 tileId,
+        uint256 newPrice,
+        address referrer,
+        string message
+    ) public payable atStage(Stage.DutchAuction) {
         require(
             tileToOwner[tileId] == address(0) && tileToPrice[tileId] == 0,
             "Can't buy a tile that's already been auctioned off"
@@ -133,6 +146,8 @@ contract Microverse is
         _changeTilePrice(tileId, newPrice);
 
         numBoughtTiles = numBoughtTiles.add(1);
+
+        _setLastMessage(msg.sender, message);
 
         emit TileOwnerChanged(tileId, address(0), msg.sender, price, newPrice);
 
@@ -335,7 +350,12 @@ contract Microverse is
         emit TilePriceChanged(tileId, tileToOwner[tileId], oldPrice, newPrice);
     }
 
-    function buyTile(uint8 tileId, uint256 newPrice, address referrer)
+    function buyTile(
+        uint8 tileId,
+        uint256 newPrice,
+        address referrer,
+        string message
+    )
         public
         payable
         atStage(Stage.GameRounds)
@@ -364,6 +384,8 @@ contract Microverse is
         _changeTilePrice(tileId, newPrice);
         _extendRound();
         _logRoundExtensionVolume(msg.value);
+
+        _setLastMessage(msg.sender, message);
 
         emit TileOwnerChanged(tileId, oldOwner, msg.sender, oldPrice, newPrice);
     }
